@@ -1,0 +1,30 @@
+.day-container {
+  display: flex;
+  gap: 3px;
+}
+
+.day-color {
+  color: #000;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+.day-color.월 {
+  color: #ff00ff;
+}
+.day-color.화 {
+  color: #ffa500;
+}
+.day-color.수 {
+  color: #800080;
+}
+.day-color.목 {
+  color: #8b4513;
+}
+.day-color.금 {
+  color: #0000ff;
+}
+.day-color.토 {
+  color: #000080;
+}
+.day-color.일 {
+  color: #ff0000;
+}
