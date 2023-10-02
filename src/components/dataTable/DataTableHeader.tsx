@@ -65,7 +65,7 @@ const DataTableHeader = ({
         isLoading={isLoading}
         disabled={disabled}
       />
-      <DataTableFilter filter={filter} onChangeFilter={doFilter} />
+      {filter && <DataTableFilter filter={filter} onChangeFilter={doFilter} />}
       <DataSearchBox
         doSearch={doSearch}
         placeholder={searchPlaceholder}
