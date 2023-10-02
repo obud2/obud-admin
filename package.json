@@ -7,8 +7,9 @@
     "dev": "vite --port 3003",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "aws s3 cp --recursive ./dist s3://admin.obud.site --profile obud",
-    "invalidate": "aws cloudfront create-invalidation --profile obud --distribution-id E3O4W4GZ1XAY7P --paths /*"
+    "upload": "aws s3 cp --recursive ./dist s3://admin.obud.site --profile obud",
+    "invalidate": "aws cloudfront create-invalidation --profile obud --distribution-id E3O4W4GZ1XAY7P --paths /*",
+    "deploy": "yarn build && yarn upload && yarn invalidate"
   },
   "dependencies": {
     "@ant-design/compatible": "^5.0.0",
