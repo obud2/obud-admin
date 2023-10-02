@@ -2,9 +2,6 @@
 node_modules/
 build/
 
-package-lock.json
-yarn.lock
-
 .idea/
 
 #amplify-do-not-edit-begin
