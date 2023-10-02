@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
-import { smLayout } from '../../styles/VariablesStyles';
+import styled, { css } from "styled-components";
+import { smLayout } from "../../styles/VariablesStyles";
 
 export const SDataDetailBody = styled.div`
   width: 100%;
@@ -121,4 +121,11 @@ export const SDataDetailItem = styled.div`
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
   }
+`;
+
+export const SDataDetailTitle = styled.div`
+  padding: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;

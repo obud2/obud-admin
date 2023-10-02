@@ -1,18 +1,39 @@
-import React from 'react';
+import React from "react";
 
-import DetailHeader from './DetailHeader';
-import { SDataDetailBody, SDataDetailItem } from './DataDetailBody.styled';
+import DetailHeader from "./DetailHeader";
+import {
+  SDataDetailBody,
+  SDataDetailItem,
+  SDataDetailTitle,
+} from "./DataDetailBody.styled";
 
-import DataDetail from './DataDetail';
+import DataDetail from "./DataDetail";
 
 /**
  *
  * @param {*} children : <div className="data-detail-body-item"></div>
  * @returns
  */
-const DataDetailBody = ({ open, onClose, title, subTitle, isLoading, extra, children, notiMessage, notiDescription, noModal }) => {
+const DataDetailBody = ({
+  open,
+  onClose,
+  title,
+  subTitle,
+  isLoading,
+  extra,
+  children,
+  notiMessage,
+  notiDescription,
+  noModal,
+}) => {
   return (
-    <DataDetail open={open} onClose={onClose} noModal={noModal} notiMessage={notiMessage} notiDescription={notiDescription}>
+    <DataDetail
+      open={open}
+      onClose={onClose}
+      noModal={noModal}
+      notiMessage={notiMessage}
+      notiDescription={notiDescription}
+    >
       <DetailHeader title={title} subTitle={subTitle} extra={extra} />
 
       <SDataDetailBody>
@@ -38,7 +59,7 @@ const DataDetailBody = ({ open, onClose, title, subTitle, isLoading, extra, chil
 export const DataDetailItem = ({ label, point, span = 2, children }) => {
   return (
     <SDataDetailItem span={span}>
-      <p className={`data-detail-body-title ${label ? '' : 'empty'}`}>
+      <p className={`data-detail-body-title ${label ? "" : "empty"}`}>
         {label} {point && <i className="title-point" />}
       </p>
 
@@ -48,3 +69,7 @@ export const DataDetailItem = ({ label, point, span = 2, children }) => {
 };
 
 export default DataDetailBody;
+
+export const DataDetailTitle = ({ title }) => {
+  return <SDataDetailTitle>{title}</SDataDetailTitle>;
+};
