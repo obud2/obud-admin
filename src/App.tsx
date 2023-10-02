@@ -39,9 +39,6 @@ const ForgotPasswordPage = lazy(
 const Error404Page = lazy(() => import("./pages/errors/404/Error404Page"));
 const Error500Page = lazy(() => import("./pages/errors/500/Error500Page"));
 
-/* API */
-const SwaggerPage = lazy(() => import("./pages/swagger/SwaggerPage"));
-
 // --------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------
 
@@ -166,8 +163,6 @@ const App = () => {
             <Route path="*" element={<Error404Page />} />
             <Route path="/pages/errors/error-404" element={<Error404Page />} />
             <Route path="/pages/errors/error-500" element={<Error500Page />} />
-
-            <Route path="/pages/swagger" element={<SwaggerPage />} />
 
             {/*  AllTalk */}
             <Route path="/pages/template" element={<TemplateListPage />} />
