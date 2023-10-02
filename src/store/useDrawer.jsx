@@ -1,5 +1,5 @@
-import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 const useDrawer = create(
   devtools((set) => ({
@@ -8,7 +8,7 @@ const useDrawer = create(
     onChangeDrawer: (boolean) => {
       set({ isDrawerOpen: boolean });
     },
-  })),
+  }))
 );
 
 export default useDrawer;

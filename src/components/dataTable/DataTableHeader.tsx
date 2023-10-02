@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import { notification } from 'antd';
+import { notification } from "antd";
 
-import DataTableTitle from './DataTableTitle';
-import DataSearchBox from './DataSearchBox';
-import DataTableFilter from './DataTableFilter';
+import DataTableTitle from "./DataTableTitle";
+import DataSearchBox from "./DataSearchBox";
+import DataTableFilter from "./DataTableFilter";
 
 /**
  *
@@ -32,16 +32,20 @@ const DataTableHeader = ({
   isLoading,
   notiMessage,
   notiDescription,
-}) => {
+}: any) => {
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     if (notiMessage || notiDescription) {
-      openNotification(notiMessage, notiDescription, 'bottomRight');
+      openNotification(notiMessage, notiDescription, "bottomRight");
     }
   }, [notiMessage, notiDescription]);
 
-  const openNotification = (notiMessage, notiDescription, placement) => {
+  const openNotification = (
+    notiMessage: any,
+    notiDescription: any,
+    placement: any
+  ) => {
     api.info({
       message: notiMessage,
       description: notiDescription,
@@ -62,7 +66,12 @@ const DataTableHeader = ({
         disabled={disabled}
       />
       <DataTableFilter filter={filter} onChangeFilter={doFilter} />
-      <DataSearchBox doSearch={doSearch} placeholder={searchPlaceholder} isLoading={isLoading} disabled={disabled} />
+      <DataSearchBox
+        doSearch={doSearch}
+        placeholder={searchPlaceholder}
+        isLoading={isLoading}
+        disabled={disabled}
+      />
     </React.Fragment>
   );
 };
@@ -74,7 +83,7 @@ const DataTableHeader = ({
  * @param {*} key  : 검색 될 Key
  * @returns
  */
-export const dataFilter = async (filter, data, key) => {
+export const dataFilter = async (filter: string, data: any, key: string) => {
   let dataCopy = [...data];
   let rtData = [];
 
@@ -98,7 +107,7 @@ export const dataFilter = async (filter, data, key) => {
  * @param {*} key  : 검색 될 Key
  * @returns
  */
-export const tabFilter = (filter, data, key) => {
+export const tabFilter = (filter: string, data: any[], key: string) => {
   let dataCopy = [...data];
   let rtData = [];
 

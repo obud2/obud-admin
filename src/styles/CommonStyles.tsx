@@ -1,30 +1,31 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 /* ////////////////////////////////////////////
                   Spacing
 //////////////////////////////////////////// */
-export const Spacing = styled.nav`
+export const Spacing = styled.nav<{ spacing?: string }>`
   width: 100%;
-  height: ${(props) => (props.spacing ? `${props.spacing}px` : '15px')};
+  height: ${(props) => (props.spacing ? `${props.spacing}px` : "15px")};
   display: block;
-
-  ${(props) =>
-    props.width &&
-    css`
-      width: ${`${props.width}px`};
-    `}
-
-  ${(props) =>
-    props.backgroundColor &&
-    css`
-      background-color: ${props.backgroundColor};
-    `}
 `;
 
 /* ////////////////////////////////////////////
                   Flex
 //////////////////////////////////////////// */
-export const Flex = styled.div`
+export const Flex = styled.div<{
+  flex?: string;
+  justifyContent?: string;
+  alignItems?: string;
+  flexDirection?: string;
+  flexWrap?: string;
+  cursor?: string;
+  padding?: string;
+  width?: string;
+  height?: string;
+  margin?: string;
+  textAlign?: string;
+  gap?: string;
+}>`
   display: flex;
 
   ${(props) =>

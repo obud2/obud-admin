@@ -52,6 +52,9 @@ const ProductLessonPage = lazy(
   () => import("./pages/product/ProductLessonPage")
 );
 
+/* Coupon */
+const CouponListPage = lazy(() => import("./pages/coupon/CouponListPage"));
+
 /* Specail */
 const SpecialListPage = lazy(() => import("./pages/special/SpecialListPage"));
 
@@ -127,6 +130,9 @@ const App = () => {
               path="/pages/product/studio/:id/:studioId"
               element={<ProductLessonPage />}
             />
+
+            {/* Coupon */}
+            <Route path="/pages/coupon/list" element={<CouponListPage />} />
 
             {/* Special */}
             <Route path="/pages/special" element={<SpecialListPage />} />
