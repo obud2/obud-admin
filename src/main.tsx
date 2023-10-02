@@ -1,26 +1,25 @@
-import './index.css';
+import "./index.css";
 // import 'antd/dist/reset.css';
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import App from './App';
+import App from "./App";
 
-import ThemeProvider from './context/ThemeProvider';
-import LayoutContextProvider from './context/LayoutContext';
-import UserContextPrivider from './context/UserContext';
-import GlobalContextProvider from './context/GlobalContext';
-import NavigationContextProvider from './context/NavigationContext';
-import MenuContextPrivider from './context/MenuContext';
+import ThemeProvider from "./context/ThemeProvider";
+import LayoutContextProvider from "./context/LayoutContext";
+import UserContextPrivider from "./context/UserContext";
+import GlobalContextProvider from "./context/GlobalContext";
+import NavigationContextProvider from "./context/NavigationContext";
+import MenuContextPrivider from "./context/MenuContext";
 
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 50000,
       cacheTime: 50000,
-
       refetchOnMount: true,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
@@ -30,9 +29,9 @@ const queryClient = new QueryClient({
   },
 });
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 
-ReactDOM.createRoot(container).render(
+ReactDOM.createRoot(container!).render(
   <GlobalContextProvider>
     <ThemeProvider>
       <LayoutContextProvider>
@@ -47,5 +46,5 @@ ReactDOM.createRoot(container).render(
         </NavigationContextProvider>
       </LayoutContextProvider>
     </ThemeProvider>
-  </GlobalContextProvider>,
+  </GlobalContextProvider>
 );

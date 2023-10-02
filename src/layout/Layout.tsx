@@ -1,29 +1,32 @@
-import React, { useState, useEffect, useLayoutEffect, useContext } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 
-import awsmobile from '../../aws-exports';
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth } from "aws-amplify";
+import awsmobile from "../../aws-exports";
 
-import Header from './Header';
-import Drawer from './Drawer';
-import Main from './Main';
-import Footer from './Footer';
+import Drawer from "./Drawer";
+import Footer from "./Footer";
+import Header from "./Header";
+import Main from "./Main";
 
-import moment from 'moment';
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
+import moment from "moment";
 
-import { getJwt, loginCheck, userLogout } from '../constants';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
+import { getJwt, loginCheck, userLogout } from "../constants";
 
-import { NavigationContext } from '../context/NavigationContext';
+import { NavigationContext } from "../context/NavigationContext";
 
-import ErrorBoundary from './ErrorBoundary';
-import { Spin } from 'antd';
-
-import { tokenRefresh } from '../constants/axiosInstance';
+import { Spin } from "antd";
+import { tokenRefresh } from "../constants/AxiosInstance";
+import ErrorBoundary from "./ErrorBoundary";
 
 Amplify.configure(awsmobile);
 
-const Layout = ({ isLoading, children }) => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const Layout = ({ children }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,23 +34,23 @@ const Layout = ({ isLoading, children }) => {
 
   const { open, handleDrawerToggle } = useContext(NavigationContext);
 
-  const [delay, setDelay] = useState('');
+  const [delay, setDelay] = useState("");
   const [isLayoutHide, setIsLayoutHide] = useState(false);
 
   const [isDelay, setIsDelay] = useState(true);
 
   useLayoutEffect(() => {
     switch (location?.pathname) {
-      case '/mobile/menu':
+      case "/mobile/menu":
         setIsLayoutHide(true);
         break;
-      case '/pages/auth/login':
+      case "/pages/auth/login":
         setIsLayoutHide(true);
         break;
-      case '/pages/auth/register':
+      case "/pages/auth/register":
         setIsLayoutHide(true);
         break;
-      case '/pages/auth/forgot-password':
+      case "/pages/auth/forgot-password":
         setIsLayoutHide(true);
         break;
       default:
@@ -72,33 +75,31 @@ const Layout = ({ isLoading, children }) => {
 
   useEffect(() => {
     if (USER_TOKEN) {
-      const decoded = jwt_decode(USER_TOKEN, { complete: true });
+      const decoded = jwt_decode(USER_TOKEN);
 
       if (decoded) {
-        const exp = moment(decoded.exp * 1000);
+        const exp = moment((decoded as any).exp * 1000);
 
         if (delay) clearInterval(delay);
 
         const interval = setInterval(() => {
           const now = moment();
-          const diff = exp.diff(now, 'minutes');
-
-          console.log(`토큰 만료 : ${diff}분`);
+          const diff = exp.diff(now, "minutes");
 
           if (diff < 10) {
             tokenRefresh().then(() => {
               window.location.reload();
             });
           }
-        }, [7000]);
+        }, 7000);
 
-        setDelay(interval);
+        setDelay(interval as any);
       }
     }
   }, []);
 
   const goLogin = () => {
-    navigate('/pages/auth/login');
+    navigate("/pages/auth/login");
   };
 
   if (isLayoutHide) {
@@ -114,8 +115,6 @@ const Layout = ({ isLoading, children }) => {
         <ErrorBoundary>{children}</ErrorBoundary>
       </Main>
 
-      {isLoading && <Fallback />}
-
       <Footer />
     </React.Fragment>
   );
@@ -125,16 +124,16 @@ const Fallback = () => {
   return (
     <div
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        width: '100vw',
-        height: '100vh',
-        position: 'fixed',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        width: "100vw",
+        height: "100vh",
+        position: "fixed",
         top: 0,
         left: 0,
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: "rgba(0,0,0,0.3)",
       }}
     >
       <Spin spinning={true} />
