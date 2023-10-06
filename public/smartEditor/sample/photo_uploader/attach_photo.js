@@ -573,7 +573,7 @@ window.onload = function () {
 // 이미지 압축
 const imageOptimization = async (file) => {
   const options = {
-    maxSizeMB: 1,
+    maxSizeMB: 10,
     fileType: 'image/jpeg',
   };
 
