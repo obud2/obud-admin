@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { NavigationConfig, NavigationMenu } from '../config/NavigationConfig';
+import { NavigationConfig, NavigationMenu } from "../config/NavigationConfig";
 
 export const MenuContext = React.createContext();
 
@@ -19,11 +19,11 @@ const MenuContextPrivider = (props) => {
     Object.values(temp).forEach((value, i) => {
       const key = `0-${i}`;
 
-      value['key'] = key;
+      value["key"] = key;
 
       value?.children?.forEach((c, i) => {
         const keyC = `${key}-${i}`;
-        c['key'] = keyC;
+        c["key"] = keyC;
       });
     });
 
@@ -31,11 +31,7 @@ const MenuContextPrivider = (props) => {
   }, []);
 
   return (
-    <MenuContext.Provider
-      value={{
-        menu: menu || [],
-      }}
-    >
+    <MenuContext.Provider value={{ menu: menu || [] }}>
       {props.children}
     </MenuContext.Provider>
   );

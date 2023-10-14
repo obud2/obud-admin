@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from "react";
 
-import { NavigationContext } from '../context/NavigationContext';
-import { useLocation } from 'react-router-dom';
+import { NavigationContext } from "../context/NavigationContext";
+import { useLocation } from "react-router-dom";
 
-import CustomIcon from './CustomIcon';
-import { SNavChildren, SNavCollapse } from './NavCollapse.styled';
+import CustomIcon from "./CustomIcon";
+import { SNavChildren, SNavCollapse } from "./NavCollapse.styled";
 
-import NavItem from './NavItem';
-import useDrawer from '../store/useDrawer';
+import NavItem from "./NavItem";
+import useDrawer from "../store/useDrawer";
 
 const NavCollapse = ({ item }) => {
   const location = useLocation();
@@ -37,13 +37,27 @@ const NavCollapse = ({ item }) => {
   return (
     item?.isShow && (
       <React.Fragment>
-        <SNavCollapse onClick={handleClick} open={open || isDrawerOpen} active={isActive}>
-          {item.icon && <CustomIcon type={item.icon} style={{ fontSize: '18px' }} theme="Outlined" />}
+        <SNavCollapse
+          onClick={handleClick}
+          open={open || isDrawerOpen}
+          active={isActive}
+        >
+          {item.icon && (
+            <CustomIcon
+              type={item.icon}
+              style={{ fontSize: "18px" }}
+              theme="Outlined"
+            />
+          )}
           <p className="nav-title">{item.title}</p>
-          <div className={`nav-collapes-more ${isOpen ? 'active' : ''}`} />
+          <div className={`nav-collapes-more ${isOpen ? "active" : ""}`} />
         </SNavCollapse>
 
-        <NavChildren open={(open || isDrawerOpen) && isOpen && item?.children} item={item} onActiveCheck={onActiveCheck} />
+        <NavChildren
+          open={(open || isDrawerOpen) && isOpen && item?.children}
+          item={item}
+          onActiveCheck={onActiveCheck}
+        />
       </React.Fragment>
     )
   );
@@ -70,9 +84,13 @@ const NavChildren = ({ open, item, onActiveCheck }) => {
     <SNavChildren ref={navChildrenRef} height={height} open={open}>
       {item?.children?.map(
         (item, i) =>
-          (item.type === 'item' || item.type === 'link') && (
-            <NavItem key={`navCollapse_${i}_${item.id}`} item={item} activeCheck={onActiveCheck} />
-          ),
+          (item.type === "item" || item.type === "link") && (
+            <NavItem
+              key={`navCollapse_${i}_${item.id}`}
+              item={item}
+              activeCheck={onActiveCheck}
+            />
+          )
       )}
     </SNavChildren>
   );

@@ -1,22 +1,22 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from "react";
 
-import _ from 'lodash';
+import _ from "lodash";
 
-import useDrawer from '../store/useDrawer';
-import useMenuByRole from '../hook/useMenuByRole';
+import useDrawer from "../store/useDrawer";
+import useMenuByRole from "../hook/useMenuByRole";
 
-import { LayoutContext } from '../context/LayoutContext';
+import { LayoutContext } from "../context/LayoutContext";
 
-import { PROJECT_NAME } from '../constants';
+import { PROJECT_NAME } from "../constants";
 
-import NavItem from './NavItem';
-import NavGroup from './NavGroup';
-import NavTitle from './NavTitle';
-import NavCollapse from './NavCollapse';
-import AvatarMenu from './AvatarMenu';
+import NavItem from "./NavItem";
+import NavGroup from "./NavGroup";
+import NavTitle from "./NavTitle";
+import NavCollapse from "./NavCollapse";
+import AvatarMenu from "./AvatarMenu";
 
-import { SNavigation } from './Navigation.style';
-import { useNavigate } from 'react-router-dom';
+import { SNavigation } from "./Navigation.style";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = ({ open, handleDrawerToggle }) => {
   const navigator = useNavigate();
@@ -35,8 +35,8 @@ const Navigation = ({ open, handleDrawerToggle }) => {
 
   useEffect(() => {
     if (!isAccess) {
-      console.log('## 접근불가 ##');
-      navigator('/');
+      console.log("## 접근불가 ##");
+      navigator("/");
     }
   }, [isAccess]);
 
@@ -55,16 +55,18 @@ const Navigation = ({ open, handleDrawerToggle }) => {
           menu.map((item, i) => (
             <React.Fragment key={`menu_${item?.id}_${i}`}>
               {/* 그룹 아이템  : isShow 포함 */}
-              {item.type === 'group' && <NavGroup item={item} />}
+              {item.type === "group" && <NavGroup item={item} />}
 
               {/* 제목 포함 아이템 */}
-              {item.type === 'group_title' && <NavTitle item={item} />}
+              {item.type === "group_title" && <NavTitle item={item} />}
 
               {/* 하위 메뉴 아이템 : isShow 포함 */}
-              {item.type === 'collapse' && <NavCollapse item={item} />}
+              {item.type === "collapse" && <NavCollapse item={item} />}
 
               {/* 메뉴 아이템 : isShow 포함 */}
-              {(item.type === 'item' || item.type === 'link') && <NavItem item={item} />}
+              {(item.type === "item" || item.type === "link") && (
+                <NavItem item={item} />
+              )}
             </React.Fragment>
           ))
         ) : (
@@ -77,7 +79,10 @@ const Navigation = ({ open, handleDrawerToggle }) => {
       </div>
 
       <div className="navigation-footer-container">
-        <div className="navition-drawer-toggle-container" onClick={handleDrawerToggle}>
+        <div
+          className="navition-drawer-toggle-container"
+          onClick={handleDrawerToggle}
+        >
           <button>
             <span className="arrow-icons" />
             <span className="arrow-icons" />

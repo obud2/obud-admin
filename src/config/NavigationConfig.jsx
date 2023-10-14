@@ -246,6 +246,7 @@ export const NavigationMenu = [
     type: "collapse",
     icon: "Message",
     iconType: "ant",
+    isShow: true,
     children: [
       {
         id: "group-info",

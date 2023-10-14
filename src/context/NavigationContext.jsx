@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export const NavigationContext = React.createContext({
   open: true,
   handleDrawerToggle: () => {},
 });
 
-const NavigationContextProvider = props => {
+const NavigationContextProvider = (props) => {
   const [open, setOpen] = useState(true);
 
-  const handleDrawerToggle = e => {
+  const handleDrawerToggle = (e) => {
     setOpen(!open);
   };
 
