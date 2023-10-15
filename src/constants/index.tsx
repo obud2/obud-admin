@@ -112,13 +112,13 @@ export const userLogout = () => {
  *
  * @returns Format(yyyy.mm.dd)
  */
-export const setCreatedAt = (createdAt: number, format: number) => {
+export const setCreatedAt = (createdAt: number, format: number | string) => {
   if (!(createdAt > 0)) return "-";
 
   const dt = new Date(Number(createdAt));
   const addDt =
     dt.getFullYear() +
-    format +
+    format.toString() +
     `00${(dt.getMonth() + 1).toString()}`.slice(-2) +
     format +
     `00${dt.getDate().toString()}`.slice(-2) +

@@ -6,7 +6,7 @@ import { useQuery, useInfiniteQuery } from "react-query";
 
 import ProductService from "../../services/ProductService";
 
-import { LIST_HEADER, FILTER, EXEL_HEADER } from "./ProductStudio.option";
+import { LIST_HEADER, EXEL_HEADER } from "./ProductStudio.option";
 
 import ProductShellTitle from "./ProductStudio";
 import ProductClassDetail from "./detail/ProductClassDetail";

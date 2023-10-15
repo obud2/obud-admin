@@ -34,10 +34,7 @@ const Navigation = ({ open, handleDrawerToggle }) => {
   };
 
   useEffect(() => {
-    if (!isAccess) {
-      console.log("## 접근불가 ##");
-      navigator("/");
-    }
+    // if (!isAccess) navigator("/");
   }, [isAccess]);
 
   return (

@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { Button, Checkbox, Input, Typography } from 'antd';
-import { addComma } from '../../../constants';
+import { Button, Checkbox, Input, Typography } from "antd";
+import { addComma } from "../../../constants";
 
-import _ from 'lodash';
-import moment from 'moment';
+import _ from "lodash";
+import moment from "moment";
 
-import { useQuery } from 'react-query';
-import ProductService from '../../../services/ProductService';
+import { useQuery } from "react-query";
+import ProductService from "../../../services/ProductService";
 
-import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
-import DataListTable from '../../../components/dataTable/DataListTable';
-import PlanCommentDetail from './option/PlanCommentDetail';
+import DataDetailBody, {
+  DataDetailItem,
+} from "../../../components/detailTable/DataDetailBody";
+import DataListTable from "../../../components/dataTable/DataListTable";
+import PlanCommentDetail from "./option/PlanCommentDetail";
 
 /**
  *
@@ -19,53 +21,53 @@ import PlanCommentDetail from './option/PlanCommentDetail';
  * @returns
  */
 const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
-  const [isCommentOpen, setIsCommentOpen] = useState('');
+  const [isCommentOpen, setIsCommentOpen] = useState("");
 
   const {
     data: plan,
     isLoading: isPlanLoading,
     isRefetching: isPlanRefetchLoading,
     refetch,
-  } = useQuery(['product-paln-item', id], () => ProductService?.getPlan(id));
+  } = useQuery(["product-plan-item", id], () => ProductService?.getPlan(id));
 
   const isAllLoading = isPlanLoading || isPlanRefetchLoading;
 
   const LIST_HEADER = [
     {
-      id: 'orderId',
-      label: '주문번호',
+      id: "orderId",
+      label: "주문번호",
       customBodyRender: (value) => {
         return value;
       },
     },
     {
-      id: 'userInfo',
-      label: 'Email',
+      id: "userInfo",
+      label: "Email",
       customBodyRender: (value) => {
         return value?.email;
       },
     },
     {
-      id: 'reservationer',
-      label: '예약자명',
+      id: "reservationer",
+      label: "예약자명",
     },
     {
-      id: 'reservationCount',
-      label: '인원',
+      id: "reservationCount",
+      label: "인원",
       customBodyRender: (value) => {
         return `${value || 0}명`;
       },
     },
     {
-      id: 'payOptionCount',
-      label: '옵션',
+      id: "payOptionCount",
+      label: "옵션",
       customBodyRender: (value) => {
         return `${value || 0}명`;
       },
     },
     {
-      id: 'attendance',
-      label: '출석여부',
+      id: "attendance",
+      label: "출석여부",
       customBodyRender: (value, data) => {
         const onClickAttendance = () => {
           const param = {
@@ -78,37 +80,60 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
           });
         };
 
-        return <Checkbox checked={value} onClick={onClickAttendance} disabled={isAllLoading} />;
+        return (
+          <Checkbox
+            checked={value}
+            onClick={onClickAttendance}
+            disabled={isAllLoading}
+          />
+        );
       },
     },
     {
-      id: 'comment',
-      label: '메모',
+      id: "comment",
+      label: "메모",
       customBodyRender: (value, data) => {
         const onFocusComment = () => {
           setIsCommentOpen(data);
         };
 
-        return <Input value={value || ''} readOnly onFocus={onFocusComment} disabled={isAllLoading} />;
+        return (
+          <Input
+            value={value || ""}
+            readOnly
+            onFocus={onFocusComment}
+            disabled={isAllLoading}
+          />
+        );
       },
     },
   ];
 
   const renderButtons = () => {
     return [
-      <Button key="cancel-btn" style={{ width: '70px', marginRight: '5px' }} onClick={onClose}>
+      <Button
+        key="cancel-btn"
+        style={{ width: "70px", marginRight: "5px" }}
+        onClick={onClose}
+      >
         닫기
       </Button>,
     ];
   };
 
   return (
-    <DataDetailBody open={open} onClose={onClose} title="예약자 명단" subTitle={lesson?.title || ''} extra={renderButtons()}>
+    <DataDetailBody
+      open={open}
+      onClose={onClose}
+      title="예약자 명단"
+      subTitle={lesson?.title || ""}
+      extra={renderButtons()}
+    >
       <DataDetailItem label="카테고리" span={2}>
         {studio?.category &&
           studio?.category?.length > 0 &&
           studio?.category?.map((item) => (
-            <Typography.Text key={item} style={{ marginRight: '10px' }}>
+            <Typography.Text key={item} style={{ marginRight: "10px" }}>
               {item}
             </Typography.Text>
           ))}
@@ -116,14 +141,16 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
 
       <DataDetailItem label="수업일" span={2}>
         <Typography.Text>
-          {moment(plan?.startDate || '')
-            .locale('ko')
-            .format('YYYY-MM-DD')}
+          {moment(plan?.startDate || "")
+            .locale("ko")
+            .format("YYYY-MM-DD")}
         </Typography.Text>
       </DataDetailItem>
 
       <DataDetailItem label="시간" span={2}>
-        <Typography.Text>{`${moment(plan?.startDate).format('HH:mm')} ~ ${moment(plan?.endDate).format('HH:mm')}`}</Typography.Text>
+        <Typography.Text>{`${moment(plan?.startDate).format(
+          "HH:mm"
+        )} ~ ${moment(plan?.endDate).format("HH:mm")}`}</Typography.Text>
       </DataDetailItem>
 
       <DataDetailItem label="가격" span={2}>
@@ -131,23 +158,36 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
       </DataDetailItem>
 
       <DataDetailItem label="강사" span={2}>
-        <Typography.Text>{plan?.instructorInfo?.name || '-'}</Typography.Text>
+        <Typography.Text>{plan?.instructorInfo?.name || "-"}</Typography.Text>
       </DataDetailItem>
 
       <DataDetailItem label="예약/정원" span={2}>
-        <Typography.Text type="danger">{plan?.currentMember || 0}</Typography.Text>
-        <Typography.Text>{' / '}</Typography.Text>
+        <Typography.Text type="danger">
+          {plan?.currentMember || 0}
+        </Typography.Text>
+        <Typography.Text>{" / "}</Typography.Text>
         <Typography.Text>{plan?.maxMember || 0}</Typography.Text>
       </DataDetailItem>
 
       <DataDetailItem label="예약현황" span={2}>
-        <Typography.Text type="danger">{plan?.reservationStatus === 'impossible' ? '예약불가능' : '예약가능'}</Typography.Text>
+        <Typography.Text type="danger">
+          {plan?.reservationStatus === "impossible" ? "예약불가능" : "예약가능"}
+        </Typography.Text>
       </DataDetailItem>
       <DataDetailItem span={2} />
 
-      <DataListTable data={plan?.reservationList || []} header={LIST_HEADER} useDetail={false} />
+      <DataListTable
+        data={plan?.reservationList || []}
+        header={LIST_HEADER}
+        useDetail={false}
+      />
 
-      <PlanCommentDetail isOpen={isCommentOpen} onClose={() => setIsCommentOpen('')} data={isCommentOpen} refetch={refetch} />
+      <PlanCommentDetail
+        isOpen={isCommentOpen}
+        onClose={() => setIsCommentOpen("")}
+        data={isCommentOpen}
+        refetch={refetch}
+      />
     </DataDetailBody>
   );
 };
