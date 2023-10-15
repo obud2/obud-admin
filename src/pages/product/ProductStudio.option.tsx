@@ -2,7 +2,7 @@ import { Button, Switch } from "antd";
 import { GoLinkExternal } from "react-icons/go";
 import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import { setCreatedAt } from "../../constants";
+import { APP_URL, setCreatedAt } from "../../constants";
 import ProductService from "../../services/ProductService";
 
 // TODO: Strict Typing
@@ -14,16 +14,17 @@ export const LIST_HEADER = [
     width: "300px",
     customBodyRender: (value: any, data: any, onClick: any) => {
       return (
-        <div
-          style={{ display: "flex", alignItems: "center", gap: "10px" }}
-          onClick={() => onClick(data)}
-        >
-          <img
-            src={data?.images[0]?.url || ""}
-            style={{ width: 49, height: 49 }}
-          />
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div onClick={() => onClick(data)}>
+            <img
+              src={data?.images[0]?.url || ""}
+              style={{ width: 49, height: 49 }}
+            />
+          </div>
           {value}
-          <GoLinkExternal />
+          <Link target="_blank" to={`${APP_URL}/lesson/${data.id}`}>
+            <GoLinkExternal />
+          </Link>
         </div>
       );
     },
