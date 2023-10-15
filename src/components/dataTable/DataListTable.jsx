@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { Spin } from 'antd';
-import { SDataListTable } from './DataListTable.styled';
+import { Spin } from "antd";
+import { SDataListTable } from "./DataListTable.styled";
 
-import FileDownload from '../fileDownload/FileDownload';
+import FileDownload from "../fileDownload/FileDownload";
 
-import DataListItem from './DataListItem';
+import DataListItem from "./DataListItem";
 
-import { ReactSortable } from 'react-sortablejs';
-import InfiniteScrollAction from './InfiniteScrollAction';
+import { ReactSortable } from "react-sortablejs";
+import InfiniteScrollAction from "./InfiniteScrollAction";
 
 /**
  *
@@ -46,11 +46,11 @@ const DataListTable = ({
   onExcelListApi,
   sorted,
   sortApi,
-  sortId = 'sortOrder',
+  sortId = "sortOrder",
 }) => {
-  const [select, setSelect] = useState('');
+  const [select, setSelect] = useState("");
 
-  const [datas, setDatas] = useState('');
+  const [datas, setDatas] = useState("");
 
   useEffect(() => {
     if (Array.isArray(data) || data?.pages) {
@@ -60,7 +60,7 @@ const DataListTable = ({
         data?.pages?.map((page) =>
           page?.result?.map((a) => {
             copyArr.push(a);
-          }),
+          })
         );
       } else {
         data?.map((a) => {
@@ -112,14 +112,28 @@ const DataListTable = ({
         <li className="data-list-header-field no">No</li>
 
         {header?.map((head) => (
-          <li className="data-list-header-field" key={`data-list-${head?.label}`} style={{ flex: head?.flex || 1 }}>
+          <li
+            className="data-list-header-field"
+            key={`data-list-${head?.label}`}
+            style={{ flex: head?.flex || 1, width: head?.width || "auto" }}
+          >
             {head?.label}
           </li>
         ))}
 
-        {useDetail && <li className="data-list-header-field" aria-label="상세 버튼을 위한 공백" />}
+        {useDetail && (
+          <li
+            className="data-list-header-field"
+            aria-label="상세 버튼을 위한 공백"
+          />
+        )}
 
-        {useOption && <li className="data-list-header-field" aria-label="상세 옵션버튼을 위한 공백" />}
+        {useOption && (
+          <li
+            className="data-list-header-field"
+            aria-label="상세 옵션버튼을 위한 공백"
+          />
+        )}
       </ul>
 
       {/* 로딩 영역 */}
@@ -130,9 +144,13 @@ const DataListTable = ({
       )}
 
       {/* Data List Body 영역 */}
-      <InfiniteScrollAction data={data || []} fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage}>
+      <InfiniteScrollAction
+        data={data || []}
+        fetchNextPage={fetchNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      >
         <ReactSortable
-          className={`data-list-container ${isSomeLoading ? 'loading' : ''}`}
+          className={`data-list-container ${isSomeLoading ? "loading" : ""}`}
           onEnd={onEnd}
           list={datas}
           setList={setList}
@@ -158,7 +176,9 @@ const DataListTable = ({
                   useOption={useOption}
                 />
               ))
-            : !isSomeLoading && <p className="empty-list-item">조회 된 데이터가 없습니다.</p>}
+            : !isSomeLoading && (
+                <p className="empty-list-item">조회 된 데이터가 없습니다.</p>
+              )}
         </ReactSortable>
       </InfiniteScrollAction>
     </SDataListTable>
