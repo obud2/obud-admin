@@ -1,30 +1,30 @@
-import { Switch } from "antd";
+import { Button, Switch } from "antd";
+import { GoLinkExternal } from "react-icons/go";
 import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import { setCreatedAt } from "../../constants";
 import ProductService from "../../services/ProductService";
 
+// TODO: Strict Typing
 export const LIST_HEADER = [
   {
     id: "title",
     label: "수업명",
     flex: "none",
     width: "300px",
-    customBodyRender: (value: any, data: any) => {
+    customBodyRender: (value: any, data: any, onClick: any) => {
       return (
-        <Link
-          to={`/pages/product/studio/${data?.studiosId || ""}/${
-            data?.id || ""
-          }`}
+        <div
+          style={{ display: "flex", alignItems: "center", gap: "10px" }}
+          onClick={() => onClick(data)}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img
-              src={data?.images[0]?.url || ""}
-              style={{ width: 49, height: 49 }}
-            />
-            {value}
-          </div>
-        </Link>
+          <img
+            src={data?.images[0]?.url || ""}
+            style={{ width: 49, height: 49 }}
+          />
+          {value}
+          <GoLinkExternal />
+        </div>
       );
     },
   },
@@ -54,6 +54,17 @@ export const LIST_HEADER = [
         />
       );
     },
+  },
+  {
+    id: "",
+    label: "일정등록",
+    customBodyRender: (value: any, data: any) => (
+      <Link
+        to={`/pages/product/studio/${data?.studiosId || ""}/${data?.id || ""}`}
+      >
+        <Button type="primary">등록</Button>
+      </Link>
+    ),
   },
   {
     id: "createdAt",

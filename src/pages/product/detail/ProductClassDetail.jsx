@@ -99,8 +99,6 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
     setBody((prev) => ({ ...prev, [type]: e }));
   };
 
-  console.log("body", body);
-
   const onSubmit = async () => {
     const param = {
       ...body,

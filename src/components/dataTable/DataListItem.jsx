@@ -51,7 +51,7 @@ const DataListItem = ({
           style={{ flex: o?.flex || 1, width: o?.width || "auto" }}
         >
           {o?.customBodyRender
-            ? o?.customBodyRender(data[o?.id], data)
+            ? o?.customBodyRender(data[o?.id], data, onClick)
             : data[o?.id] || "-"}
         </div>
       ))}
