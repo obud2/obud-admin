@@ -4,20 +4,21 @@ import { smLayout } from "../../styles/VariablesStyles";
 export const SDataDetailBody = styled.div`
   width: 100%;
   min-height: 500px;
+  overflow-x: auto;
   height: calc(95% - 24px);
 
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 
   margin-top: 10px;
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
   background-color: #ffffff;
 
   ${smLayout} {
     padding-bottom: 200px;
+  }
+
+  .calendar-wrapper {
+    min-width: 900px;
   }
 
   .detail-body-loading {

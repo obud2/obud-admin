@@ -67,13 +67,15 @@ const OrderStatusCalendarPage = () => {
         // detail에 planList가 없는 경우도 있음.
         detail.planList?.forEach((plan) => {
           sortDate.push({
-            id: `${detail.startDate}-${plan.id}`,
+            id: `${plan.id}`,
             date: moment(plan.startDate).format("YYYY-MM-DD"),
             start: moment(plan.startDate).format("YYYY-MM-DD"),
             end: moment(plan.endDate).format("YYYY-MM-DD"),
-            title: `${moment(plan.startDate).format("HH:mm")} 예약현황: ${
-              plan.currentMember
-            }/${plan.maxMember}`,
+            title: `${moment(plan.startDate).format(
+              "HH:mm"
+            )} ${detail.title?.substring(0, 6)} ${plan.currentMember}/${
+              plan.maxMember
+            }`,
             backgroundColor: "#34423599",
             borderColor: "#34423599",
             textColor: "#ffffff",
@@ -112,6 +114,7 @@ const OrderStatusCalendarPage = () => {
 
   const onDetail = (data) => {
     setDetailId({ id: data?.date || "new" });
+    setReservationId(data?.id);
   };
 
   const eventContent = (eventInfo) => {
@@ -120,9 +123,9 @@ const OrderStatusCalendarPage = () => {
     );
   };
 
-  const onResevation = (data) => {
-    setReservationId(data?.id);
-  };
+  // const onResevation = (data) => {
+  //   setReservationId(data?.id);
+  // };
 
   const isAllLoading = isStudioLoading || isLoading || isRefetching;
 
@@ -137,24 +140,26 @@ const OrderStatusCalendarPage = () => {
       />
 
       <SDataDetailBody padding>
-        <Calendar
-          list={data?.sortDate || []}
-          onClick={onDetail}
-          onChangeDate={onChangeDate}
-          eventContent={eventContent}
-          isLoading={isAllLoading}
-          statusHide
-        />
+        <div className="calendar-wrapper">
+          <Calendar
+            list={data?.sortDate || []}
+            onClick={onDetail}
+            onChangeDate={onChangeDate}
+            eventContent={eventContent}
+            isLoading={isAllLoading}
+            statusHide
+          />
+        </div>
       </SDataDetailBody>
 
       {/* 예약목록 */}
-      <OrderStatusCalendarPalnList
+      {/* <OrderStatusCalendarPalnList
         lessonId={id}
         month={detailId?.id}
         open={detailId?.id}
         onClose={() => setDetailId(false)}
         onResevation={onResevation}
-      />
+      /> */}
 
       {/* 예약자 현황 */}
       <ProductPlanResevationList

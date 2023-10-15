@@ -119,12 +119,12 @@ const Calendar = ({
         }}
         nowIndicator
         datesSet={onChangeDate}
-        eventClick={(info) =>
+        eventClick={(info) => {
           onClick(
             list.find((e: any) => e.id === info.event.id),
             info.event.id
-          )
-        }
+          );
+        }}
         events={temp || []}
         eventContent={eventContent}
       />
