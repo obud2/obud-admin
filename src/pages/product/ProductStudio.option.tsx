@@ -8,6 +8,8 @@ export const LIST_HEADER = [
   {
     id: "title",
     label: "수업명",
+    flex: "none",
+    width: "300px",
     customBodyRender: (value: any, data: any) => {
       return (
         <Link
@@ -46,7 +48,7 @@ export const LIST_HEADER = [
 
       return (
         <Switch
-          style={{ width: "50px" }}
+          style={{ width: "50px", margin: "0 4px" }}
           checked={value}
           onChange={(e) => updateShow(e)}
         />
