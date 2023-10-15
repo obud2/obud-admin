@@ -62,7 +62,7 @@ export const LIST_HEADER = [
       <Link
         to={`/pages/product/studio/${data?.studiosId || ""}/${data?.id || ""}`}
       >
-        <Button type="primary">등록</Button>
+        <Button type="default">등록</Button>
       </Link>
     ),
   },
