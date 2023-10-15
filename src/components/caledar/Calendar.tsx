@@ -1,29 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import _ from 'lodash';
-import moment from 'moment';
+import _ from "lodash";
+import moment from "moment";
 
-import { Button, Spin } from 'antd';
-import { SCalendar } from './Calendar.styled';
+import { Button, Spin } from "antd";
+import { SCalendar } from "./Calendar.styled";
 
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import koLocale from '@fullcalendar/core/locales/ko';
+import FullCalendar from "@fullcalendar/react"; // must go before plugins
+import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import koLocale from "@fullcalendar/core/locales/ko";
 
 const startColor = {
-  backgroundColor: '#dcccfc',
-  borderColor: '#dcccfc',
-  textColor: '#7846f0',
+  backgroundColor: "#dcccfc",
+  borderColor: "#dcccfc",
+  textColor: "#7846f0",
 };
 
 const endColor = {
-  backgroundColor: '#eeeeee',
-  borderColor: '#eeeeee',
-  textColor: '#868686',
+  backgroundColor: "#eeeeee",
+  borderColor: "#eeeeee",
+  textColor: "#868686",
 };
 
-const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventContent, statusHide }) => {
-  const dateFormat = 'YYYYMMDDHHmmss';
+const Calendar = ({
+  list,
+  onClick,
+  onChangeDate,
+  resister,
+  isLoading,
+  eventContent,
+  statusHide,
+}: any) => {
+  const dateFormat = "YYYYMMDDHHmmss";
 
   const [temp, setTemp] = useState([]);
 
@@ -31,18 +39,20 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
     if (list && list?.length > 0) {
       const copy = list || [];
 
-      copy?.map((a) => {
+      copy?.map((a: any) => {
         const now = moment().format(dateFormat).valueOf();
         const start = moment(a.startDate).format(dateFormat).valueOf();
 
         if (Number(now) < Number(start)) {
-          if (!a?.backgroundColor) a['backgroundColor'] = startColor?.backgroundColor;
-          if (!a?.borderColor) a['borderColor'] = startColor?.borderColor;
-          if (!a?.textColor) a['textColor'] = startColor?.textColor;
+          if (!a?.backgroundColor)
+            a["backgroundColor"] = startColor?.backgroundColor;
+          if (!a?.borderColor) a["borderColor"] = startColor?.borderColor;
+          if (!a?.textColor) a["textColor"] = startColor?.textColor;
         } else {
-          if (!a?.backgroundColor) a['backgroundColor'] = endColor?.backgroundColor;
-          if (!a?.borderColor) a['borderColor'] = endColor?.borderColor;
-          if (!a?.textColor) a['textColor'] = endColor?.textColor;
+          if (!a?.backgroundColor)
+            a["backgroundColor"] = endColor?.backgroundColor;
+          if (!a?.borderColor) a["borderColor"] = endColor?.borderColor;
+          if (!a?.textColor) a["textColor"] = endColor?.textColor;
         }
       });
 
@@ -90,9 +100,9 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
             type="primary"
             disabled={isLoading}
             loading={isLoading}
-            style={{ width: 'auto', minWidth: '90px' }}
+            style={{ width: "auto", minWidth: "90px" }}
           >
-            {resister?.text || '등록'}
+            {resister?.text || "등록"}
           </Button>
         )}
       </div>
@@ -103,16 +113,16 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
         height={800}
         initialView="dayGridMonth"
         headerToolbar={{
-          start: '',
-          center: 'title',
-          end: 'today prev,next',
+          start: "",
+          center: "title",
+          end: "today prev,next",
         }}
         nowIndicator
         datesSet={onChangeDate}
         eventClick={(info) =>
           onClick(
-            list.find((e) => e.id === info.event.id),
-            info.event.id,
+            list.find((e: any) => e.id === info.event.id),
+            info.event.id
           )
         }
         events={temp || []}

@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.18.9",
+    "@types/lodash": "^4.14.199",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-query": "^1.2.9",
