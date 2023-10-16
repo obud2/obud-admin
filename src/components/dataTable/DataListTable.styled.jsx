@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { smLayout } from '../../styles/VariablesStyles';
+import { smLayout } from "../../styles/VariablesStyles";
 
 export const SDataListTable = styled.div`
   width: 100%;
@@ -84,26 +84,16 @@ export const SDataListTable = styled.div`
 
     background-color: #ffffff;
     overflow: hidden;
-
-    box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
   }
 
   .data-list-container {
     height: auto;
     color: rgba(0, 0, 0, 0.87);
 
-    transform: translateY(0);
-    transition: transform 0.2s;
-
     background-color: #ffffff;
-    box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 
     ${smLayout} {
       min-width: 1140px;
-    }
-
-    &.loading {
-      transform: translateY(65px);
     }
 
     .empty-list-item {

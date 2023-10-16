@@ -34,7 +34,7 @@ const Navigation = ({ open, handleDrawerToggle }) => {
   };
 
   useEffect(() => {
-    if (!isAccess) navigator("/");
+    // if (!isAccess) navigator("/");
   }, [isAccess]);
 
   return (
