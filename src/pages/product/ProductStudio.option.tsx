@@ -15,13 +15,17 @@ export const LIST_HEADER = [
     customBodyRender: (value: any, data: any, onClick: any) => {
       return (
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div onClick={() => onClick(data)}>
+          <div
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+            onClick={() => onClick(data)}
+          >
             <img
               src={data?.images[0]?.url || ""}
-              style={{ width: 49, height: 49 }}
+              style={{ width: 49, height: 49, marginRight: "10px" }}
             />
+            <span>{value}</span>
           </div>
-          {value}
+
           <Link target="_blank" to={`${APP_URL}/lesson/${data.id}`}>
             <GoLinkExternal />
           </Link>
