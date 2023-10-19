@@ -3,8 +3,6 @@ import React from 'react';
 import { Button } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 
-import { PROJECT_NAME } from '../constants';
-
 import { useNavigate } from 'react-router-dom';
 
 import AvatarMenu from './AvatarMenu';
@@ -20,11 +18,16 @@ const Header = () => {
 
   return (
     <SOftadehAppBar>
-      <Button type="text" onClick={onClickGoMenuPage}>
+      <Button
+        type='text'
+        onClick={onClickGoMenuPage}
+      >
         <MenuOutlined style={{ fontSize: '18px' }} />
       </Button>
 
-      <p className="header-title">{PROJECT_NAME}</p>
+      <p className='header-title'>
+        <img src='/img/obud_logo.png' />
+      </p>
 
       <AvatarMenu />
     </SOftadehAppBar>

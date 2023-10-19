@@ -40,7 +40,9 @@ const Navigation = ({ open, handleDrawerToggle }) => {
   return (
     <SNavigation open={open || isDrawerOpen}>
       <div className="navigation-topbar">
-        <div className="navigation-title">{PROJECT_NAME}</div>
+        <div className="navigation-title">
+          <img src="/img/obud_logo.png" />
+        </div>
       </div>
 
       <div

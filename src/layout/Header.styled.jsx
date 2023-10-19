@@ -20,9 +20,11 @@ export const SOftadehAppBar = styled.header`
 
   background-color: ${(props) => props.theme.background};
 
-  transition: margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms, width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  transition: margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
-  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
 
   z-index: 1000;
 
@@ -32,6 +34,10 @@ export const SOftadehAppBar = styled.header`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+
+    img {
+      width: 50px;
+    }
   }
 
   button {

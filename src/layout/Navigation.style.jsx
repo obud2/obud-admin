@@ -1,5 +1,5 @@
-import styled, { css, keyframes } from 'styled-components';
-import { smLayout } from '../styles/VariablesStyles';
+import styled, { css, keyframes } from "styled-components";
+import { smLayout } from "../styles/VariablesStyles";
 
 const ArrawAnimationLeft = keyframes`
   0% {
@@ -62,6 +62,11 @@ export const SNavigation = styled.div`
 
       text-overflow: ellipsis;
       overflow: hidden;
+
+      img {
+        width: 25%;
+        max-width: 80px;
+      }
     }
 
     ${(props) =>
@@ -145,17 +150,20 @@ export const SNavigation = styled.div`
 
         &:nth-child(1) {
           animation-duration: 2s;
-          border-color: ${(props) => (props.theme.theme === 'light' ? '#404368c2' : '#fefeffc2')};
+          border-color: ${(props) =>
+            props.theme.theme === "light" ? "#404368c2" : "#fefeffc2"};
         }
 
         &:nth-child(2) {
           animation-duration: 1.9s;
-          border-color: ${(props) => (props.theme.theme === 'light' ? '#23233763' : '#ffffff63')};
+          border-color: ${(props) =>
+            props.theme.theme === "light" ? "#23233763" : "#ffffff63"};
         }
 
         &:nth-child(3) {
           animation-duration: 1.8s;
-          border-color: ${(props) => (props.theme.theme === 'light' ? '#23233729' : '#ffffff29')};
+          border-color: ${(props) =>
+            props.theme.theme === "light" ? "#23233729" : "#ffffff29"};
         }
       }
     }
