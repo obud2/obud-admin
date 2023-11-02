@@ -10,7 +10,6 @@ export const ALLTALK_CHANNEL = "obud";
 export const ALLTALK_API_KEY = "b3e06d45-35a4-4d31-ad41-4feab973d050";
 
 export const API_URL = "https://api.obud.site";
-export const API_V2_URL = "http://api.v2.obud.site";
 export const APP_URL = "https://www.obud.site";
 
 export const S3_BUCKET = "file.obud.site";

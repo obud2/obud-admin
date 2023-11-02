@@ -1,4 +1,4 @@
-import { API_V2_URL } from "../constants";
+import { API_URL } from "../constants";
 
 import axiosInstance from "../constants/axiosInstance";
 import { Coupon } from "../entities/coupon";
@@ -19,7 +19,7 @@ type RegisterCouponRequest = {
 
 const registerCoupon = async (params: RegisterCouponRequest) => {
   try {
-    const response = await axiosInstance.post(`${API_V2_URL}/coupon`, params);
+    const response = await axiosInstance.post(`${API_URL}/coupon`, params);
     return response?.data;
   } catch (error) {
     throw error;
@@ -35,7 +35,7 @@ const listCoupons = async (req: ListCouponsRequest) => {
   try {
     const params = new URLSearchParams();
     params.append("page", req.page.toString() || "1");
-    const response = await axiosInstance.get(`${API_V2_URL}/coupon`, {
+    const response = await axiosInstance.get(`${API_URL}/coupon`, {
       params,
     });
     return response?.data;
