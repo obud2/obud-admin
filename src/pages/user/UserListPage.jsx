@@ -17,7 +17,7 @@ import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
 
 const UserListPage = () => {
-  const [searchFilter, setSearchFilter] = useState({ value: '', filter: '' });
+  const [searchFilter, setSearchFilter] = useState({ value: '', filter: '', role: 'USR' });
 
   const [detailId, setDetailId] = useState('');
   const [isRegistOpen, setIsRegistOpen] = useState(false);
@@ -34,7 +34,7 @@ const UserListPage = () => {
       if (!searchFilter?.filter) {
         res = await UserService.getUserAll(cursor?.pageParam, searchFilter?.value);
       } else {
-        res = await UserService.getUserList(cursor?.pageParam, searchFilter?.value, searchFilter?.filter);
+        res = await UserService.getUserList(cursor?.pageParam, searchFilter?.value, searchFilter?.filter, searchFilter?.role);
       }
     }
 
@@ -51,7 +51,10 @@ const UserListPage = () => {
   };
 
   const { data, isLoading, refetch, isRefetching, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['user-list', searchFilter?.filter],
+    ['user-list', {
+      filter: searchFilter?.filter,
+      role: searchFilter?.role,
+    }],
     fetchList,
     {
       enabled: !!user?.id,
@@ -106,7 +109,7 @@ const UserListPage = () => {
   };
 
   const doClear = async () => {
-    await setSearchFilter({ value: '', filter: '' });
+    await setSearchFilter({ value: '', filter: '', role: 'USR' });
     refetch();
   };
 
@@ -130,7 +133,10 @@ const UserListPage = () => {
         refresh={refetch}
         resister={user?.group === STUDIO ? { text: '강사등록', onClick: onClickRegistOpen } : ''} // 스튜디오 관리자 강사 등록 폼 추가
         doSearch={(e) => doSearch('value', e)}
-        doFilter={(e) => doSearch('filter', e)}
+        doFilter={(headerId) => {
+          doSearch('filter', headerId)
+          doSearch('role', headerId === 'GR0100' ? 'ADMIN' : 'USR')
+        }}
         doClear={doClear}
         filter={isAdmin ? FILTER : []} // 어드민만 필터 노출
         title="회원 관리"

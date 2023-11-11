@@ -49,14 +49,15 @@ const getStudioInstructor = (cursor, keyword) => {
   });
 };
 
-const getUserList = (cursor, keyword, group) => {
+const getUserList = (cursor, keyword, group, role) => {
   return new Promise((resolve) => {
     const keywordTemp = keyword ? `&keyword=${keyword}` : '';
     const cursorTemp = cursor ? `&cursor=${cursor}` : '';
     const groupTemp = group ? `&group=${group}` : '';
 
+    const path = role.toLowerCase() === 'admin' ? '/user/admin' : '/user';
     axiosInstance
-      .get(`${API_URL}/user/admin?limit=${limit}${cursorTemp}${groupTemp}${keywordTemp}`)
+      .get(`${API_URL}${path}?limit=${limit}${cursorTemp}${groupTemp}${keywordTemp}`)
       .then((response) => {
         resolve(response?.data || []);
       })
