@@ -111,10 +111,11 @@ export const userLogout = () => {
  *
  * @returns Format(yyyy.mm.dd)
  */
-export const setCreatedAt = (createdAt: number, format: number | string) => {
-  if (!(createdAt > 0)) return "-";
+export const setCreatedAt = (createdAt: number | string, format: number | string) => {
+  if (!createdAt) return "-";
+  if (!isNaN(Number(createdAt)) && !(Number(createdAt) > 0)) return "-";
 
-  const dt = new Date(Number(createdAt));
+  const dt = new Date(!isNaN(Number(createdAt)) ? Number(createdAt) : createdAt);
   const addDt =
     dt.getFullYear() +
     format.toString() +
