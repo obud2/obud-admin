@@ -3,16 +3,6 @@ import { API_URL } from '../constants';
 import axiosInstance from '../constants/axiosInstance';
 import swal from '@sweetalert/with-react';
 
-const getListAll = () => {
-  return new Promise((resolve, reject) => {
-    axiosInstance.get(`${API_URL}/bbs/info/`).then((response) => {
-      if (response.data && response.data.value) {
-        resolve(response.data.value);
-      }
-    });
-  });
-};
-
 const info = (id) => {
   return new Promise((resolve, reject) => {
     axiosInstance.get(`${API_URL}/bbs/info/${id}`).then((response) => {
@@ -55,7 +45,6 @@ const deleteItem = (id) => {
 };
 
 const InfoService = {
-  getListAll,
   info,
   deleteItem,
   saveItem,
