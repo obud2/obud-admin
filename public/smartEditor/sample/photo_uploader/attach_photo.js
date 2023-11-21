@@ -36,7 +36,7 @@ var welDropAreaUL = $Element(elDropAreaUL);
 var fnUploadImage = null;
 var welLoading = $Element(loading);
 
-const API_URL = 'https://api.obud.site';
+const API_URL = 'https://api.obud.co';
 const s3 = 'https://s3.ap-northeast-2.amazonaws.com/';
 
 //File API 지원 여부로 결정
@@ -584,7 +584,7 @@ const imageOptimization = async (file) => {
 
 /**
 	 *  서버로부터 받은 데이타를 에디터에 전달하고 창을 닫음.
-	 * @parameter aFileInfo [{},{},...] 
+	 * @parameter aFileInfo [{},{},...]
 	 * @ex aFileInfo = [
 	 * 	{
 			sFileName : "nmms_215646753.gif",
@@ -698,7 +698,7 @@ jindo.$Ajax.prototype.request = function (oData) {
       /*
  				 * IE6에서는 onreadystatechange가 동기적으로 실행되어 timeout이벤트가 발생안됨.
  				 * 그래서 interval로 체크하여 timeout이벤트가 정상적으로 발생되도록 수정. 비동기 방식일때만
- 		
+
  	             */
       if (window.navigator.userAgent.match(/(?:MSIE) ([0-9.]+)/)[1] == 6 && opt.async) {
         var onreadystatechange = function (rq) {
