@@ -181,8 +181,8 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
       .then((res) => {
         setNotiMessage(`등록 되었습니다.`);
       })
-      .catch((res) => {
-        setNotiMessage(res?.data?.meta || res?.data?.message);
+      .catch((message) => {
+        setNotiMessage(message || '등록에 실패하였습니다.');
       })
       .finally(() => {
         refetch();

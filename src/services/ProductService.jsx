@@ -57,13 +57,13 @@ const setStudio = (method, param) => {
 };
 
 /**
- * 
+ *
  * @param {*} param  {
                         "id": test123,         게시글의 ID 값,
                         "before": 5,           이동하기전 게시물의 sortOrder 값
                         "after": 1             이동한후에 게시글의 sortOrder 값
-                      } 
- * @returns 
+                      }
+ * @returns
  */
 const sortStudio = (param) => {
   return new Promise((resolve) => {
@@ -209,13 +209,13 @@ const setLesson = (method, param) => {
 };
 
 /**
- * 
+ *
  * @param {*} param  {
                         "id": test123,         게시글의 ID 값,
                         "before": 5,           이동하기전 게시물의 sortOrder 값
                         "after": 1             이동한후에 게시글의 sortOrder 값
-                      } 
- * @returns 
+                      }
+ * @returns
  */
 const sortLesson = (param) => {
   return new Promise((resolve) => {
@@ -338,11 +338,11 @@ const setMultiPlan = (body) => {
         if (response?.data?.status === 200) {
           resolve(response?.data?.value || {});
         } else {
-          reject(response);
+          reject(response.data.error || response.data.message || response.data.meat || response.data);
         }
       })
-      .catch(() => {
-        resolve({});
+      .catch((e) => {
+        reject(e);
       });
   });
 };
