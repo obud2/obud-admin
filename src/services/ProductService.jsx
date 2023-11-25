@@ -303,10 +303,10 @@ const setPlan = (method, param) => {
         data: param,
       })
       .then((response) => {
-        if (response?.data?.status === 200) {
-          resolve(response?.data?.value || {});
+        if (response.data?.status < 300 && response.data?.status >= 200) {
+          resolve(response.data?.value || {});
         } else {
-          reject(response);
+          reject(response.data.error || response.data.message || response.data.meat || response.data);
         }
       })
       .catch((error) => {
