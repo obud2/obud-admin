@@ -128,14 +128,14 @@ const getSpecialList = (keyword) => {
 };
 
 const sortSpecial = (param) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .post(`${API_URL}/studios/lesson/sort/special`, param)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
@@ -154,11 +154,9 @@ const sortSpecial = (param) => {
  * @returns
  */
 const limit = 20;
-const getLessonsAll = (studioId) => {
-  return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/studios/lesson/all?studiosId=${studioId}`).then((response) => {
-      resolve(response.data?.value || []);
-    });
+const getLessonsAll = async (studioId) => {
+  return axiosInstance.get(`${API_URL}/studios/lesson/all?studiosId=${studioId}`).then((response) => {
+      return response.data?.value || [];
   });
 };
 
@@ -166,22 +164,20 @@ const getLessons = (studioId, cursor, keyword) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
-  return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response.data);
-    });
-  });
+  return axiosInstance.get(`${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
+      return response.data;
+    })
 };
 
 const getLesson = (id) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .get(`${API_URL}/studios/lesson/${id}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
@@ -218,40 +214,40 @@ const setLesson = (method, param) => {
  * @returns
  */
 const sortLesson = (param) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .post(`${API_URL}/studios/lesson/sort`, param)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
 
 const cloneLesson = (id) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .post(`${API_URL}/studios/lesson/clone/${id}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
 
 const deleteLesson = (id) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .delete(`${API_URL}/studios/lesson/${id}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
@@ -270,38 +266,27 @@ const deleteLesson = (id) => {
  * @returns
  */
 
-const getPlans = (lessonId, cursor, keyword) => {
+const getPlans = async (lessonId, cursor, keyword) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
-  return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/studios/plan/all?lessonId=${lessonId}&limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response.data);
-    });
+  return axiosInstance.get(`${API_URL}/studios/plan/all?lessonId=${lessonId}&limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
+      return response.data;
   });
 };
 
-const getMonthPlans = (lessonId, month, keyword) => {
+const getMonthPlans = async (lessonId, month, keyword) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
 
-  return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/studios/plan/month/all?lessonId=${lessonId}&date=${month}${keywordTemp}`).then((response) => {
-      resolve(response.data);
+  return axiosInstance.get(`${API_URL}/studios/plan/month/all?lessonId=${lessonId}&date=${month}${keywordTemp}`).then((response) => {
+      return response.data
     });
-  });
 };
 
-const getPlan = (id) => {
-  return new Promise((resolve) => {
-    axiosInstance
+const getPlan = async (id) => {
+  return await axiosInstance
       .get(`${API_URL}/studios/plan/${id}`)
-      .then((response) => {
-        resolve(response?.data?.value || {});
-      })
-      .catch(() => {
-        resolve({});
-      });
-  });
+      .then((response) => response.data.value || {})
 };
 
 /**
@@ -348,53 +333,53 @@ const setMultiPlan = (body) => {
 };
 
 const deletePlan = (id) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .delete(`${API_URL}/studios/plan/${id}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
 
 const clonePlan = (id) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .post(`${API_URL}/studios/plan/clone/${id}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
 
 const onAttendance = (param) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .put(`${API_URL}/studios/plan/attendance`, param)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
 
 const onComment = (param) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .put(`${API_URL}/studios/plan/comment`, param)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
@@ -407,27 +392,27 @@ const onComment = (param) => {
 const getPlanCaledar = (studiosId, date, lessonId) => {
   const lessonIdTemp = lessonId ? `&lessonId=${lessonId}` : '';
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .get(`${API_URL}/studios/plan/calendar?studiosId=${studiosId}&date=${date}&=${lessonIdTemp}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
 
 const getPlanCaledarDayInfo = (studiosId, date) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .get(`${API_URL}/studios/plan/calendar/dayInfo?studiosId=${studiosId}&date=${date}`)
       .then((response) => {
         resolve(response?.data?.value || {});
       })
       .catch(() => {
-        resolve({});
+        reject({});
       });
   });
 };
