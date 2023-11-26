@@ -92,16 +92,8 @@ const cloneStudio = (id) => {
 };
 
 const deleteStudio = (id) => {
-  return new Promise((resolve) => {
-    axiosInstance
+  return axiosInstance
       .delete(`${API_URL}/studios/${id}`)
-      .then((response) => {
-        resolve(response?.data);
-      })
-      .catch(() => {
-        resolve({});
-      });
-  });
 };
 
 /**

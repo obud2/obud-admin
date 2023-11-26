@@ -42,12 +42,12 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
       }).then((willDelete) => {
         if (willDelete) {
           ProductService.deleteStudio(data?.id).then((res) => {
-            if (res?.status === 200) {
+            if (res.status === 200) {
               refetch();
             } else {
               swal({
                 title: '',
-                text: res?.message,
+                text: res.data?.message || '스튜디오를 삭제할 수 없습니다.',
                 icon: 'warning',
               });
             }
