@@ -10,7 +10,7 @@ export const ALLTALK_CHANNEL = "obud";
 export const ALLTALK_API_KEY = "b3e06d45-35a4-4d31-ad41-4feab973d050";
 
 export const API_URL = "https://api.obud.co";
-export const APP_URL = "https://www.obud.site";
+export const APP_URL = "https://www.obud.co";
 
 export const S3_BUCKET = "file.obud.site";
 export const BASE_IMG_URL = `https://s3.ap-northeast-2.amazonaws.com/${S3_BUCKET}/`;
@@ -111,11 +111,16 @@ export const userLogout = () => {
  *
  * @returns Format(yyyy.mm.dd)
  */
-export const setCreatedAt = (createdAt: number | string, format: number | string) => {
+export const setCreatedAt = (
+  createdAt: number | string,
+  format: number | string
+) => {
   if (!createdAt) return "-";
   if (!isNaN(Number(createdAt)) && !(Number(createdAt) > 0)) return "-";
 
-  const dt = new Date(!isNaN(Number(createdAt)) ? Number(createdAt) : createdAt);
+  const dt = new Date(
+    !isNaN(Number(createdAt)) ? Number(createdAt) : createdAt
+  );
   const addDt =
     dt.getFullYear() +
     format.toString() +
