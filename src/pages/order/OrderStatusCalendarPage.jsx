@@ -165,7 +165,7 @@ const OrderStatusCalendarPage = () => {
       <ProductPlanResevationList
         id={reservationId}
         open={reservationId}
-        onClose={() => setReservationId(false)}
+        onClose={() => setReservationId()}
         studio={studio}
         lesson={id}
       />

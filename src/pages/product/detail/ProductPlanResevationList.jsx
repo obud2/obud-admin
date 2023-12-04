@@ -28,7 +28,9 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
     isLoading: isPlanLoading,
     isRefetching: isPlanRefetchLoading,
     refetch,
-  } = useQuery(["product-plan-item", id], () => ProductService?.getPlan(id));
+  } = useQuery(["product-plan-item", id], () => ProductService?.getPlan(id), {
+    enabled: !!id,
+  });
 
   const isAllLoading = isPlanLoading || isPlanRefetchLoading;
 
