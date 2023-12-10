@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 /**
  * 프로젝트 이름
  * 각 영역별로 이름 바뀜.
@@ -118,9 +120,9 @@ export const setCreatedAt = (
   if (!createdAt) return "-";
   if (!isNaN(Number(createdAt)) && !(Number(createdAt) > 0)) return "-";
 
-  const dt = new Date(
+  const dt = dayjs(new Date(
     !isNaN(Number(createdAt)) ? Number(createdAt) : createdAt
-  );
+  )).add(9, "hour").toDate()
   const addDt =
     dt.getFullYear() +
     format.toString() +
