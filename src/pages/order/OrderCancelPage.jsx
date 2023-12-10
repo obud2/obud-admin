@@ -8,6 +8,7 @@ import { EXEL_HEADER, FILTER, LIST_HEADER } from './OrderCancelPage.option';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
 import OrderCancelModal from './OrderCancelModal';
+import dayjs from "dayjs";
 
 const OrderCancelPage = () => {
   const [detail, setDetail] = useState({});
@@ -22,7 +23,7 @@ const OrderCancelPage = () => {
       res = await ReservationService.getCancelReservation(cursor?.pageParam || '', searchFilter?.value);
     }
 
-    const list = res?.value?.sort((a, b) => a?.createdAt - b?.createdAt);
+    const list = res?.value?.sort((a, b) => dayjs(a?.cancelDate).diff(dayjs(b?.cancelDate)));
 
     return {
       result: list || [],
