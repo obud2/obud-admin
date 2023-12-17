@@ -7,12 +7,13 @@ import styled from "styled-components";
 type Props = {
   open: boolean;
   onClose: () => void;
+  addSectionItems: (sectionItems: SectionItem[]) => void;
 };
 
-const SectionFindModal = ({ open, onClose }: Props) => {
+const SectionFindModal = ({ open, onClose, addSectionItems }: Props) => {
   const [keyword, setKeyword] = useState("");
   const [items, setItems] = useState<SectionItem[]>([]);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SectionItem[]>([]);
 
   useEffect(() => {
     onSearch();
@@ -22,14 +23,26 @@ const SectionFindModal = ({ open, onClose }: Props) => {
     };
   }, []);
 
-  const toggleItemSelection = (itemId: string) => {
+  const toggleItemSelection = (item: SectionItem) => {
     setSelectedItems((prevSelected) => {
-      if (prevSelected.includes(itemId)) {
-        return prevSelected.filter((id) => id !== itemId);
+      if (prevSelected.find((i) => i.id === item.id && i.type === item.type)) {
+        return prevSelected.filter(
+          (i) => i.id !== item.id || i.type !== item.type
+        );
       } else {
-        return [...prevSelected, itemId];
+        return [...prevSelected, item];
       }
     });
+  };
+
+  const handleAddItems = () => {
+    const sectionItems = items.filter((item) =>
+      selectedItems.find((i) => i.id === item.id && i.type === item.type)
+    );
+    onClose();
+    setKeyword("");
+    setItems([]);
+    addSectionItems(sectionItems);
   };
 
   const onSearch = async () => {
@@ -49,7 +62,7 @@ const SectionFindModal = ({ open, onClose }: Props) => {
       open={open}
       onCancel={onClose}
       footer={[
-        <Button key={"cancel"} onClick={onClose}>
+        <Button key={"add"} onClick={handleAddItems}>
           추가
         </Button>,
         <Button key={"cancel"} onClick={onClose}>
@@ -74,8 +87,12 @@ const SectionFindModal = ({ open, onClose }: Props) => {
           {items.map((item) => (
             <Item key={`${item.id}-${item.type}`}>
               <Checkbox
-                checked={selectedItems.includes(item.id)}
-                onChange={() => toggleItemSelection(item.id)}
+                checked={
+                  !!selectedItems.find(
+                    (i) => i.id === item.id && i.type === item.type
+                  )
+                }
+                onChange={() => toggleItemSelection(item)}
               >
                 <div>{item.name}</div>
               </Checkbox>

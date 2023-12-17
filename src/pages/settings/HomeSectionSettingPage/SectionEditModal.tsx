@@ -1,6 +1,6 @@
 import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
 import { SectionItem, SectionWithItems } from "@/entities/place";
-import { Button, Divider, Input, Modal } from "antd";
+import { Button, Divider, Input, Modal, Tag } from "antd";
 import { useState } from "react";
 import { RxDragHandleDots1 } from "react-icons/rx";
 import { ReactSortable } from "react-sortablejs";
@@ -21,6 +21,13 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
 
   const onDeleteItem = (item: SectionItem) => {
     setItems((prev) => prev.filter((prevItem) => prevItem.id !== item.id));
+  };
+
+  const onAddItems = (items: SectionItem[]) => {
+    const filteredItems = items.filter(
+      (item) => !sectionWithItems.items.find((i) => i.id === item.id)
+    );
+    setItems((prev) => [...prev, ...filteredItems]);
   };
 
   return (
@@ -49,30 +56,36 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
           <SectionFindModal
             open={openFindItemModal}
             onClose={() => setOpenFindItemModal(false)}
+            addSectionItems={onAddItems}
           />
         </ButtonWrapper>
-        <ReactSortable
-          className="section-with-items-list"
-          list={items}
-          setList={setItems}
-          animation={200}
-          delayOnTouchStart={true}
-          delay={1}
-          handle=".section-with-items-drag-button"
-        >
-          {items.map((item) => (
-            <SSectionItem key={item.id}>
-              <SectionWithItemsDragButton />
-              <div>{item.name}</div>
-              <Button
-                style={{ marginLeft: "auto" }}
-                onClick={() => onDeleteItem(item)}
-              >
-                삭제
-              </Button>
-            </SSectionItem>
-          ))}
-        </ReactSortable>
+        <ResultWrapper>
+          <ReactSortable
+            className="section-with-items-list"
+            list={items}
+            setList={setItems}
+            animation={200}
+            delayOnTouchStart={true}
+            delay={1}
+            handle=".section-with-items-drag-button"
+          >
+            {items.map((item) => (
+              <SSectionItem key={`${item.id}-${item.type}`}>
+                <SectionWithItemsDragButton />
+                <Item>
+                  <div>{item.name}</div>
+                  <Tag>{item.type}</Tag>
+                </Item>
+                <Button
+                  style={{ marginLeft: "auto" }}
+                  onClick={() => onDeleteItem(item)}
+                >
+                  삭제
+                </Button>
+              </SSectionItem>
+            ))}
+          </ReactSortable>
+        </ResultWrapper>
       </Wrapper>
     </Modal>
   );
@@ -114,6 +127,21 @@ const SSectionItem = styled.div`
       height: 23px;
     }
   }
+`;
+
+const ResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  height: 500px;
+  overflow-y: scroll;
+`;
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
 `;
 
 const SectionWithItemsDragButton = () => {
