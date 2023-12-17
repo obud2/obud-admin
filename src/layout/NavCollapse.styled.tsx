@@ -89,7 +89,7 @@ export const SNavCollapse = styled.div<{ active?: boolean; open?: boolean }>`
   }
 `;
 
-export const SNavChildren = styled.div<{ open?: boolean; height: number }>`
+export const SNavChildren = styled.div<{ open?: boolean; height?: number }>`
   width: 100%;
   height: 0px;
 
@@ -103,12 +103,6 @@ export const SNavChildren = styled.div<{ open?: boolean; height: number }>`
   }
 
   ${(props) =>
-    props.height &&
-    css`
-      height: ${props.height}px;
-    `};
-
-  ${(props) =>
     props.open &&
     css`
       opacity: 1;
@@ -118,4 +112,11 @@ export const SNavChildren = styled.div<{ open?: boolean; height: number }>`
         height: auto;
       }
     `}
+
+  ${(props) =>
+    props.open &&
+    props.height &&
+    css`
+      height: ${props.height}px;
+    `};
 `;
