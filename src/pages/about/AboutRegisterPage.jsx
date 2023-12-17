@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 
 import { useQuery } from 'react-query';
-import { EXEL_HEADER, FILTER, LIST_HEADER } from './AboutSupportPage.option';
+import { EXEL_HEADER, FILTER, LIST_HEADER } from './AboutRegisterPage.option';
 
 import AboutService from '../../services/AboutService';
 
 import DataTableHeader, { dataFilter, tabFilter } from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
-import AboutSupportDetail from './AboutSupportDetail';
+import AboutRegisterDetail from './AboutRegisterDetail';
 
-const AboutSupportPage = () => {
+const AboutRegisterPage = () => {
   const [searchFilter, setSearchFilter] = useState({ value: '', filter: '' });
   const [detailId, setDetailId] = useState('');
 
   const fetchList = async () => {
-    const response = await AboutService.getListByType('support');
+    const response = await AboutService.getListByType('register');
 
-    let list = await dataFilter(searchFilter?.value, response, 'name');
+    let list = await dataFilter(searchFilter?.value, response, 'representative');
     list = await tabFilter(searchFilter?.filter, list, 'process');
 
     return list || [];
@@ -66,10 +66,10 @@ const AboutSupportPage = () => {
         sorted={false}
         excel={true}
         excelCols={EXEL_HEADER}
-        onExcelListApi={() => AboutService.getListByType('support')}
+        onExcelListApi={() => AboutService.getListByType('register')}
       />
 
-      <AboutSupportDetail
+      <AboutRegisterDetail
         id={detailId?.id || ''}
         open={detailId}
         onClose={() => onDetailClose(false)}
@@ -79,4 +79,4 @@ const AboutSupportPage = () => {
   );
 };
 
-export default AboutSupportPage;
+export default AboutRegisterPage;

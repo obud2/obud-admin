@@ -76,6 +76,7 @@ const SpecialListPage = lazy(() => import("./pages/special/SpecialListPage"));
 /* About */
 const AboutClassPage = lazy(() => import("./pages/about/AboutClassPage"));
 const AboutSupportPage = lazy(() => import("./pages/about/AboutSupportPage"));
+const AboutRegisterPage = lazy(() => import("./pages/about/AboutRegisterPage"));
 
 /* User */
 const UserListPage = lazy(() => import("./pages/user/UserListPage"));
@@ -163,6 +164,7 @@ const App = () => {
             {/* About */}
             <Route path="/pages/about-class" element={<AboutClassPage />} />
             <Route path="/pages/about-support" element={<AboutSupportPage />} />
+            <Route path="/pages/about-register" element={<AboutRegisterPage />} />
 
             {/* User */}
             <Route path="/pages/user/list" element={<UserListPage />} />
