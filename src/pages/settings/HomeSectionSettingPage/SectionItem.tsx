@@ -1,20 +1,30 @@
-import { Section } from "@/entities/place";
+import { SectionWithItems } from "@/entities/place";
 import { Button } from "antd";
+import { useState } from "react";
 import { RxDragHandleDots1 } from "react-icons/rx";
 import styled from "styled-components";
+import SectionEditModal from "./SectionEditModal";
 
 type Props = {
-  section: Section;
+  sectionWithItems: SectionWithItems;
 };
 
-const SectionItem = ({ section }: Props) => {
+const SectionItem = ({ sectionWithItems }: Props) => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const section = sectionWithItems.section;
+
   return (
     <SSectionItem>
       <SectionListItemDragButton />
       <div>{section.name}</div>
       <div className="action-container">
-        <Button>수정</Button>
+        <Button onClick={() => setEditModalOpen(true)}>수정</Button>
       </div>
+      <SectionEditModal
+        sectionWithItems={sectionWithItems}
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+      />
     </SSectionItem>
   );
 };

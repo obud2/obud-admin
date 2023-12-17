@@ -20,7 +20,7 @@ import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
 import { useNavigate } from "react-router-dom";
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 const { TextArea } = Input;
 const Template = () => {

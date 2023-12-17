@@ -1,57 +1,61 @@
 import DataTableHeader from "@/components/dataTable/DataTableHeader";
-import { Section } from "@/entities/place";
+import { SectionWithItems } from "@/entities/place";
 import PlaceService from "@/services/PlaceService";
+import { message } from "antd";
 import { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import styled from "styled-components";
 import SectionItem from "./SectionItem";
-import { Button } from "antd";
-import swal from "sweetalert";
 
 const HomeSectionSettingPage = () => {
-  const [sections, setSections] = useState<Section[]>([]);
+  const [sectionWithItems, setSectionWithItems] = useState<SectionWithItems[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchSections = async () => {
       const data = await PlaceService.listSections();
-      setSections(data.map((s) => s.section));
+      setSectionWithItems(data);
     };
 
     fetchSections();
   }, []);
 
-  const onSubmit = async (sections: Section[]) => {
+  const onSaveSectionInfo = async (sectionWithItems: SectionWithItems[]) => {
     try {
-      const orderItems = sections.map((section, index) => ({
-        id: section.id,
+      const orderItems = sectionWithItems.map((swi, index) => ({
+        id: swi.section.id,
         order: index + 1,
       }));
 
       await PlaceService.updateSectionOrder(orderItems);
-      swal("저장되었습니다.");
+      message.success("저장되었습니다.");
     } catch (err) {
-      console.log(err);
+      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
   return (
     <Wrapper>
-      <DataTableHeader title="홈 화면 섹션 관리" />
-      <ButtonWrapper>
-        <Button onClick={() => onSubmit(sections)}>저장</Button>
-      </ButtonWrapper>
-      {sections && (
+      <DataTableHeader
+        title="홈 화면 섹션 관리"
+        resister={{
+          text: "저장",
+          onClick: () => onSaveSectionInfo(sectionWithItems),
+        }}
+      />
+      {sectionWithItems && (
         <ReactSortable
           className="section-list"
-          list={sections}
-          setList={setSections}
+          list={sectionWithItems}
+          setList={setSectionWithItems}
           animation={200}
           delayOnTouchStart={true}
           delay={1}
           handle=".section-list-item-drag-button"
         >
-          {sections.map((section) => (
-            <SectionItem key={section.name} section={section} />
+          {sectionWithItems.map((swi) => (
+            <SectionItem key={swi.id} sectionWithItems={swi} />
           ))}
         </ReactSortable>
       )}
@@ -68,9 +72,4 @@ const Wrapper = styled.div`
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
   }
-`;
-
-const ButtonWrapper = styled.div`
-  text-align: right;
-  margin-bottom: 24px;
 `;

@@ -45,6 +45,13 @@ export enum SectionItemType {
 export type SectionItem = {
   type: SectionItemType;
   id: string;
+  name: string;
   images: { key: string; url: string }[];
   order: number;
+};
+
+export type SectionWithItems = {
+  id: number; // Section Id;
+  section: Section;
+  items: SectionItem[];
 };
