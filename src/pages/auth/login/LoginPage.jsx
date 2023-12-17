@@ -1,17 +1,22 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../../../aws-exports';
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../../../aws-exports";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { APP_PREFIX, PROJECT_NAME, setJwt, setUserId } from '../../../constants';
+import {
+  APP_PREFIX,
+  PROJECT_NAME,
+  setJwt,
+  setUserId,
+} from "../../../constants/config";
 
-import { PoweroffOutlined } from '@ant-design/icons';
-import { Button, Input, Typography } from 'antd';
+import { PoweroffOutlined } from "@ant-design/icons";
+import { Button, Input, Typography } from "antd";
 
-import { SLoginPage } from './LoginPage.style';
-import { loginCheck } from '../../../constants';
+import { SLoginPage } from "./LoginPage.style";
+import { loginCheck } from "../../../constants/config";
 
 Amplify.configure(awsconfig);
 
@@ -24,7 +29,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (loginCheck()) {
-      navigator('/');
+      navigator("/");
     }
   }, []);
 
@@ -37,25 +42,25 @@ const LoginPage = () => {
   }, [localStorage]);
 
   const handleInputChange = (type, e) => {
-    if (type === 'id') setId(e.target.value);
+    if (type === "id") setId(e.target.value);
     else setPassword(e.target.value);
   };
 
   const login = () => {
     if (!id) {
-      alert('아이디를 입력해주세요.');
+      alert("아이디를 입력해주세요.");
       return;
     }
     if (!password) {
-      alert('비밀번호를 입력해주세요.');
+      alert("비밀번호를 입력해주세요.");
       return;
     }
 
     setLoading(true);
     Auth.signIn(id, password)
       .then(async (user) => {
-        const idToken = user.signInUserSession?.idToken || '';
-        const getToken = idToken ? idToken?.getJwtToken() : '';
+        const idToken = user.signInUserSession?.idToken || "";
+        const getToken = idToken ? idToken?.getJwtToken() : "";
 
         // 아이디 저장
         localStorage.setItem(`${APP_PREFIX}_save`, id);
@@ -66,14 +71,14 @@ const LoginPage = () => {
         window.location.reload();
       })
       .catch((err) => {
-        alert('잘못된 아이디 또는 비밀번호입니다.');
+        alert("잘못된 아이디 또는 비밀번호입니다.");
         setLoading(false);
       });
   };
 
   const handleKeyPress = (e) => {
     const KEY = e.key;
-    const ENTER = 'Enter';
+    const ENTER = "Enter";
 
     if (KEY === ENTER) {
       login();
@@ -92,9 +97,9 @@ const LoginPage = () => {
         <Input
           size="large"
           placeholder="아이디를 입력해주세요."
-          style={{ margin: '15px 0 10px', height: 40 }}
+          style={{ margin: "15px 0 10px", height: 40 }}
           value={id}
-          onChange={(e) => handleInputChange('id', e)}
+          onChange={(e) => handleInputChange("id", e)}
           onKeyDown={handleKeyPress}
           disabled={loading}
         />
@@ -105,13 +110,20 @@ const LoginPage = () => {
           placeholder="비밀번호를 입력해주세요."
           type="password"
           value={password}
-          style={{ margin: '0 0 10px', height: 40 }}
-          onChange={(e) => handleInputChange('password', e)}
+          style={{ margin: "0 0 10px", height: 40 }}
+          onChange={(e) => handleInputChange("password", e)}
           onKeyDown={handleKeyPress}
           disabled={loading}
         />
 
-        <Button icon={<PoweroffOutlined />} type="primary" size={'large'} onClick={() => login()} loading={loading} disabled={loading}>
+        <Button
+          icon={<PoweroffOutlined />}
+          type="primary"
+          size={"large"}
+          onClick={() => login()}
+          loading={loading}
+          disabled={loading}
+        >
           로그인
         </Button>
 

@@ -8,7 +8,7 @@ import DataTableTitle from "../../components/dataTable/DataTableTitle";
 
 import { Card, Col, Row } from "antd";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
-import { addComma } from "../../constants";
+import { addComma } from "../../constants/config";
 
 const DashboardPage = () => {
   const { isAdmin } = useContext(UserContext);

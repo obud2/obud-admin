@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import { BASE_IMG_URL } from "../../constants";
+import { BASE_IMG_URL } from "../../constants/config";
 
 import UploadToS3, { imageOptimization } from "./UploadToS3";
 

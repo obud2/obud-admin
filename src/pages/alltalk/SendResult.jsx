@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Descriptions, Table } from "antd";
 import { Content } from "antd/es/layout/layout";
 import moment from "moment";
-import { ALLTALK_GROUP } from "../../constants";
+import { ALLTALK_GROUP } from "../../constants/config";
 import PortalService from "../../services/PortalService";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";

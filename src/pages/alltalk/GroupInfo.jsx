@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Descriptions, Typography } from "antd";
-import { addComma, ALLTALK_GROUP } from "../../constants";
+import { addComma, ALLTALK_GROUP } from "../../constants/config";
 import PortalService from "../../services/PortalService";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";

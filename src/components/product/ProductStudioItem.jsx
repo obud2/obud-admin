@@ -1,29 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-import { setCreatedAt } from '../../constants';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import { RxDragHandleDots1 } from 'react-icons/rx';
+import { setCreatedAt } from "../../constants/config";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { RxDragHandleDots1 } from "react-icons/rx";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { SProductStudioItem } from './ProductStudioItem.styled';
-import ProductService from '../../services/ProductService';
-import swal from 'sweetalert';
+import { SProductStudioItem } from "./ProductStudioItem.styled";
+import ProductService from "../../services/ProductService";
+import swal from "sweetalert";
 
-const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail }) => {
+const ProductStudioItem = ({
+  data,
+  refetch,
+  option,
+  sorted,
+  onClick,
+  onDetail,
+}) => {
   const navigation = useNavigate();
 
   const onClickOption = (id) => {
-    if (id === 'edit') {
+    if (id === "edit") {
       onDetail(data);
     }
 
-    if (id === 'copy') {
+    if (id === "copy") {
       swal({
-        title: '상품을 복제하시겠습니까?',
-        text: '',
+        title: "상품을 복제하시겠습니까?",
+        text: "",
         buttons: true,
-        icon: 'info',
+        icon: "info",
       }).then((willDelete) => {
         if (willDelete) {
           ProductService.cloneStudio(data?.id).then(() => {
@@ -33,12 +40,12 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
       });
     }
 
-    if (id === 'delete') {
+    if (id === "delete") {
       swal({
-        title: '상품을 삭제하시겠습니까?',
-        text: '',
+        title: "상품을 삭제하시겠습니까?",
+        text: "",
         buttons: true,
-        icon: 'warning',
+        icon: "warning",
       }).then((willDelete) => {
         if (willDelete) {
           ProductService.deleteStudio(data?.id).then((res) => {
@@ -46,9 +53,9 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
               refetch();
             } else {
               swal({
-                title: '',
-                text: res.data?.message || '스튜디오를 삭제할 수 없습니다.',
-                icon: 'warning',
+                title: "",
+                text: res.data?.message || "스튜디오를 삭제할 수 없습니다.",
+                icon: "warning",
               });
             }
           });
@@ -56,7 +63,7 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
       });
     }
 
-    if (id === 'detail') {
+    if (id === "detail") {
       onClickGoDetail();
     }
   };
@@ -65,7 +72,7 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
     if (onClick) {
       onClick(data);
     } else {
-      if (data?.lessonType === 'Special') {
+      if (data?.lessonType === "Special") {
         navigation(`/pages/product/studio/${data?.studiosId}/${data?.id}`);
       } else {
         navigation(`/pages/product/studio/${data?.id}`);
@@ -78,10 +85,10 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
       <div className="product-shell-item-image-container">
         <img
           className="product-shell-item-images"
-          src={data?.images?.[0]?.url || ''}
+          src={data?.images?.[0]?.url || ""}
           alt={data?.title}
           onError={(e) => {
-            e.target.src = '/img/noImg.png';
+            e.target.src = "/img/noImg.png";
           }}
         />
 
@@ -91,12 +98,18 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
       </div>
 
       <div className="product-shell-item-contents-container">
-        <p className="product-shell-item-createdAt">{setCreatedAt(data?.createdAt || '', '-')}</p>
-        <p className="product-shell-item-title" onClick={onClickGoDetail}>
-          {data?.title || ''}
+        <p className="product-shell-item-createdAt">
+          {setCreatedAt(data?.createdAt || "", "-")}
         </p>
-        <div className={`product-shell-item-isShow ${data?.isShow ? 'point-text' : 'disabled-text'}`}>
-          {data?.isShow ? '게시중' : '숨김'}
+        <p className="product-shell-item-title" onClick={onClickGoDetail}>
+          {data?.title || ""}
+        </p>
+        <div
+          className={`product-shell-item-isShow ${
+            data?.isShow ? "point-text" : "disabled-text"
+          }`}
+        >
+          {data?.isShow ? "게시중" : "숨김"}
         </div>
       </div>
     </SProductStudioItem>
@@ -104,10 +117,10 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
 };
 
 const Option = [
-  { id: 'edit', title: '수정' },
-  { id: 'copy', title: '복제' },
-  { id: 'delete', title: '삭제' },
-  { id: 'detail', title: '수업목록' },
+  { id: "edit", title: "수정" },
+  { id: "copy", title: "복제" },
+  { id: "delete", title: "삭제" },
+  { id: "detail", title: "수업목록" },
 ];
 
 const ProductShellDragButton = () => {
@@ -128,10 +141,10 @@ const ProductShellItemOption = ({ onClickOption }) => {
     };
 
     if (isOpen) {
-      window.addEventListener('click', closeOption);
+      window.addEventListener("click", closeOption);
     }
 
-    return () => window.removeEventListener('click', closeOption);
+    return () => window.removeEventListener("click", closeOption);
   }, [isOpen]);
 
   const onClickToggleOption = () => {
@@ -145,13 +158,20 @@ const ProductShellItemOption = ({ onClickOption }) => {
 
   return (
     <div className="product-shell-item-option-container" ref={optionRef}>
-      <button className="product-shell-item-option-button" onClick={onClickToggleOption}>
+      <button
+        className="product-shell-item-option-button"
+        onClick={onClickToggleOption}
+      >
         <BsThreeDotsVertical />
       </button>
 
-      <ul className={`product-shell-item-option ${isOpen ? 'active' : ''}`}>
+      <ul className={`product-shell-item-option ${isOpen ? "active" : ""}`}>
         {Option?.map((option) => (
-          <li key={option?.id} className="option-item" onClick={() => onClickOptionByClose(option?.id)}>
+          <li
+            key={option?.id}
+            className="option-item"
+            onClick={() => onClickOptionByClose(option?.id)}
+          >
             {option?.title}
           </li>
         ))}

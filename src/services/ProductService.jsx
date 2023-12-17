@@ -1,5 +1,5 @@
-import { API_URL } from '../constants';
-import axiosInstance from '../constants/axiosInstance';
+import { API_URL } from "../constants/config";
+import axiosInstance from "../constants/axiosInstance";
 
 /**
  *
@@ -8,16 +8,20 @@ import axiosInstance from '../constants/axiosInstance';
  * @returns
  */
 const getStudios = (keyword) => {
-  const keywordTemp = keyword ? `?keyword=${keyword}` : '';
+  const keywordTemp = keyword ? `?keyword=${keyword}` : "";
 
   return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/studios/all${keywordTemp}`).then((response) => {
-      if (response.data && response.data.value) {
-        const val = response.data.value.sort((a, b) => (a.sortOrder > b.sortOrder ? -1 : 1));
+    axiosInstance
+      .get(`${API_URL}/studios/all${keywordTemp}`)
+      .then((response) => {
+        if (response.data && response.data.value) {
+          const val = response.data.value.sort((a, b) =>
+            a.sortOrder > b.sortOrder ? -1 : 1
+          );
 
-        resolve(val);
-      }
-    });
+          resolve(val);
+        }
+      });
   });
 };
 
@@ -43,7 +47,7 @@ const setStudio = (method, param) => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .request({
-        method: method === 'new' ? 'post' : 'put',
+        method: method === "new" ? "post" : "put",
         url: `${API_URL}/studios`,
         data: param,
       })
@@ -92,8 +96,7 @@ const cloneStudio = (id) => {
 };
 
 const deleteStudio = (id) => {
-  return axiosInstance
-      .delete(`${API_URL}/studios/${id}`)
+  return axiosInstance.delete(`${API_URL}/studios/${id}`);
 };
 
 /**
@@ -103,13 +106,15 @@ const deleteStudio = (id) => {
  */
 
 const getSpecialList = (keyword) => {
-  const keywordTemp = keyword ? `?keyword=${keyword}` : '';
+  const keywordTemp = keyword ? `?keyword=${keyword}` : "";
 
   return new Promise((resolve) => {
     axiosInstance
       .get(`${API_URL}/studios/lesson/special/all${keywordTemp}`)
       .then((response) => {
-        const val = response?.data?.value?.sort((a, b) => (a.specialSort > b.specialSort ? -1 : 1));
+        const val = response?.data?.value?.sort((a, b) =>
+          a.specialSort > b.specialSort ? -1 : 1
+        );
 
         resolve(val);
       })
@@ -147,18 +152,24 @@ const sortSpecial = (param) => {
  */
 const limit = 20;
 const getLessonsAll = async (studioId) => {
-  return axiosInstance.get(`${API_URL}/studios/lesson/all?studiosId=${studioId}`).then((response) => {
+  return axiosInstance
+    .get(`${API_URL}/studios/lesson/all?studiosId=${studioId}`)
+    .then((response) => {
       return response.data?.value || [];
-  });
+    });
 };
 
 const getLessons = (studioId, cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
-  return axiosInstance.get(`${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
+  return axiosInstance
+    .get(
+      `${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${limit}${cursorTemp}${keywordTemp}`
+    )
+    .then((response) => {
       return response.data;
-    })
+    });
 };
 
 const getLesson = (id) => {
@@ -183,7 +194,7 @@ const setLesson = (method, param) => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .request({
-        method: method === 'new' ? 'post' : 'put',
+        method: method === "new" ? "post" : "put",
         url: `${API_URL}/studios/lesson`,
         data: param,
       })
@@ -259,26 +270,34 @@ const deleteLesson = (id) => {
  */
 
 const getPlans = async (lessonId, cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
-  return axiosInstance.get(`${API_URL}/studios/plan/all?lessonId=${lessonId}&limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
+  return axiosInstance
+    .get(
+      `${API_URL}/studios/plan/all?lessonId=${lessonId}&limit=${limit}${cursorTemp}${keywordTemp}`
+    )
+    .then((response) => {
       return response.data;
-  });
+    });
 };
 
 const getMonthPlans = async (lessonId, month, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
 
-  return axiosInstance.get(`${API_URL}/studios/plan/month/all?lessonId=${lessonId}&date=${month}${keywordTemp}`).then((response) => {
-      return response.data
+  return axiosInstance
+    .get(
+      `${API_URL}/studios/plan/month/all?lessonId=${lessonId}&date=${month}${keywordTemp}`
+    )
+    .then((response) => {
+      return response.data;
     });
 };
 
 const getPlan = async (id) => {
   return await axiosInstance
-      .get(`${API_URL}/studios/plan/${id}`)
-      .then((response) => response.data.value || {})
+    .get(`${API_URL}/studios/plan/${id}`)
+    .then((response) => response.data.value || {});
 };
 
 /**
@@ -290,7 +309,7 @@ const setPlan = (method, param) => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .request({
-        method: method === 'new' ? 'post' : 'put',
+        method: method === "new" ? "post" : "put",
         url: `${API_URL}/studios/plan`,
         data: param,
       })
@@ -298,7 +317,12 @@ const setPlan = (method, param) => {
         if (response.data?.status < 300 && response.data?.status >= 200) {
           resolve(response.data?.value || {});
         } else {
-          reject(response.data.error || response.data.message || response.data.meat || response.data);
+          reject(
+            response.data.error ||
+              response.data.message ||
+              response.data.meat ||
+              response.data
+          );
         }
       })
       .catch((error) => {
@@ -315,7 +339,12 @@ const setMultiPlan = (body) => {
         if (response?.data?.status === 200) {
           resolve(response?.data?.value || {});
         } else {
-          reject(response.data.error || response.data.message || response.data.meat || response.data);
+          reject(
+            response.data.error ||
+              response.data.message ||
+              response.data.meat ||
+              response.data
+          );
         }
       })
       .catch((e) => {
@@ -382,11 +411,13 @@ const onComment = (param) => {
  *  *************************************
  */
 const getPlanCaledar = (studiosId, date, lessonId) => {
-  const lessonIdTemp = lessonId ? `&lessonId=${lessonId}` : '';
+  const lessonIdTemp = lessonId ? `&lessonId=${lessonId}` : "";
 
   return new Promise((resolve, reject) => {
     axiosInstance
-      .get(`${API_URL}/studios/plan/calendar?studiosId=${studiosId}&date=${date}&=${lessonIdTemp}`)
+      .get(
+        `${API_URL}/studios/plan/calendar?studiosId=${studiosId}&date=${date}&=${lessonIdTemp}`
+      )
       .then((response) => {
         resolve(response?.data?.value || {});
       })
@@ -399,7 +430,9 @@ const getPlanCaledar = (studiosId, date, lessonId) => {
 const getPlanCaledarDayInfo = (studiosId, date) => {
   return new Promise((resolve, reject) => {
     axiosInstance
-      .get(`${API_URL}/studios/plan/calendar/dayInfo?studiosId=${studiosId}&date=${date}`)
+      .get(
+        `${API_URL}/studios/plan/calendar/dayInfo?studiosId=${studiosId}&date=${date}`
+      )
       .then((response) => {
         resolve(response?.data?.value || {});
       })

@@ -2,7 +2,7 @@ import { Button, Switch } from "antd";
 import { GoLinkExternal } from "react-icons/go";
 import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import { APP_URL, setCreatedAt } from "../../constants";
+import { APP_URL, setCreatedAt } from "../../constants/config";
 import ProductService from "../../services/ProductService";
 
 // TODO: Strict Typing

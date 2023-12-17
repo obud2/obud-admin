@@ -1,10 +1,10 @@
-import imageCompression from 'browser-image-compression';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import imageCompression from "browser-image-compression";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-import { BASE_IMG_URL, S3_BUCKET } from '../../constants';
+import { BASE_IMG_URL, S3_BUCKET } from "../../constants/config";
 
-const REGION = 'ap-northeast-2';
-import awsmobile from '../../../aws-exports';
+const REGION = "ap-northeast-2";
+import awsmobile from "../../../aws-exports";
 
 const myBucket = new S3Client({
   region: REGION,
@@ -12,7 +12,7 @@ const myBucket = new S3Client({
     accessKeyId: awsmobile.aws_accessKeyId,
     secretAccessKey: awsmobile.aws_secretAccessKey,
   },
-  signatureVersion: 'v4',
+  signatureVersion: "v4",
 });
 
 export const GetObjectUrl = (key, folder) => {
@@ -22,10 +22,12 @@ export const GetObjectUrl = (key, folder) => {
 const UploadToS3 = (file, folder, id, callback, keyName) => {
   return new Promise(async (resolve, reject) => {
     const orgFileName = file.name;
-    const ext = file?.name?.substr(file.name.lastIndexOf('.') + 1);
-    let _key = keyName ? folder + '/' + id + '_' + keyName + '.' + ext : folder + '/' + id + '_' + file.name;
+    const ext = file?.name?.substr(file.name.lastIndexOf(".") + 1);
+    let _key = keyName
+      ? folder + "/" + id + "_" + keyName + "." + ext
+      : folder + "/" + id + "_" + file.name;
     let params = {
-      ACL: 'public-read',
+      ACL: "public-read",
       Body: file,
       Bucket: S3_BUCKET,
       Key: _key,
@@ -68,7 +70,7 @@ const uploadToLarge = (file, key, bucket, callback) => {
     const chunkSize = Math.pow(1024, 2) * 10; // chunk size is set to 10MB
     const iterations = Math.ceil(file.size / chunkSize); // number of chunks to be broken
     const arr = Array.from(Array(iterations).keys()); // dummy array to loop through
-    let uploadId = ''; // we will use this later
+    let uploadId = ""; // we will use this later
     succeededParts = [];
     try {
       await startUpload(key, bucket).then(async (result) => {
@@ -77,15 +79,16 @@ const uploadToLarge = (file, key, bucket, callback) => {
           console.log(blob);
           await uploadPart(key, bucket, blob, result.UploadId, item + 1);
 
-          if (callback) callback(Math.round((succeededParts.length / arr.length) * 100));
+          if (callback)
+            callback(Math.round((succeededParts.length / arr.length) * 100));
 
           if (succeededParts.length === arr.length) {
-            console.log('UploadPart Fisnish', succeededParts.length);
+            console.log("UploadPart Fisnish", succeededParts.length);
             const data = await completeUpload(
               key,
               bucket,
               result.UploadId,
-              succeededParts.sort((a, b) => a.PartNumber - b.PartNumber), // needs sorted array
+              succeededParts.sort((a, b) => a.PartNumber - b.PartNumber) // needs sorted array
             )
               .catch((completeErr) => {
                 abortUpload(key, bucket, result.UploadId);
@@ -157,7 +160,7 @@ const abortUpload = async (key, bucket, uploadId) => {
 };
 
 const completeUpload = async (key, bucket, uploadId, parts) => {
-  console.log('CompleteUpload >>>>>');
+  console.log("CompleteUpload >>>>>");
   const params = {
     Key: key,
     Bucket: bucket,

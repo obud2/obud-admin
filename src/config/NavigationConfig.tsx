@@ -3,7 +3,7 @@
  * 아이콘 전부 소문자로 입력.
  */
 
-import { APP_URL } from "../constants";
+import { APP_URL } from "../constants/config";
 
 // 기본 메뉴
 export const NavigationConfig = [

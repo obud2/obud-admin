@@ -6,7 +6,7 @@ import awsmobile from "../../aws-exports";
 import { useNavigate } from "react-router-dom";
 import { MenuContext } from "../context/MenuContext";
 import { UserContext } from "../context/UserContext";
-import { userLogout } from "../constants";
+import { userLogout } from "../constants/config";
 
 import swal from "sweetalert";
 

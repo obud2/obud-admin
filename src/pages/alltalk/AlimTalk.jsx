@@ -3,7 +3,7 @@ import { PhoneBox, ScrollDiv, Title } from "./Kakao.styles";
 import { LeftOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Row, Select, Space, Typography } from "antd";
 import PortalService from "../../services/PortalService";
-import { ALLTALK_CHANNEL, ALLTALK_GROUP } from "../../constants";
+import { ALLTALK_CHANNEL, ALLTALK_GROUP } from "../../constants/config";
 import PhoneDataEditTable from "../../components/PhoneDataEditTable";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";

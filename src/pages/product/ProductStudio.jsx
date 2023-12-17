@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { APP_URL } from '../../constants/index';
+import { APP_URL } from "../../constants/config";
 
-import { GoLinkExternal } from 'react-icons/go';
-import { SProductStudio } from './ProductStudio.styled';
+import { GoLinkExternal } from "react-icons/go";
+import { SProductStudio } from "./ProductStudio.styled";
 
 const ProductStudio = ({ title, subTitle, link }) => {
   const onClickGoDataDetail = () => {

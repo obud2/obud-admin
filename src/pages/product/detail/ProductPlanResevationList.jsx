@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Button, Checkbox, Input, Typography } from "antd";
-import { addComma } from "../../../constants";
+import { addComma } from "../../../constants/config";
 
 import _ from "lodash";
 import moment from "moment";

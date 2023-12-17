@@ -6,7 +6,7 @@ import {
   API_URL,
   getJwt,
   setJwt,
-} from "./index";
+} from "./config";
 import { Auth } from "aws-amplify";
 
 import awsconfig from "../../aws-exports";

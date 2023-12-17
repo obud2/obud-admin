@@ -5,7 +5,7 @@ import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { Descriptions, Input } from "antd";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
 import InfoService from "../../services/InfoService";
-import { setCreatedAt } from "../../constants";
+import { setCreatedAt } from "../../constants/config";
 
 const SettingInfoPage = () => {
   const [body, setBody] = useState({});

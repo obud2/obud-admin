@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { API_URL } from '../constants';
-import axiosInstance from '../constants/axiosInstance';
+import axios from "axios";
+import { API_URL } from "../constants/config";
+import axiosInstance from "../constants/axiosInstance";
 
 const getList = () => {
   return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ const saveItem = (type, param) => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .request({
-        method: type === 'new' ? 'post' : 'put',
+        method: type === "new" ? "post" : "put",
         url: `${API_URL}/code`,
         data: param,
       })
@@ -51,7 +51,7 @@ const deleteItem = (id) => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .request({
-        method: 'delete',
+        method: "delete",
         url: `${API_URL}/code/${id}`,
       })
       .then((response) => {
@@ -67,7 +67,7 @@ const dashBorder = () => {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/code/dash`)
-      .then((res) => resolve(res?.data?.value || ''))
+      .then((res) => resolve(res?.data?.value || ""))
       .catch(reject);
   });
 };

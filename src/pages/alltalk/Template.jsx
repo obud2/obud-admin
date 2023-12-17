@@ -15,7 +15,7 @@ import {
 import PortalService from "../../services/PortalService";
 import { PhoneBox, ScrollDiv, Title } from "./Kakao.styles";
 import { FormOutlined, LeftOutlined } from "@ant-design/icons";
-import { ALLTALK_GROUP } from "../../constants";
+import { ALLTALK_GROUP } from "../../constants/config";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
 import { useNavigate } from "react-router-dom";

@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Button, Descriptions, Space, Table, Tag } from "antd";
-import PortalService from "../../services/PortalService";
 import { CloudUploadOutlined } from "@ant-design/icons";
+import { Button, Descriptions, Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
-import { ALLTALK_API_KEY, ALLTALK_CHANNEL } from "../../constants";
+import { ALLTALK_CHANNEL } from "../../constants/config";
+import PortalService from "../../services/PortalService";
 
 const TemplateList = (props) => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [channels, setChannels] = useState([]);
-  const [selectChannel, setSelectChannel] = useState("");
 
   useEffect(() => {
     getList();

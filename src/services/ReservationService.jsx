@@ -1,43 +1,53 @@
-import { API_URL } from '../constants';
+import { API_URL } from "../constants/config";
 
-import axiosInstance from '../constants/axiosInstance';
+import axiosInstance from "../constants/axiosInstance";
 
 const limit = 20;
 
 const getReservationAll = (type) => {
   return new Promise((resolve) => {
-    const typeTemp = type === 'pass' ? '/old' : '';
+    const typeTemp = type === "pass" ? "/old" : "";
 
-    axiosInstance.get(`${API_URL}/reservation/complete${typeTemp}`).then((response) => {
-      resolve(response?.data?.value || []);
-    });
+    axiosInstance
+      .get(`${API_URL}/reservation/complete${typeTemp}`)
+      .then((response) => {
+        resolve(response?.data?.value || []);
+      });
   });
 };
 
 const getReservation = (cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
   return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/reservation/complete?limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response?.data || {});
-    });
+    axiosInstance
+      .get(
+        `${API_URL}/reservation/complete?limit=${limit}${cursorTemp}${keywordTemp}`
+      )
+      .then((response) => {
+        resolve(response?.data || {});
+      });
   });
 };
 
 const getOldReservation = (cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
   return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/reservation/complete/old?limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response?.data || {});
-    });
+    axiosInstance
+      .get(
+        `${API_URL}/reservation/complete/old?limit=${limit}${cursorTemp}${keywordTemp}`
+      )
+      .then((response) => {
+        resolve(response?.data || {});
+      });
   });
 };
 
 const getCancelReservationAll = (type) => {
-  const typeTemp = type === 'canceling' ? 'canceling' : 'cancel';
+  const typeTemp = type === "canceling" ? "canceling" : "cancel";
 
   return new Promise((resolve) => {
     axiosInstance.get(`${API_URL}/reservation/${typeTemp}`).then((response) => {
@@ -47,35 +57,47 @@ const getCancelReservationAll = (type) => {
 };
 
 const getCancelReservation = (cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
   return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/reservation/cancel?limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response?.data || {});
-    });
+    axiosInstance
+      .get(
+        `${API_URL}/reservation/cancel?limit=${limit}${cursorTemp}${keywordTemp}`
+      )
+      .then((response) => {
+        resolve(response?.data || {});
+      });
   });
 };
 
 const getCancelingReservation = (cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
   return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/reservation/canceling?limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response?.data || {});
-    });
+    axiosInstance
+      .get(
+        `${API_URL}/reservation/canceling?limit=${limit}${cursorTemp}${keywordTemp}`
+      )
+      .then((response) => {
+        resolve(response?.data || {});
+      });
   });
 };
 
 const getRefusalReservation = (cursor, keyword) => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+  const keywordTemp = keyword ? `&keyword=${keyword}` : "";
+  const cursorTemp = cursor ? `&cursor=${cursor}` : "";
 
   return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/reservation/refusal?limit=${limit}${cursorTemp}${keywordTemp}`).then((response) => {
-      resolve(response?.data || []);
-    });
+    axiosInstance
+      .get(
+        `${API_URL}/reservation/refusal?limit=${limit}${cursorTemp}${keywordTemp}`
+      )
+      .then((response) => {
+        resolve(response?.data || []);
+      });
   });
 };
 

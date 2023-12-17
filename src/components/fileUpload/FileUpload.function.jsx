@@ -1,6 +1,6 @@
-import axiosInstance from '../../constants/AxiosInstance';
+import axiosInstance from "../../constants/AxiosInstance";
 
-import { API_URL, S3_BUCKET } from '../../constants/index';
+import { API_URL, S3_BUCKET } from "../../constants/config";
 
 export const readFile = (file, limit) => {
   return new Promise((resolve, reject) => {
@@ -28,8 +28,8 @@ export const removeStorageFile = async (file, fileId, uploadKey, apiKey) => {
   };
 
   const payloadString = Object.entries(param)
-    .map((e) => e.join('='))
-    .join('&');
+    .map((e) => e.join("="))
+    .join("&");
 
   const encURI = `${API_URL}/${apiKey}/files/${S3_BUCKET}?${payloadString}`;
 

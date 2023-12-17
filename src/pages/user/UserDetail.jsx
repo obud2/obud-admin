@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { Button, Input, Select, Typography } from 'antd';
-import { QqOutlined, SettingOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Button, Input, Select, Typography } from "antd";
+import {
+  QqOutlined,
+  SettingOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 
-import { STUDIO, USER_ROLE, setCreatedAt } from '../../constants';
+import { STUDIO, USER_ROLE, setCreatedAt } from "../../constants/config";
 
-import { LIST_HEADER } from './UserListPage.option';
+import { LIST_HEADER } from "./UserListPage.option";
 
-import UserService from '../../services/UserService';
+import UserService from "../../services/UserService";
 
-import DataTableHeader from '../../components/dataTable/DataTableHeader';
-import DataListTable from '../../components/dataTable/DataListTable';
+import DataTableHeader from "../../components/dataTable/DataTableHeader";
+import DataListTable from "../../components/dataTable/DataListTable";
 
-import DataDetailBody, { DataDetailItem } from '../../components/detailTable/DataDetailBody';
-import InstructorRegist from './InstructorRegist';
-import swal from 'sweetalert';
+import DataDetailBody, {
+  DataDetailItem,
+} from "../../components/detailTable/DataDetailBody";
+import InstructorRegist from "./InstructorRegist";
+import swal from "sweetalert";
 
 /**
  *
@@ -28,15 +34,15 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
   const [instructorList, setInstructorList] = useState([]);
 
   const [header, setHeader] = useState([]);
-  const [isSns, setIsSns] = useState({ type: '', id: '' });
+  const [isSns, setIsSns] = useState({ type: "", id: "" });
 
   const [isRegistOpen, setIsRegistOpen] = useState(false);
-  const [notiMessage, setNotiMessage] = useState('');
+  const [notiMessage, setNotiMessage] = useState("");
 
   useEffect(() => {
     if (notiMessage) {
       setTimeout(() => {
-        setNotiMessage('');
+        setNotiMessage("");
       }, [2000]);
     }
   }, [notiMessage]);
@@ -46,26 +52,30 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
 
     //   강사 해지 버튼 추가
     temp.push({
-      id: 'id',
-      label: '',
+      id: "id",
+      label: "",
       customBodyRender: (value) => {
-        return <Button onClick={() => onClickDeleteInstructor(value, body?.id)}>해지</Button>;
+        return (
+          <Button onClick={() => onClickDeleteInstructor(value, body?.id)}>
+            해지
+          </Button>
+        );
       },
     });
     setHeader(temp);
   }, [body]);
 
   useEffect(() => {
-    if (id && id !== 'new') {
+    if (id && id !== "new") {
       setIsLoading(true);
 
       UserService?.getUser(id).then((res) => {
-        let sns = '';
+        let sns = "";
 
-        if (res?.kakao) sns = '카카오 소셜로그인';
-        else if (res?.naver) sns = '네이버 소셜로그인';
-        else if (res?.google) sns = '구글 소셜로그인';
-        else if (res?.apple) sns = '애플 소셜로그인';
+        if (res?.kakao) sns = "카카오 소셜로그인";
+        else if (res?.naver) sns = "네이버 소셜로그인";
+        else if (res?.google) sns = "구글 소셜로그인";
+        else if (res?.apple) sns = "애플 소셜로그인";
 
         if (sns) {
           setIsSns({
@@ -80,8 +90,8 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
     } else {
       setBody({});
       setIsSns({
-        type: '',
-        id: '',
+        type: "",
+        id: "",
       });
     }
 
@@ -96,10 +106,10 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
 
   const onClickDeleteInstructor = (instructorId, studiosAdminId) => {
     swal({
-      title: '',
-      text: '해당 강사 권한을 해지하시겠습니가?',
+      title: "",
+      text: "해당 강사 권한을 해지하시겠습니가?",
       buttons: true,
-      icon: 'warning',
+      icon: "warning",
     }).then(async (willDelete) => {
       if (willDelete) {
         const body = {
@@ -130,12 +140,12 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
   const onSubmit = () => {
     setIsLoading(true);
 
-    UserService?.setUser('edit', body)
+    UserService?.setUser("edit", body)
       .then(() => {
-        setNotiMessage('수정 되었습니다.');
+        setNotiMessage("수정 되었습니다.");
       })
       .catch(() => {
-        setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
+        setNotiMessage("에러가 발생하였습니다. 잠시 후 다시시도해주세요.");
       })
       .finally(() => {
         refresh();
@@ -144,11 +154,16 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
 
   const renderButtons = () => {
     return [
-      <Button key="cancel-btn" style={{ marginRight: '5px' }} onClick={onClose}>
+      <Button key="cancel-btn" style={{ marginRight: "5px" }} onClick={onClose}>
         취소
       </Button>,
-      <Button key="add-btn" type="primary" style={{ marginRight: '5px' }} onClick={onSubmit}>
-        {id === 'new' ? '등록' : '수정'}
+      <Button
+        key="add-btn"
+        type="primary"
+        style={{ marginRight: "5px" }}
+        onClick={onSubmit}
+      >
+        {id === "new" ? "등록" : "수정"}
       </Button>,
     ];
   };
@@ -157,7 +172,7 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
     <DataDetailBody
       open={open}
       onClose={onClose}
-      title={`사용자 ${id === 'new' ? '등록' : '수정'}`}
+      title={`사용자 ${id === "new" ? "등록" : "수정"}`}
       extra={renderButtons()}
       subTitle={body?.name}
       isLoading={isLoading}
@@ -173,8 +188,8 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
       <DataDetailItem label="권한설정" span={2}>
         <Select
           value={USER_ROLE?.filter((a) => a?.value === body?.group)[0]?.label}
-          style={{ width: '100%' }}
-          onChange={(e) => onChangeBody('group', e)}
+          style={{ width: "100%" }}
+          onChange={(e) => onChangeBody("group", e)}
           options={USER_ROLE}
           disabled={isLoading}
         />
@@ -191,7 +206,7 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
         <Input
           value={body?.email}
           disabled
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           //
         />
       </DataDetailItem>
@@ -199,9 +214,9 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
       {isSns?.id && (
         <DataDetailItem label="SNS" span={2}>
           <Input
-            value={isSns?.type || ''}
+            value={isSns?.type || ""}
             readOnly
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             //
           />
         </DataDetailItem>
@@ -210,9 +225,9 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
       <DataDetailItem label="이름" span={2}>
         <Input
           value={body?.name}
-          onChange={(e) => onChangeBody('name', e.target.value)}
+          onChange={(e) => onChangeBody("name", e.target.value)}
           disabled={isLoading}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           //
         />
       </DataDetailItem>
@@ -220,9 +235,9 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
       <DataDetailItem label="전화번호" span={2}>
         <Input
           value={body?.hp}
-          onChange={(e) => onChangeBody('hp', e.target.value)}
+          onChange={(e) => onChangeBody("hp", e.target.value)}
           disabled={isLoading}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           //
         />
       </DataDetailItem>
@@ -231,21 +246,21 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
         <Input
           value={body?.adr}
           disabled
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           //
         />
       </DataDetailItem>
 
       <DataDetailItem label="상세 주소" span={2}>
-        <Input value={body?.adrDetail} disabled style={{ width: '100%' }} />
+        <Input value={body?.adrDetail} disabled style={{ width: "100%" }} />
       </DataDetailItem>
 
       <DataDetailItem label="성별" span={2}>
         <Input
           value={body?.gender}
-          onChange={(e) => onChangeBody('gender', e.target.value)}
+          onChange={(e) => onChangeBody("gender", e.target.value)}
           disabled={isLoading}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
         />
       </DataDetailItem>
 
@@ -253,17 +268,17 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
         <Input
           type="date"
           value={body?.birthdate}
-          onChange={(e) => onChangeBody('birthdate', e.target.value)}
+          onChange={(e) => onChangeBody("birthdate", e.target.value)}
           disabled={isLoading}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
         />
       </DataDetailItem>
 
       <DataDetailItem label="가입일자" span={2}>
         <Input
           disabled
-          value={setCreatedAt(body?.createdAt, '-')}
-          style={{ width: '100%' }}
+          value={setCreatedAt(body?.createdAt, "-")}
+          style={{ width: "100%" }}
           //
         />
       </DataDetailItem>
@@ -279,18 +294,22 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
           </DataDetailItem>
 
           <DataTableHeader
-            resister={{ text: '강사추가', onClick: onClickRegistOpen }} // 스튜디오 관리자 강사 등록 폼 추가
+            resister={{ text: "강사추가", onClick: onClickRegistOpen }} // 스튜디오 관리자 강사 등록 폼 추가
             title="강사 목록"
             isLoading={isLoading}
           />
 
-          <DataListTable data={instructorList || []} header={header} useDetail={false} />
+          <DataListTable
+            data={instructorList || []}
+            header={header}
+            useDetail={false}
+          />
 
           {/* 강사 등록 폼 */}
           <InstructorRegist
             isOpen={isRegistOpen}
             isClose={() => setIsRegistOpen(false)}
-            studiosId={body?.id || ''}
+            studiosId={body?.id || ""}
             refresh={getAdminStudiosInstr}
           />
         </React.Fragment>

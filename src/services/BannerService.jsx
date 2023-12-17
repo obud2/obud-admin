@@ -1,6 +1,6 @@
-import { API_URL } from '../constants';
+import { API_URL } from "../constants/config";
 
-import axiosInstance from '../constants/axiosInstance';
+import axiosInstance from "../constants/axiosInstance";
 
 const info = (id) => {
   return new Promise((resolve) => {
@@ -15,7 +15,7 @@ const saveItem = (type, param) => {
     if (param.createdAt) delete param.createdAt;
     axiosInstance
       .request({
-        method: type === 'new' ? 'post' : 'put',
+        method: type === "new" ? "post" : "put",
         url: `${API_URL}/banner/`,
         data: param,
       })

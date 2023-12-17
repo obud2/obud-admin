@@ -12,7 +12,7 @@ import jwt_decode from "jwt-decode";
 import moment from "moment";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { getJwt, loginCheck, userLogout } from "../constants";
+import { getJwt, loginCheck, userLogout } from "../constants/config";
 
 import { NavigationContext } from "../context/NavigationContext";
 
