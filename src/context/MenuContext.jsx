@@ -30,6 +30,8 @@ const MenuContextPrivider = (props) => {
     setMenu(Object.values(temp));
   }, []);
 
+  console.log("menu", menu);
+
   return (
     <MenuContext.Provider value={{ menu: menu || [] }}>
       {props.children}

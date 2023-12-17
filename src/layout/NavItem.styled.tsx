@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-export const SNavItem = styled.div`
+export const SNavItem = styled.div<{ active?: boolean; open?: boolean }>`
   width: 100%;
   display: flex;
   position: relative;

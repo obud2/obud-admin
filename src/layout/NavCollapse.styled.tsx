@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-export const SNavCollapse = styled.div`
+export const SNavCollapse = styled.div<{ active?: boolean; open?: boolean }>`
   width: 100%;
   display: flex;
   position: relative;
@@ -89,7 +89,7 @@ export const SNavCollapse = styled.div`
   }
 `;
 
-export const SNavChildren = styled.div`
+export const SNavChildren = styled.div<{ open?: boolean; height: number }>`
   width: 100%;
   height: 0px;
 
@@ -103,16 +103,16 @@ export const SNavChildren = styled.div`
   }
 
   ${(props) =>
+    props.height &&
+    css`
+      height: ${props.height}px;
+    `};
+
+  ${(props) =>
     props.open &&
     css`
       opacity: 1;
       pointer-events: auto;
-
-      ${(props) =>
-        props.height &&
-        css`
-          height: ${props.height}px;
-        `};
 
       * {
         height: auto;

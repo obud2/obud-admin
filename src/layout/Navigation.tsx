@@ -2,24 +2,25 @@ import React, { useContext, useEffect } from "react";
 
 import _ from "lodash";
 
-import useDrawer from "../store/useDrawer";
 import useMenuByRole from "../hook/useMenuByRole";
+import useDrawer from "../store/useDrawer";
 
 import { LayoutContext } from "../context/LayoutContext";
 
-import { PROJECT_NAME } from "../constants";
-
-import NavItem from "./NavItem";
-import NavGroup from "./NavGroup";
-import NavTitle from "./NavTitle";
-import NavCollapse from "./NavCollapse";
 import AvatarMenu from "./AvatarMenu";
+import NavCollapse from "./NavCollapse";
+import NavGroup from "./NavGroup";
+import NavItem from "./NavItem";
+import NavTitle from "./NavTitle";
 
 import { SNavigation } from "./Navigation.style";
-import { useNavigate } from "react-router-dom";
 
-const Navigation = ({ open, handleDrawerToggle }) => {
-  const navigator = useNavigate();
+type Props = {
+  open?: boolean;
+  handleDrawerToggle?: () => void;
+};
+
+const Navigation = ({ open, handleDrawerToggle }: Props) => {
   const { matchese } = useContext(LayoutContext);
 
   const { menu, isAccess } = useMenuByRole();
@@ -28,7 +29,7 @@ const Navigation = ({ open, handleDrawerToggle }) => {
     onChangeDrawer: state.onChangeDrawer,
   }));
 
-  const onChangeDrawerHandler = (e) => {
+  const onChangeDrawerHandler = (e: boolean) => {
     if (matchese) return;
     onChangeDrawer(e);
   };
@@ -51,7 +52,8 @@ const Navigation = ({ open, handleDrawerToggle }) => {
         onMouseOut={() => onChangeDrawerHandler(false)}
       >
         {!_.isEmpty(menu) ? (
-          menu.map((item, i) => (
+          // TODO: type
+          menu.map((item: any, i) => (
             <React.Fragment key={`menu_${item?.id}_${i}`}>
               {/* 그룹 아이템  : isShow 포함 */}
               {item.type === "group" && <NavGroup item={item} />}

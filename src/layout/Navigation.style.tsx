@@ -25,7 +25,7 @@ const ArrawAnimationRight = keyframes`
   }
 `;
 
-export const SNavigation = styled.div`
+export const SNavigation = styled.div<{ open?: boolean }>`
   width: 100%;
   height: 100vh;
 

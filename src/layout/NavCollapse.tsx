@@ -9,7 +9,11 @@ import { SNavChildren, SNavCollapse } from "./NavCollapse.styled";
 import NavItem from "./NavItem";
 import useDrawer from "../store/useDrawer";
 
-const NavCollapse = ({ item }) => {
+type Props = {
+  item: any; // TODO: type
+};
+
+const NavCollapse = ({ item }: Props) => {
   const location = useLocation();
 
   const { open } = useContext(NavigationContext);
@@ -28,7 +32,7 @@ const NavCollapse = ({ item }) => {
     setIsOpen((prev) => !prev);
   };
 
-  const onActiveCheck = (e) => {
+  const onActiveCheck = (e: boolean) => {
     if (e) {
       setActive(e);
     }
@@ -63,8 +67,15 @@ const NavCollapse = ({ item }) => {
   );
 };
 
-const NavChildren = ({ open, item, onActiveCheck }) => {
-  const navChildrenRef = useRef();
+type NavChildrenProps = {
+  open: boolean;
+  item: any; // TODO: type
+  onActiveCheck: (e: boolean) => void;
+};
+
+const NavChildren = ({ open, item, onActiveCheck }: NavChildrenProps) => {
+  // TODO: type
+  const navChildrenRef = useRef<any>();
 
   const [height, setHeight] = useState(0);
 
@@ -83,7 +94,7 @@ const NavChildren = ({ open, item, onActiveCheck }) => {
   return (
     <SNavChildren ref={navChildrenRef} height={height} open={open}>
       {item?.children?.map(
-        (item, i) =>
+        (item: any, i: number) =>
           (item.type === "item" || item.type === "link") && (
             <NavItem
               key={`navCollapse_${i}_${item.id}`}

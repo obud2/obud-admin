@@ -39,8 +39,8 @@ export const NavigationConfig = [
 // 데이터 메뉴
 export const NavigationMenu = [
   {
-    id: "order",
-    key: "order",
+    id: "screen",
+    key: "screen",
     iconType: "ant",
     title: "화면관리",
     type: "collapse",
@@ -48,8 +48,8 @@ export const NavigationMenu = [
     isShow: false,
     children: [
       {
-        id: "order-list",
-        key: "order-list",
+        id: "main-screen",
+        key: "main-screen",
         title: "메인화면",
         type: "item",
         url: "/pages/main-setting",
@@ -57,8 +57,26 @@ export const NavigationMenu = [
         isShow: false,
       },
       {
-        id: "order-cancel",
-        key: "order-cancel",
+        id: "home-banner-screen",
+        key: "home-banner-screen",
+        title: "홈 화면 배너",
+        type: "item",
+        url: "/pages/home-banner-setting",
+        exact: true,
+        isShow: false,
+      },
+      {
+        id: "home-section-screen",
+        key: "home-section-screen",
+        title: "홈 화면 섹션",
+        type: "item",
+        url: "/pages/home-section-setting",
+        exact: true,
+        isShow: false,
+      },
+      {
+        id: "abount-screen",
+        key: "abount-screen",
         title: "About us",
         type: "item",
         url: "/pages/about-setting",
