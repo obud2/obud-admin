@@ -17,7 +17,9 @@ const listSections = async () => {
 };
 
 const updateSectionOrder = async (sectionOrders: SectionOrderItem[]) => {
-  await axiosInstance.put(`${API_URL}/v2/place/section/order`, sectionOrders);
+  await axiosInstance.post(`${API_URL}/v2/place/section/order`, {
+    sectionOrders,
+  });
 };
 
 const PlaceService = {
