@@ -1,20 +1,28 @@
 import axiosInstance from "@/constants/axiosInstance";
 import { API_URL } from "@/constants/config";
-import { PlaceSection } from "@/entities/place";
+import { Section, SectionItem, SectionOrderItem } from "@/entities/place";
 
-type GetPlaceSectionsResponse = {
-  value: PlaceSection[];
+type ListSectionsResponse = {
+  value: {
+    section: Section;
+    items: SectionItem[];
+  }[];
 };
 
-const getPlaceSections = async () => {
-  const response = await axiosInstance.get<GetPlaceSectionsResponse>(
+const listSections = async () => {
+  const response = await axiosInstance.get<ListSectionsResponse>(
     `${API_URL}/v2/place/section`
   );
   return response.data.value;
 };
 
+const updateSectionOrder = async (sectionOrders: SectionOrderItem[]) => {
+  await axiosInstance.put(`${API_URL}/v2/place/section/order`, sectionOrders);
+};
+
 const PlaceService = {
-  getPlaceSections,
+  listSections,
+  updateSectionOrder,
 };
 
 export default PlaceService;

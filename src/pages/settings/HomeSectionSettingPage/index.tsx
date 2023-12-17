@@ -1,47 +1,59 @@
-import { useState } from "react";
+import { useMutation, useQuery } from "react-query";
 
-import { useQuery } from "react-query";
-
+import DataTableHeader from "@/components/dataTable/DataTableHeader";
+import PlaceService from "@/services/PlaceService";
 import { ReactSortable } from "react-sortablejs";
-import DataTableHeader from "../../../components/dataTable/DataTableHeader";
-import PlaceService from "../../../services/PlaceService";
+import styled from "styled-components";
+import SectionItem from "./SectionItem";
+import { Section } from "@/entities/place";
 
 const HomeSectionSettingPage = () => {
-  const { data: sections, isLoading: sectionLoading } = useQuery(
+  const { data, isLoading } = useQuery(
     ["place-section"],
-    () => PlaceService.getPlaceSections()
+    () => PlaceService.listSections(),
+    {
+      select: (data) => data.map((s) => s.section),
+    }
   );
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [notiMessage, setNotiMessage] = useState("");
+  const { mutate } = useMutation((sections: Section[]) => {
+    const orderItems = sections.map((section, index) => ({
+      id: section.id,
+      order: index,
+    }));
 
-  const onClickSubmit = async () => {
-    setIsLoading(true);
-  };
+    return PlaceService.updateSectionOrder(orderItems);
+  });
 
   return (
-    <>
-      <DataTableHeader
-        title="About 관리"
-        resister={{ text: "저장", onClick: onClickSubmit }}
-        notiMessage={notiMessage}
-        isLoading={isLoading || sectionLoading}
-      />
-      {sections && (
+    <Wrapper>
+      <DataTableHeader title="About 관리" isLoading={isLoading} />
+      {data && (
         <ReactSortable
-          list={sections}
-          setList={(e) => console.log(e)}
+          className="section-list"
+          list={data}
+          setList={mutate}
           animation={200}
           delayOnTouchStart={true}
           delay={1}
+          handle=".section-list-item-drag-button"
         >
-          {sections.map((item, idx) => (
-            <div key={idx}>{item.createdAt}</div>
+          {data.map((section) => (
+            <SectionItem key={section.name} section={section} />
           ))}
         </ReactSortable>
       )}
-    </>
+    </Wrapper>
   );
 };
 
 export default HomeSectionSettingPage;
+
+const Wrapper = styled.div`
+  .section-list {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+`;

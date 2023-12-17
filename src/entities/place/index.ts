@@ -21,11 +21,30 @@ export type Place = {
   viewCount: number;
 };
 
-export type PlaceSection = {
+export type Section = {
   id: number;
   name: string;
   order: number;
   isVisible: boolean;
   createdAt: string; // ex: "2023-12-11T05:15:22.275Z"
   updatedAt: string;
+};
+
+export type SectionOrderItem = {
+  id: number;
+  order: number;
+};
+
+export enum SectionItemType {
+  //studios
+  PLACE = "PLACE",
+  //lesson
+  PROGRAM = "PROGRAM",
+}
+
+export type SectionItem = {
+  type: SectionItemType;
+  id: string;
+  images: { key: string; url: string }[];
+  order: number;
 };
