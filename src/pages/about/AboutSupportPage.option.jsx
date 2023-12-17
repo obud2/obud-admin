@@ -2,7 +2,7 @@ import { setCreatedAt } from "../../constants/config";
 
 export const LIST_HEADER = [
   { id: "name", label: "이름" },
-  { id: "hp", label: "연락처" },
+  { id: "phone", label: "연락처" },
   { id: "region", label: "희망(거주)지역" },
   { id: "career", label: "경력" },
   {
@@ -25,7 +25,7 @@ export const LIST_HEADER = [
 
 export const EXEL_HEADER = [
   { id: "name", label: "이름" },
-  { id: "hp", label: "연락처" },
+  { id: "phone", label: "연락처" },
   { id: "sns", label: "SNS" },
   { id: "region", label: "희망(거주)지역" },
   { id: "career", label: "수업경력" },

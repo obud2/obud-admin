@@ -16,6 +16,8 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
 
   const [notiMessage, setNotiMessage] = useState("");
 
+  console.log(body);
+
   useEffect(() => {
     if (notiMessage) {
       setTimeout(() => {
@@ -109,8 +111,8 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
 
       <DataDetailItem label="연락처">
         <Input
-          value={body?.hp || "-"}
-          onChange={(e) => onChangeBody("hp", e.target.value)}
+          value={body?.phone || "-"}
+          onChange={(e) => onChangeBody("phone", e.target.value)}
           readOnly
         />
       </DataDetailItem>

@@ -140,9 +140,9 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
 
       <DataDetailItem label="연락처" span={2}>
         <Input
-          value={body?.hp || "-"}
+          value={body?.phone || "-"}
           placeholder="URL을 입력하세요"
-          onChange={(e) => onChangeBody("hp", e.target.value)}
+          onChange={(e) => onChangeBody("phone", e.target.value)}
           readOnly
         />
       </DataDetailItem>
