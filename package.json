@@ -2,7 +2,7 @@
   "name": "obud-admin",
   "private": true,
   "type": "module",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite --port 3003",
     "build": "vite build",
@@ -30,7 +30,7 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@sweetalert/with-react": "^0.1.1",
     "antd": "^5.0.0",
-    "aws-amplify": "^4.3.13",
+    "aws-amplify": "4.3.13",
     "aws-sdk": "2.1172.0",
     "axios": "^0.20.0",
     "browser-image-compression": "^2.0.2",
