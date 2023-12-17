@@ -5,23 +5,21 @@ import BannerService from "../../services/BannerService";
 
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
+import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled";
 import { DataDetailItem } from "../../components/detailTable/DataDetailBody";
 
 import UploadBtn from "../../components/common/uploadBtn/UploadBtn";
-import FileUpload from "../../components/fileUpload/FileUpload.tsx";
+import FileUpload from "../../components/fileUpload/FileUpload";
 
-const AboutSettingPage = () => {
-  const fileRef = useRef();
+const HomeBannerSettingPage = () => {
+  // TODO: type
+  const fileRef = useRef<any>();
 
   const { data, isLoading: bannerLoading } = useQuery(["banner-about"], () =>
     BannerService.info("about")
   );
 
-  const [body, setBody] = useState({
-    bannerType: "image",
-  });
-
+  const [body, setBody] = useState({ bannerType: "image" });
   const [file, setFile] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +37,9 @@ const AboutSettingPage = () => {
     const param = {
       id: "about",
       ...body,
-    };
+    } as any;
+
+    if (!fileRef.current) return;
 
     const web = await fileRef.current.upload("about");
     param["images"] = web.images || [];
@@ -59,7 +59,7 @@ const AboutSettingPage = () => {
   return (
     <React.Fragment>
       <DataTableHeader
-        title="About 관리"
+        title="홈 배너 관리"
         resister={{ text: "저장", onClick: onClickSubmit }}
         notiMessage={notiMessage}
         isLoading={isLoading || bannerLoading}
@@ -85,4 +85,4 @@ const AboutSettingPage = () => {
   );
 };
 
-export default AboutSettingPage;
+export default HomeBannerSettingPage;

@@ -1,19 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 
-import { useQuery } from 'react-query';
-import CodeService from '../../services/CodeService';
-import { UserContext } from '../../context/UserContext';
+import { useQuery } from "react-query";
+import CodeService from "../../services/CodeService";
+import { UserContext } from "../../context/UserContext";
 
-import DataTableTitle from '../../components/dataTable/DataTableTitle';
+import DataTableTitle from "../../components/dataTable/DataTableTitle";
 
-import { Card, Col, Row } from 'antd';
-import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled';
-import { addComma } from '../../constants';
+import { Card, Col, Row } from "antd";
+import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
+import { addComma } from "../../constants";
 
 const DashboardPage = () => {
   const { isAdmin } = useContext(UserContext);
 
-  const { data } = useQuery(['dash'], () => CodeService.dashBorder(), { enabled: isAdmin });
+  const { data } = useQuery(["dash"], () => CodeService.dashBorder(), {
+    enabled: isAdmin,
+  });
 
   return (
     <React.Fragment>

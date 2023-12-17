@@ -6,7 +6,7 @@ import { MenuContext } from "../../context/MenuContext";
 import { Flex } from "../../styles/CommonStyles";
 import { USER_ROLE } from "../../constants";
 
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled";
+import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
 
 import GroupService from "../../services/GroupService";

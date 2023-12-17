@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { smLayout } from "../../styles/VariablesStyles";
 
-export const SDataDetailBody = styled.div`
+export const SDataDetailBody = styled.div<{ padding?: boolean }>`
   width: 100%;
   min-height: 500px;
   overflow-x: auto;
@@ -51,7 +51,7 @@ export const SDataDetailBody = styled.div`
     `}
 `;
 
-export const SDataDetailItem = styled.div`
+export const SDataDetailItem = styled.div<{ span?: number }>`
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 

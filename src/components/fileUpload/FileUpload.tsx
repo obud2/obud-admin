@@ -1,15 +1,25 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
-import { BASE_IMG_URL } from '../../constants';
+import { BASE_IMG_URL } from "../../constants";
 
-import UploadToS3, { imageOptimization } from './UploadToS3';
+import UploadToS3, { imageOptimization } from "./UploadToS3";
 
-import { SFileUpload } from './FileUpload.styled';
-import { UploadingHelpMessage } from './FileUploading.styled';
+import { SFileUpload } from "./FileUpload.styled";
+import { UploadingHelpMessage } from "./FileUploading.styled";
 
-import { removeStorageFile } from './FileUpload.function';
+import { removeStorageFile } from "./FileUpload.function";
 
-import FileUploading from './FileUploading';
+import FileUploading from "./FileUploading";
+
+/**
+ * TODO: Make Strict Typing
+ */
 
 /**
  *  @param {Ref} ref : 필수 값
@@ -31,7 +41,8 @@ import FileUploading from './FileUploading';
  *
  *  파일 업로드는 업로드한 사진 확인 가능 용도 및 업로드 기능으로 만 사용 / 커스텀 버튼을 통해 업로드.
  */
-const FileUpload = forwardRef((props, ref) => {
+
+const FileUpload = forwardRef((props: any, ref) => {
   const {
     files,
     onFileHandler,
@@ -42,40 +53,40 @@ const FileUpload = forwardRef((props, ref) => {
     deleteId,
     deleteKey,
 
-    folder = 'temp',
-    accept = 'image/*',
-    uploadKey = 'images',
+    folder = "temp",
+    accept = "image/*",
+    uploadKey = "images",
   } = props;
 
-  const fileRef = useRef();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const [uploadList, setUploadList] = useState([]);
-  const [uploadingItem, setUploadingItem] = useState('');
+  const [uploadingItem, setUploadingItem] = useState("");
 
-  const [errMessage, setErrMessage] = useState('');
+  const [errMessage, setErrMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useImperativeHandle(ref, () => ({
     async open() {
       if (isLoading) return;
 
-      fileRef.current.click();
+      fileRef.current!.click();
     },
 
     async cleanUp() {
       setUploadList([]);
-      setUploadingItem('');
-      setErrMessage('');
+      setUploadingItem("");
+      setErrMessage("");
       setIsLoading(false);
     },
 
-    async upload(id) {
+    async upload(id: any) {
       if (isLoading) return;
 
-      if (!id) return setErrMessage('Missing required key.');
+      if (!id) return setErrMessage("Missing required key.");
       if (!(files?.length > 0)) return [];
 
-      const param = { id };
+      const param = { id } as any;
       const upKey = uploadKey;
 
       param[upKey] = [];
@@ -93,8 +104,8 @@ const FileUpload = forwardRef((props, ref) => {
             lastModified: file?.lastModified,
             lastModifiedDate: file?.lastModified,
             size: file?.size,
-            type: 'image/jpeg',
-          });
+            type: "image/jpeg",
+          } as any);
 
           const compressedFile = await imageOptimization(newFile);
 
@@ -125,24 +136,26 @@ const FileUpload = forwardRef((props, ref) => {
   useEffect(() => {
     if (errMessage) {
       setTimeout(() => {
-        setErrMessage('');
-      }, [5000]);
+        setErrMessage("");
+      }, 5000);
     }
   }, [errMessage]);
 
-  const onChangeFile = async (e) => {
+  const onChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
     const files = e.target.files;
 
+    if (!files) return;
+
     if (maxCount && files.length > maxCount) {
       setErrMessage(`${maxCount}장까지 첨부 가능합니다.`);
-      e.target.value = '';
+      e.target.value = "";
       return;
     }
     if (maxCount && uploadList.length + files.length > maxCount) {
       setErrMessage(`${maxCount}장까지 첨부 가능합니다.`);
-      e.target.value = '';
+      e.target.value = "";
       return;
     }
 
@@ -156,10 +169,10 @@ const FileUpload = forwardRef((props, ref) => {
       }
     }
 
-    e.target.value = '';
+    e.target.value = "";
   };
 
-  const removeUploadListFile = (idx, item) => {
+  const removeUploadListFile = (idx: number, item: { upload: any }) => {
     if (item?.upload) {
       removeStorageFile(item, deleteId, uploadKey, deleteKey);
     }
@@ -170,20 +183,20 @@ const FileUpload = forwardRef((props, ref) => {
   };
 
   const onClickCloseOptionBox = () => {
-    setUploadingItem('');
+    setUploadingItem("");
   };
 
-  const onOptionSelect = async (item) => {
-    const list = [...uploadList, item];
+  const onOptionSelect = async (item: any) => {
+    const list = [...uploadList, item] as any;
 
     try {
       await setUploadList(list);
       await onFileHandler(list);
-      await setUploadingItem('');
+      await setUploadingItem("");
     } catch (error) {}
   };
 
-  const updateList = (files) => {
+  const updateList = (files: React.SetStateAction<never[]>) => {
     setUploadList(files);
     onFileHandler(files);
   };
@@ -200,7 +213,11 @@ const FileUpload = forwardRef((props, ref) => {
       />
 
       {/* <Cropper  /> */}
-      <FileUploading src={uploadingItem} onClose={onClickCloseOptionBox} onClick={onOptionSelect} />
+      <FileUploading
+        src={uploadingItem}
+        onClose={onClickCloseOptionBox}
+        onClick={onOptionSelect}
+      />
 
       <div className="upload-list-view-box">
         {uploadList?.map((item, idx) => (
@@ -227,14 +244,20 @@ const FileUpload = forwardRef((props, ref) => {
   );
 });
 
-const UploadedItem = ({ item, idx, dataList, setDatas, removeUploadListFile }) => {
-  const handleDragStart = (e, index) => {
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', index);
+const UploadedItem = ({
+  item,
+  idx,
+  dataList,
+  setDatas,
+  removeUploadListFile,
+}: any) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: any) => {
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", index);
   };
 
-  const handleDrop = (e, index) => {
-    const fromIndex = e.dataTransfer.getData('text/plain');
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    const fromIndex = e.dataTransfer.getData("text/plain") as any;
     const newItems = [...dataList];
     const [removedItem] = newItems.splice(fromIndex, 1);
 
@@ -250,13 +273,16 @@ const UploadedItem = ({ item, idx, dataList, setDatas, removeUploadListFile }) =
       onDrop={(e) => handleDrop(e, idx)}
       onDragOver={(e) => e.preventDefault()}
     >
-      <button className="upload-delete-btn" onClick={() => removeUploadListFile(idx, item)} />
+      <button
+        className="upload-delete-btn"
+        onClick={() => removeUploadListFile(idx, item)}
+      />
 
       <img
         className="upload-img"
         src={item?.path || item?.url}
-        onError={(e) => {
-          e.target.src = 'https://via.placeholder.com/100.png?text=noimage';
+        onError={(e: any) => {
+          e.target.src = "https://via.placeholder.com/100.png?text=noimage";
         }}
         alt="preview-img"
       />

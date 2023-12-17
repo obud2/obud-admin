@@ -11,7 +11,7 @@ import { DataDetailItem } from "../../components/detailTable/DataDetailBody";
 import UploadBtn from "../../components/common/uploadBtn/UploadBtn";
 import FileUpload from "../../components/fileUpload/FileUpload.tsx";
 
-const AboutSettingPage = () => {
+const HomeSectionSettingPage = () => {
   const fileRef = useRef();
 
   const { data, isLoading: bannerLoading } = useQuery(["banner-about"], () =>
@@ -85,4 +85,4 @@ const AboutSettingPage = () => {
   );
 };
 
-export default AboutSettingPage;
+export default HomeSectionSettingPage;

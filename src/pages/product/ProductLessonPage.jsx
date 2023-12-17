@@ -10,7 +10,7 @@ import ProductService from "../../services/ProductService";
 import ProductShellTitle from "./ProductStudio";
 import ProductPlanDetail from "./detail/ProductPlanDetail";
 
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled";
+import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
 
 import Calendar from "../../components/caledar/Calendar";
 

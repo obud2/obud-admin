@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import Calendar from "../../components/caledar/Calendar";
 import DataTableHeader from "../../components/dataTable/DataTableHeader";
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled";
+import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
 import ProductService from "../../services/ProductService";
 import ProductPlanResevationList from "../product/detail/ProductPlanResevationList";
 import OrderStatusCalendarPalnList from "./status/OrderStatusCalendarPalnList";

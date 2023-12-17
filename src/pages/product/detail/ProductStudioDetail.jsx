@@ -16,7 +16,7 @@ import CodeService from "../../../services/CodeService";
 import swal from "sweetalert";
 
 import UploadBtn from "../../../components/common/uploadBtn/UploadBtn";
-import FileUpload from "../../../components/fileUpload/FileUpload";
+import FileUpload from "../../../components/fileUpload/FileUpload.tsx";
 import DaumPost from "../../../components/daumPost/DaumPost";
 import StudioRefundSettingList from "./option/StudioRefundSettingList";
 

@@ -24,6 +24,12 @@ const DashboardPage = lazy(() => import("./pages/dashboard/DashboardPage"));
 
 /* Main */
 const MainSettingPage = lazy(() => import("./pages/settings/MainSettingPage"));
+const HomeBannerSettingPage = lazy(
+  () => import("./pages/settings/HomeBannerSettingPage")
+);
+const HomeSectionSettingPage = lazy(
+  () => import("./pages/settings/HomeSectionSettingPage")
+);
 const AboutSettingPage = lazy(
   () => import("./pages/settings/AboutSettingPage")
 );
@@ -109,6 +115,14 @@ const App = () => {
 
             {/* Main */}
             <Route path="/pages/main-setting" element={<MainSettingPage />} />
+            <Route
+              path="/pages/home-banner-setting"
+              element={<HomeBannerSettingPage />}
+            />
+            <Route
+              path="/pages/home-section-setting"
+              element={<HomeSectionSettingPage />}
+            />
             <Route path="/pages/about-setting" element={<AboutSettingPage />} />
 
             {/* Account */}

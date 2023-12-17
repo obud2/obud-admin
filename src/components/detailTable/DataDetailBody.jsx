@@ -5,7 +5,7 @@ import {
   SDataDetailBody,
   SDataDetailItem,
   SDataDetailTitle,
-} from "./DataDetailBody.styled";
+} from "./DataDetailBody.styled.tsx";
 
 import DataDetail from "./DataDetail";
 

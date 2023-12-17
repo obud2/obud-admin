@@ -40,7 +40,6 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
-    "src/pages/product/ProductStudio.option.tsx"
   ],
   "exclude": [
     "node_modules"

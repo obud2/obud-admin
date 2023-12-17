@@ -14,7 +14,7 @@ import CodeService from "../../../services/CodeService";
 import ProductService from "../../../services/ProductService";
 
 import UploadBtn from "../../../components/common/uploadBtn/UploadBtn";
-import FileUpload from "../../../components/fileUpload/FileUpload";
+import FileUpload from "../../../components/fileUpload/FileUpload.tsx";
 import swal from "sweetalert";
 
 /**
