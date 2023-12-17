@@ -1,7 +1,9 @@
 import axiosInstance from "@/constants/axiosInstance";
 import { API_URL } from "@/constants/config";
 import {
+  Section,
   SectionItem,
+  SectionItemType,
   SectionOrderItem,
   SectionWithItems,
 } from "@/entities/place";
@@ -44,10 +46,29 @@ const updateSectionOrder = async (sectionOrders: SectionOrderItem[]) => {
   });
 };
 
+type UpdateSectionItemsRequest = {
+  sectionId: Section["id"];
+  items: {
+    type: SectionItemType;
+    id: string;
+    order: number;
+  }[];
+};
+
+const updateSectionItems = async (req: UpdateSectionItemsRequest) => {
+  await axiosInstance.post(
+    `${API_URL}/v2/place/section/${req.sectionId}/items`,
+    {
+      items: req.items,
+    }
+  );
+};
+
 const PlaceService = {
   listSections,
   listSectionItems,
   updateSectionOrder,
+  updateSectionItems,
 };
 
 export default PlaceService;

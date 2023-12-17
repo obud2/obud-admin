@@ -1,11 +1,12 @@
 import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
 import { SectionItem, SectionWithItems } from "@/entities/place";
-import { Button, Divider, Input, Modal, Tag } from "antd";
+import { Button, Divider, Input, Modal, Tag, message } from "antd";
 import { useState } from "react";
 import { RxDragHandleDots1 } from "react-icons/rx";
 import { ReactSortable } from "react-sortablejs";
 import styled from "styled-components";
 import SectionFindModal from "./SectionFindModal";
+import PlaceService from "@/services/PlaceService";
 
 type Props = {
   sectionWithItems: SectionWithItems;
@@ -30,13 +31,33 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
     setItems((prev) => [...prev, ...filteredItems]);
   };
 
+  const handleSubmit = async () => {
+    const requestItems = items.map((item, index) => ({
+      id: item.id,
+      order: index + 1,
+      type: item.type,
+    }));
+
+    try {
+      await PlaceService.updateSectionItems({
+        sectionId: sectionWithItems.section.id,
+        items: requestItems,
+      });
+      message.success("저장되었습니다.");
+      onClose();
+    } catch (err) {
+      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      console.log(err);
+    }
+  };
+
   return (
     <Modal
       title="섹션 수정"
       open={open}
       onCancel={onClose}
       footer={[
-        <Button key={"save"} onClick={() => console.log("SAVE")}>
+        <Button key={"save"} onClick={handleSubmit}>
           저장
         </Button>,
         <Button key={"cancel"} onClick={onClose}>
@@ -45,7 +66,12 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
       ]}
     >
       <DataDetailItem label="섹션명">
-        <Input value={label} onChange={(e) => setLabel(e.target.value)} />
+        {/* 아직 Input Value 수정은 서버에서 지원하지 않는다. */}
+        <Input
+          disabled
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+        />
       </DataDetailItem>
 
       <Wrapper>
