@@ -1,6 +1,7 @@
 import axiosInstance from "@/constants/axiosInstance";
 import { API_URL } from "@/constants/config";
 import {
+  Place,
   Section,
   SectionItem,
   SectionItemType,
@@ -64,11 +65,41 @@ const updateSectionItems = async (req: UpdateSectionItemsRequest) => {
   );
 };
 
+type ListPlaceByCategoryResponse = {
+  value: Place[];
+};
+
+const listPlaceByCategory = async (categoryId: Place["studioCategoryId"]) => {
+  const result = await axiosInstance.get<ListPlaceByCategoryResponse>(
+    `${API_URL}/v2/place?categoryId=${categoryId}`
+  );
+
+  return result.data.value;
+};
+
+type UpdateCategoryItemsRequest = {
+  categoryId: Place["studioCategoryId"];
+  placeIds: Place["id"][];
+};
+
+const updateCategoryItems = async (req: UpdateCategoryItemsRequest) => {
+  await axiosInstance.post(
+    `${API_URL}/v2/place/category/${req.categoryId}/add-studios`,
+    {
+      placeIds: req.placeIds,
+    }
+  );
+};
+
 const PlaceService = {
+  // Sections
   listSections,
   listSectionItems,
   updateSectionOrder,
   updateSectionItems,
+  // Categories
+  listPlaceByCategory,
+  updateCategoryItems,
 };
 
 export default PlaceService;
