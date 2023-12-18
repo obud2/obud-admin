@@ -1,12 +1,17 @@
 import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
-import { Place, StudioCategory } from "@/entities/place";
+import { StudioCategory } from "@/entities/place";
 import PlaceService from "@/services/PlaceService";
 import { Button, Input, Modal, message } from "antd";
 import { useEffect, useState } from "react";
 import { RxDragHandleDots1 } from "react-icons/rx";
 import { ReactSortable } from "react-sortablejs";
 import styled from "styled-components";
-import SectionFindModal from "./CategoryFindModal";
+import CategiryFindModal from "./CategoryFindModal";
+
+export type CategoryPlaceInfo = {
+  id: string;
+  title: string;
+};
 
 type Props = {
   categoryId: number;
@@ -17,13 +22,17 @@ type Props = {
 
 const CategoryEditModal = ({ categoryId, category, open, onClose }: Props) => {
   const [openFindItemModal, setOpenFindItemModal] = useState(false);
-  const [items, setItems] = useState<Place[]>([]);
+  const [categoryPlaceInfos, setCategoryPlaceInfos] = useState<
+    CategoryPlaceInfo[]
+  >([]);
 
   useEffect(() => {
     const fetchCategoryPlaces = async () => {
       try {
         const placeItems = await PlaceService.listPlaceByCategory(categoryId);
-        setItems(placeItems);
+        setCategoryPlaceInfos(
+          placeItems.map((item) => ({ id: item.id, title: item.title }))
+        );
       } catch (err) {
         message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
       }
@@ -31,24 +40,31 @@ const CategoryEditModal = ({ categoryId, category, open, onClose }: Props) => {
     fetchCategoryPlaces();
   }, [categoryId]);
 
-  const onDeleteItem = (item: Place) => {
-    setItems((prev) => prev.filter((prevItem) => prevItem.id !== item.id));
+  const handleClose = () => {
+    setCategoryPlaceInfos([]);
+    onClose();
   };
 
-  const onAddItems = (items: Place[]) => {
-    const filteredItems = items.filter(
-      (item) => !items.find((i) => i.id === item.id)
+  const onDeleteItem = (item: CategoryPlaceInfo) => {
+    setCategoryPlaceInfos((prev) =>
+      prev.filter((prevItem) => prevItem.id !== item.id)
     );
-    setItems((prev) => [...prev, ...filteredItems]);
+  };
+
+  const onAddItems = (items: CategoryPlaceInfo[]) => {
+    const filteredItems = items.filter(
+      (item) => !categoryPlaceInfos.find((i) => i.id === item.id)
+    );
+    setCategoryPlaceInfos((prev) => [...prev, ...filteredItems]);
   };
 
   const handleSubmit = async () => {
-    const placeIds = items.map((item) => item.id);
+    const placeIds = categoryPlaceInfos.map((item) => item.id);
 
     try {
       await PlaceService.updateCategoryItems({ categoryId, placeIds });
       message.success("저장되었습니다.");
-      onClose();
+      handleClose();
     } catch (err) {
       message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
       console.log(err);
@@ -59,12 +75,13 @@ const CategoryEditModal = ({ categoryId, category, open, onClose }: Props) => {
     <Modal
       title="카테고리 수정"
       open={open}
-      onCancel={onClose}
+      onCancel={handleClose}
+      destroyOnClose
       footer={[
         <Button key={"save"} onClick={handleSubmit}>
           저장
         </Button>,
-        <Button key={"cancel"} onClick={onClose}>
+        <Button key={"cancel"} onClick={handleClose}>
           취소
         </Button>,
       ]}
@@ -78,23 +95,23 @@ const CategoryEditModal = ({ categoryId, category, open, onClose }: Props) => {
           <Button onClick={() => setOpenFindItemModal(true)}>
             리스트 검색
           </Button>
-          <SectionFindModal
+          <CategiryFindModal
             open={openFindItemModal}
             onClose={() => setOpenFindItemModal(false)}
-            addSectionItems={(items) => console.log(items)}
+            addCategoryPlaceInfos={onAddItems}
           />
         </ButtonWrapper>
         <ResultWrapper>
           <ReactSortable
             className="category-with-items-list"
-            list={items}
-            setList={setItems}
+            list={categoryPlaceInfos}
+            setList={setCategoryPlaceInfos}
             animation={200}
             delayOnTouchStart={true}
             delay={1}
             handle=".category-with-items-drag-button"
           >
-            {items.map((item) => (
+            {categoryPlaceInfos.map((item) => (
               <SSectionItem key={`${item.id}`}>
                 <SectionWithItemsDragButton />
                 <Item>

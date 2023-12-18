@@ -1,34 +1,36 @@
-import { SectionItem } from "@/entities/place";
+import { SectionItem, SectionItemType } from "@/entities/place";
 import PlaceService from "@/services/PlaceService";
 import { Button, Checkbox, Input, Modal, Tag, message } from "antd";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { CategoryPlaceInfo } from "./CategoryEditModal";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  addSectionItems: (sectionItems: SectionItem[]) => void;
+  addCategoryPlaceInfos: (categoryPlaceInfos: CategoryPlaceInfo[]) => void;
 };
 
-const CategoryFindModal = ({ open, onClose, addSectionItems }: Props) => {
+const CategoryFindModal = ({ open, onClose, addCategoryPlaceInfos }: Props) => {
   const [keyword, setKeyword] = useState("");
   const [items, setItems] = useState<SectionItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<SectionItem[]>([]);
 
+  const handleClose = () => {
+    setKeyword("");
+    setItems([]);
+    setSelectedItems([]);
+    onClose();
+  };
+
   useEffect(() => {
     onSearch();
-    return () => {
-      setItems([]);
-      setSelectedItems([]);
-    };
   }, []);
 
   const toggleItemSelection = (item: SectionItem) => {
     setSelectedItems((prevSelected) => {
-      if (prevSelected.find((i) => i.id === item.id && i.type === item.type)) {
-        return prevSelected.filter(
-          (i) => i.id !== item.id || i.type !== item.type
-        );
+      if (prevSelected.find((i) => i.id === item.id)) {
+        return prevSelected.filter((i) => i.id !== item.id);
       } else {
         return [...prevSelected, item];
       }
@@ -36,19 +38,20 @@ const CategoryFindModal = ({ open, onClose, addSectionItems }: Props) => {
   };
 
   const handleAddItems = () => {
-    const sectionItems = items.filter((item) =>
-      selectedItems.find((i) => i.id === item.id && i.type === item.type)
-    );
-    onClose();
-    setKeyword("");
-    setItems([]);
-    addSectionItems(sectionItems);
+    const categoryPlaceInfos = items
+      .filter((item) => selectedItems.find((i) => i.id === item.id))
+      .map((item) => ({ id: item.id, title: item.name }));
+    addCategoryPlaceInfos(categoryPlaceInfos);
+    handleClose();
   };
 
   const onSearch = async () => {
     try {
       const sectionItems = await PlaceService.listSectionItems({ keyword });
-      setItems(sectionItems);
+      // TODO: 장소만 필터링하는게 맞는지 확인
+      setItems(
+        sectionItems.filter((item) => item.type === SectionItemType.PLACE)
+      );
       setSelectedItems([]);
     } catch (err) {
       message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
@@ -60,12 +63,12 @@ const CategoryFindModal = ({ open, onClose, addSectionItems }: Props) => {
       title="장소 검색"
       destroyOnClose
       open={open}
-      onCancel={onClose}
+      onCancel={handleClose}
       footer={[
         <Button key={"add"} onClick={handleAddItems}>
           추가
         </Button>,
-        <Button key={"cancel"} onClick={onClose}>
+        <Button key={"cancel"} onClick={handleClose}>
           취소
         </Button>,
       ]}
@@ -75,7 +78,7 @@ const CategoryFindModal = ({ open, onClose, addSectionItems }: Props) => {
           <Input
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="장소명 / 프로그램명"
+            placeholder="장소명"
           />
           <Button onClick={onSearch}>검색</Button>
         </Wrapper>
@@ -96,7 +99,6 @@ const CategoryFindModal = ({ open, onClose, addSectionItems }: Props) => {
               >
                 <div>{item.name}</div>
               </Checkbox>
-              <Tag>{item.type}</Tag>
             </Item>
           ))}
         </ItemWrapper>

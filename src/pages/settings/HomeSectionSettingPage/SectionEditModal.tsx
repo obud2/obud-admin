@@ -20,6 +20,11 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
   const [label, setLabel] = useState(sectionWithItems.section.name);
   const [items, setItems] = useState(sectionWithItems.items);
 
+  const handleClose = () => {
+    setItems([]);
+    onClose();
+  };
+
   const onDeleteItem = (item: SectionItem) => {
     setItems((prev) => prev.filter((prevItem) => prevItem.id !== item.id));
   };
@@ -44,7 +49,7 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
         items: requestItems,
       });
       message.success("저장되었습니다.");
-      onClose();
+      handleClose();
     } catch (err) {
       message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
       console.log(err);
@@ -55,12 +60,12 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
     <Modal
       title="섹션 수정"
       open={open}
-      onCancel={onClose}
+      onCancel={handleClose}
       footer={[
         <Button key={"save"} onClick={handleSubmit}>
           저장
         </Button>,
-        <Button key={"cancel"} onClick={onClose}>
+        <Button key={"cancel"} onClick={handleClose}>
           취소
         </Button>,
       ]}

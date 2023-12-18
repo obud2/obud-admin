@@ -23,6 +23,13 @@ const SectionFindModal = ({ open, onClose, addSectionItems }: Props) => {
     };
   }, []);
 
+  const handleClose = () => {
+    setKeyword("");
+    setItems([]);
+    setSelectedItems([]);
+    onClose();
+  };
+
   const toggleItemSelection = (item: SectionItem) => {
     setSelectedItems((prevSelected) => {
       if (prevSelected.find((i) => i.id === item.id && i.type === item.type)) {
@@ -39,10 +46,8 @@ const SectionFindModal = ({ open, onClose, addSectionItems }: Props) => {
     const sectionItems = items.filter((item) =>
       selectedItems.find((i) => i.id === item.id && i.type === item.type)
     );
-    onClose();
-    setKeyword("");
-    setItems([]);
     addSectionItems(sectionItems);
+    handleClose();
   };
 
   const onSearch = async () => {
@@ -60,12 +65,12 @@ const SectionFindModal = ({ open, onClose, addSectionItems }: Props) => {
       title="장소 / 프로그램 검색"
       destroyOnClose
       open={open}
-      onCancel={onClose}
+      onCancel={handleClose}
       footer={[
         <Button key={"add"} onClick={handleAddItems}>
           추가
         </Button>,
-        <Button key={"cancel"} onClick={onClose}>
+        <Button key={"cancel"} onClick={handleClose}>
           취소
         </Button>,
       ]}
