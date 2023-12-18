@@ -75,6 +75,15 @@ export const NavigationMenu = [
         isShow: false,
       },
       {
+        id: "home-category-screen",
+        key: "home-category-screen",
+        title: "홈 화면 카테고리",
+        type: "item",
+        url: "/pages/home-category-setting",
+        exact: true,
+        isShow: false,
+      },
+      {
         id: "abount-screen",
         key: "abount-screen",
         title: "About us",

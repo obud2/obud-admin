@@ -55,3 +55,11 @@ export type SectionWithItems = {
   section: Section;
   items: SectionItem[];
 };
+
+// TODO: Move this to src/entities/studio/index.ts if needed.
+export enum StudioCategory {
+  YOGA = "요가",
+  TEA = "차",
+  MEDITATION = "명상",
+  ETC = "기타",
+}

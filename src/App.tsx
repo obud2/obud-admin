@@ -30,6 +30,9 @@ const HomeBannerSettingPage = lazy(
 const HomeSectionSettingPage = lazy(
   () => import("./pages/settings/HomeSectionSettingPage")
 );
+const HomeCategorySettingPage = lazy(
+  () => import("./pages/settings/HomeCategorySettingPage")
+);
 const AboutSettingPage = lazy(
   () => import("./pages/settings/AboutSettingPage")
 );
@@ -124,6 +127,10 @@ const App = () => {
               path="/pages/home-section-setting"
               element={<HomeSectionSettingPage />}
             />
+            <Route
+              path="/pages/home-category-setting"
+              element={<HomeCategorySettingPage />}
+            />
             <Route path="/pages/about-setting" element={<AboutSettingPage />} />
 
             {/* Account */}
@@ -164,7 +171,10 @@ const App = () => {
             {/* About */}
             <Route path="/pages/about-class" element={<AboutClassPage />} />
             <Route path="/pages/about-support" element={<AboutSupportPage />} />
-            <Route path="/pages/about-register" element={<AboutRegisterPage />} />
+            <Route
+              path="/pages/about-register"
+              element={<AboutRegisterPage />}
+            />
 
             {/* User */}
             <Route path="/pages/user/list" element={<UserListPage />} />
