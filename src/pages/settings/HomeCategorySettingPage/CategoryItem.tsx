@@ -2,35 +2,35 @@ import { StudioCategory } from "@/entities/place";
 import { Button } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
-import SectionEditModal from "./CategoryEditModal";
+import CategoryEditModal from "./CategoryEditModal";
 
 type Props = {
   categoryId: number;
   category: StudioCategory;
 };
 
-const SectionItem = ({ categoryId, category }: Props) => {
+const CategoryItem = ({ categoryId, category }: Props) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   return (
-    <SSectionItem>
+    <SCategoryItem>
       <div>{category}</div>
       <div className="action-container">
         <Button onClick={() => setEditModalOpen(true)}>수정</Button>
       </div>
-      <SectionEditModal
+      <CategoryEditModal
         categoryId={categoryId}
         category={category}
         open={editModalOpen}
         onClose={() => setEditModalOpen(false)}
       />
-    </SSectionItem>
+    </SCategoryItem>
   );
 };
 
-export default SectionItem;
+export default CategoryItem;
 
-const SSectionItem = styled.div`
+const SCategoryItem = styled.div`
   position: relative;
   padding: 24px;
   background-color: #ffffff;
