@@ -47,7 +47,7 @@ type CreateBannerRequest = {
 };
 
 const createBanner = async (request: CreateBannerRequest) => {
-  const response = await axiosInstance.post(`${API_URL}/v2/banner`, request);
+  await axiosInstance.post(`${API_URL}/v2/banner`, request);
 };
 
 type DeleteBannerRequest = {
