@@ -35,7 +35,7 @@ type ListBannersResponse = {
 
 const listBanners = async () => {
   const response = await axiosInstance.get<ListBannersResponse>(
-    `${API_URL}/v2/banner`
+    `${API_URL}/v2/banner/all`
   );
   return response.data.value;
 };
