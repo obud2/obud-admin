@@ -1,21 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import BannerService from "@/services/BannerService";
-import { useQuery } from "react-query";
 
 import DataTableHeader from "@/components/dataTable/DataTableHeader";
 
-import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
-import { SDataDetailBody } from "@/components/detailTable/DataDetailBody.styled";
-
-import UploadBtn from "@/components/common/uploadBtn/UploadBtn";
-import FileUpload from "@/components/fileUpload/FileUpload";
 import { Banner } from "@/entities/banner";
-import { ReactSortable } from "react-sortablejs";
-import BannerItem from "./BannerItem";
 import { Button, message } from "antd";
+import { ReactSortable } from "react-sortablejs";
 import styled from "styled-components";
 import BannerAddModal from "./BannerAddModal";
+import BannerItem from "./BannerItem";
 
 const HomeBannerSettingPage = () => {
   const [banners, setBanners] = useState<Banner[]>([]);

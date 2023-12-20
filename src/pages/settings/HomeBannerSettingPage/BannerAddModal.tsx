@@ -14,11 +14,13 @@ type Props = {
 
 const BannerAddModal = ({ open, onClose, lastOrder, refetch }: Props) => {
   const [name, setName] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
   const [file, setFile] = useState([]);
   const fileRef = useRef<FileUploadElem>();
 
   const handleClose = () => {
     setName("");
+    setLinkUrl("");
     setFile([]);
     onClose();
   };
@@ -30,6 +32,7 @@ const BannerAddModal = ({ open, onClose, lastOrder, refetch }: Props) => {
     try {
       await BannerService.createBanner({
         name,
+        linkUrl,
         order: lastOrder + 1,
         imageUrl: images[0].url,
       });
@@ -58,6 +61,9 @@ const BannerAddModal = ({ open, onClose, lastOrder, refetch }: Props) => {
     >
       <DataDetailItem label="배너 이름">
         <Input value={name} onChange={(e) => setName(e.target.value)} />
+      </DataDetailItem>
+      <DataDetailItem label="배너 링크">
+        <Input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} />
       </DataDetailItem>
       <DataDetailItem label="배너이미지" span={2}>
         <UploadBtn

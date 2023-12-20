@@ -36,7 +36,11 @@ const BannerItem = ({ banner, refetch }: Props) => {
   return (
     <SBannerItem>
       <BannerListItemDragButton />
-      <div>{banner.name}</div>
+      <div style={{ textDecoration: "underline" }}>
+        <a target="_blank" href={banner.linkUrl}>
+          {banner.name}
+        </a>
+      </div>
       <div className="banner-tag-wrapper">
         {banner.isShow && <Tag color="green">게시중</Tag>}
         {!banner.isShow && <Tag color="red">숨김</Tag>}
