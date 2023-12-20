@@ -13,7 +13,7 @@ import FileUpload from "@/components/fileUpload/FileUpload";
 import { Banner } from "@/entities/banner";
 import { ReactSortable } from "react-sortablejs";
 import BannerItem from "./BannerItem";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import styled from "styled-components";
 import BannerAddModal from "./BannerAddModal";
 
@@ -30,11 +30,29 @@ const HomeBannerSettingPage = () => {
     fetchBanners();
   }, []);
 
+  const refetch = async () => {
+    const data = await BannerService.listBanners();
+    setBanners(data);
+  };
+
+  const handleChangeOrder = async () => {
+    const orderItems = banners.map((banner, index) => ({
+      id: banner.id,
+      order: index + 1,
+    }));
+
+    await BannerService.updateBannerOrder({
+      bannerOrders: orderItems,
+    });
+
+    message.success("저장되었습니다.");
+  };
+
   return (
     <Wrapper>
       <DataTableHeader
         title="홈 배너 관리"
-        resister={{ text: "저장", onClick: () => console.log("SAVE") }}
+        resister={{ text: "저장", onClick: handleChangeOrder }}
       />
 
       <div className="button-wrapper">
@@ -45,6 +63,7 @@ const HomeBannerSettingPage = () => {
           open={addModalOpen}
           onClose={() => setAddModalOpen(false)}
           lastOrder={banners.length}
+          refetch={refetch}
         />
       </div>
       <ReactSortable
@@ -57,7 +76,7 @@ const HomeBannerSettingPage = () => {
         handle=".banner-list-item-drag-button"
       >
         {banners.map((banner) => (
-          <BannerItem key={banner.id} banner={banner} />
+          <BannerItem key={banner.id} banner={banner} refetch={refetch} />
         ))}
       </ReactSortable>
     </Wrapper>

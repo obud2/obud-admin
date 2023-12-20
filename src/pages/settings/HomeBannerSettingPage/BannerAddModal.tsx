@@ -1,26 +1,44 @@
 import UploadBtn from "@/components/common/uploadBtn/UploadBtn";
 import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
-import FileUpload from "@/components/fileUpload/FileUpload";
-import { Button, Input, Modal } from "antd";
+import FileUpload, { FileUploadElem } from "@/components/fileUpload/FileUpload";
+import BannerService from "@/services/BannerService";
+import { Button, Input, Modal, message } from "antd";
 import { useRef, useState } from "react";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   lastOrder: number;
+  refetch: () => void;
 };
 
-const BannerAddModal = ({ open, onClose, lastOrder }: Props) => {
+const BannerAddModal = ({ open, onClose, lastOrder, refetch }: Props) => {
   const [name, setName] = useState("");
   const [file, setFile] = useState([]);
-  const fileRef = useRef<HTMLInputElement>();
+  const fileRef = useRef<FileUploadElem>();
 
   const handleClose = () => {
+    setName("");
+    setFile([]);
     onClose();
   };
 
   const handleSubmit = async () => {
-    onClose();
+    if (!fileRef.current) return;
+
+    const { images } = await fileRef.current.upload("lesson");
+    try {
+      await BannerService.createBanner({
+        name,
+        order: lastOrder + 1,
+        imageUrl: images[0].url,
+      });
+      refetch();
+      message.success("저장되었습니다.");
+    } catch (err) {
+      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+    }
+    handleClose();
   };
 
   return (
@@ -28,6 +46,7 @@ const BannerAddModal = ({ open, onClose, lastOrder }: Props) => {
       title="배너 추가"
       open={open}
       onCancel={handleClose}
+      destroyOnClose
       footer={[
         <Button key={"save"} onClick={handleSubmit}>
           저장

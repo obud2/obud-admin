@@ -42,6 +42,12 @@ import FileUploading from "./FileUploading";
  *  파일 업로드는 업로드한 사진 확인 가능 용도 및 업로드 기능으로 만 사용 / 커스텀 버튼을 통해 업로드.
  */
 
+export type FileUploadElem = {
+  open: () => void;
+  cleanUp: () => void;
+  upload: (id: any) => Promise<any>;
+};
+
 const FileUpload = forwardRef((props: any, ref) => {
   const {
     files,

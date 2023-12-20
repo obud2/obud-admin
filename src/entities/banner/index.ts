@@ -4,6 +4,7 @@ export type Banner = {
   imageUrl: string;
   order: number;
   createdAt: string;
+  isShow: boolean;
 };
 
 export type BannerOrderItem = {
