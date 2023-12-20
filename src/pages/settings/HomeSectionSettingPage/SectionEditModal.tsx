@@ -12,9 +12,15 @@ type Props = {
   sectionWithItems: SectionWithItems;
   open: boolean;
   onClose: () => void;
+  refetch: () => void;
 };
 
-const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
+const SectionEditModal = ({
+  sectionWithItems,
+  open,
+  onClose,
+  refetch,
+}: Props) => {
   const [openFindItemModal, setOpenFindItemModal] = useState(false);
 
   const [label, setLabel] = useState(sectionWithItems.section.name);
@@ -49,6 +55,7 @@ const SectionEditModal = ({ sectionWithItems, open, onClose }: Props) => {
         items: requestItems,
       });
       message.success("저장되었습니다.");
+      refetch();
       handleClose();
     } catch (err) {
       message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");

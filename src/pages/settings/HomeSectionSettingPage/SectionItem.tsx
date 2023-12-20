@@ -7,9 +7,10 @@ import SectionEditModal from "./SectionEditModal";
 
 type Props = {
   sectionWithItems: SectionWithItems;
+  refetch: () => void;
 };
 
-const SectionItem = ({ sectionWithItems }: Props) => {
+const SectionItem = ({ sectionWithItems, refetch }: Props) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const section = sectionWithItems.section;
 
@@ -24,6 +25,7 @@ const SectionItem = ({ sectionWithItems }: Props) => {
         sectionWithItems={sectionWithItems}
         open={editModalOpen}
         onClose={() => setEditModalOpen(false)}
+        refetch={refetch}
       />
     </SSectionItem>
   );

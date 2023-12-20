@@ -21,6 +21,11 @@ const HomeSectionSettingPage = () => {
     fetchSections();
   }, []);
 
+  const refetch = async () => {
+    const data = await PlaceService.listSections();
+    setSectionWithItems(data);
+  };
+
   const onSaveSectionInfo = async (sectionWithItems: SectionWithItems[]) => {
     try {
       const orderItems = sectionWithItems.map((swi, index) => ({
@@ -55,7 +60,11 @@ const HomeSectionSettingPage = () => {
           handle=".section-list-item-drag-button"
         >
           {sectionWithItems.map((swi) => (
-            <SectionItem key={swi.id} sectionWithItems={swi} />
+            <SectionItem
+              key={swi.id}
+              sectionWithItems={swi}
+              refetch={refetch}
+            />
           ))}
         </ReactSortable>
       )}
