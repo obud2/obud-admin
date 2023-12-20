@@ -83,15 +83,6 @@ export const NavigationMenu = [
         exact: true,
         isShow: false,
       },
-      {
-        id: "abount-screen",
-        key: "abount-screen",
-        title: "About us",
-        type: "item",
-        url: "/pages/about-setting",
-        exact: true,
-        isShow: false,
-      },
     ],
   },
   {

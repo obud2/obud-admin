@@ -33,9 +33,6 @@ const HomeSectionSettingPage = lazy(
 const HomeCategorySettingPage = lazy(
   () => import("./pages/settings/HomeCategorySettingPage")
 );
-const AboutSettingPage = lazy(
-  () => import("./pages/settings/AboutSettingPage")
-);
 
 /* Account */
 const LoginPage = lazy(() => import("./pages/auth/login/LoginPage"));
@@ -131,7 +128,6 @@ const App = () => {
               path="/pages/home-category-setting"
               element={<HomeCategorySettingPage />}
             />
-            <Route path="/pages/about-setting" element={<AboutSettingPage />} />
 
             {/* Account */}
             <Route path="/pages/auth/login" element={<LoginPage />} />
