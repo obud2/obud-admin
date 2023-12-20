@@ -1,12 +1,12 @@
 import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
 import { SectionItem, SectionWithItems } from "@/entities/place";
-import { Button, Divider, Input, Modal, Tag, message } from "antd";
+import PlaceService from "@/services/PlaceService";
+import { Button, Input, Modal, Tag, message } from "antd";
 import { useState } from "react";
 import { RxDragHandleDots1 } from "react-icons/rx";
 import { ReactSortable } from "react-sortablejs";
 import styled from "styled-components";
 import SectionFindModal from "./SectionFindModal";
-import PlaceService from "@/services/PlaceService";
 
 type Props = {
   sectionWithItems: SectionWithItems;
