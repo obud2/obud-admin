@@ -9,7 +9,7 @@ Obud Admin Service
 - React 18
 - Vite
 - React Query
-- Styped Components
+- Styled Components
 - Zustand
 - DraftJs
 - ChartJs
