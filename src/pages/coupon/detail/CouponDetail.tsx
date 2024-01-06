@@ -9,7 +9,6 @@ import {
   Coupon,
   CouponDiscountType,
   CouponIssueType,
-  CouponNotificationType,
 } from "../../../entities/coupon";
 import ProductService from "../../../services/ProductService";
 import locale from "antd/es/date-picker/locale/ko_KR";
@@ -27,7 +26,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
   const [notiMessage, setNotiMessage] = useState("");
   const [body, setBody] = useState<Partial<Coupon>>({
     issueType: CouponIssueType.BY_CODE,
-    notificationType: CouponNotificationType.AT_START_DATE,
     startDate: dayjs().format(dateFormat),
     endDate: dayjs().format(dateFormat),
   });
@@ -145,21 +143,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
       <DataDetailItem label="발행 수량" span={2}>
         <Input disabled placeholder="개수제한 없음" />
       </DataDetailItem>
-      <DataDetailItem label="발행 알림" span={2}>
-        <Select
-          value={body.notificationType}
-          onChange={(e) => onChangeInputValue("notificationType", e)}
-          options={[
-            {
-              label: "사용 시작일에 알림",
-              value: CouponNotificationType.AT_START_DATE,
-            },
-          ]}
-          style={{ width: "100%" }}
-          disabled
-        />
-      </DataDetailItem>
-
       <DataDetailTitle title="사용 정보" />
       <DataDetailItem label="사용 혜택" span={2} point>
         <div style={{ display: "flex" }}>
