@@ -1,6 +1,9 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-export const SDataSearchBox = styled.div`
+export const SDataSearchBox = styled.div<{
+  disabled?: boolean;
+  doSearch?: boolean;
+}>`
   width: 100%;
   height: 48px;
 

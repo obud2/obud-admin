@@ -19,6 +19,22 @@ import DataTableFilter from "./DataTableFilter";
  * @param {Boolean} isLoading  : 로딩
  * @returns
  */
+
+type Props = {
+  title: string;
+  subTitle?: string;
+  resister?: { text: string; onClick: () => void };
+  addResister?: { text: string; onClick: () => void };
+  filter?: any;
+  doFilter?: (value: string) => void;
+  doSearch: (value: string) => void;
+  searchPlaceholder?: string;
+  isLoading?: boolean;
+  disabled?: boolean;
+  notiMessage?: string;
+  notiDescription?: string;
+};
+
 const DataTableHeader = ({
   title,
   subTitle,
@@ -32,7 +48,7 @@ const DataTableHeader = ({
   isLoading,
   notiMessage,
   notiDescription,
-}: any) => {
+}: Props) => {
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
