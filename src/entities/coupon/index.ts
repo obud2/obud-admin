@@ -17,10 +17,10 @@ export type Coupon = {
   startDate: string;
   endDate: string;
   allowDuplicatePerUser: boolean;
-  placeAllowList: string;
-  programAllowList: string;
-  placeBlockList: string;
-  programBlockList: string;
+  placeAllowList: string[];
+  programAllowList: string[];
+  placeBlockList: string[];
+  programBlockList: string[];
   createdAt: string;
   createdBy: string;
   updatedAt: string;
@@ -36,4 +36,9 @@ export enum CouponIssueType {
 export enum CouponDiscountType {
   PERCENTAGE = "PERCENTAGE",
   AMOUNT = "AMOUNT",
+}
+
+export enum CouponApplyType {
+  ALL = "ALL",
+  PARTIAL = "PARTIAL",
 }

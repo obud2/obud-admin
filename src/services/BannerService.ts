@@ -42,6 +42,7 @@ const listBanners = async () => {
 
 type CreateBannerRequest = {
   name: string;
+  linkUrl: string;
   imageUrl: string;
   order: number;
 };

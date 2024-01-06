@@ -7,12 +7,16 @@ import DataDetailBody, {
 } from "../../../components/detailTable/DataDetailBody";
 import {
   Coupon,
+  CouponApplyType,
   CouponDiscountType,
   CouponIssueType,
 } from "../../../entities/coupon";
 import ProductService from "../../../services/ProductService";
 import locale from "antd/es/date-picker/locale/ko_KR";
 import dayjs from "dayjs";
+import styled from "styled-components";
+import CouponPlaceSearchModal from "./CouponPlaceSearchModal";
+import { PlaceResult } from "@/services/CouponService";
 
 /**
  * @param {*} id : Coupon Id
@@ -26,12 +30,30 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
   const [notiMessage, setNotiMessage] = useState("");
   const [body, setBody] = useState<Partial<Coupon>>({
     issueType: CouponIssueType.BY_CODE,
+    code: "",
     discountType: CouponDiscountType.AMOUNT,
     startDate: dayjs().format(dateFormat),
     endDate: dayjs().format(dateFormat),
     allowDuplicatePerUser: false,
   });
-  const [amountByUser, setAmountByUser] = useState(1);
+  const [applyType, setApplyType] = useState<CouponApplyType>(
+    CouponApplyType.ALL
+  );
+  // placeAllowList: string[];
+  // programAllowList: string[];
+  // placeBlockList: string[];
+  // programBlockList: string[];
+  const [placeAllowModalOpen, setPlaceAllowModalOpen] = useState(false);
+  const [placeAllowList, setPlaceAllowList] = useState<PlaceResult["id"][]>([]);
+  const [programAllowList, setProgramAllowList] = useState<
+    PlaceResult["programs"][number]["id"][]
+  >([]);
+
+  const [placeBlockModalOpen, setPlaceBlockModalOpen] = useState(false);
+  const [placeBlockList, setPlaceBlockList] = useState<PlaceResult["id"][]>([]);
+  const [programBlockList, setProgramBlockList] = useState<
+    PlaceResult["programs"][number]["id"][]
+  >([]);
 
   const isActive =
     body.name && body.maxDiscountAmount && body.minOrderPriceAmount;
@@ -131,7 +153,15 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
           onChange={(e) => onChangeInputValue("issueType", e)}
           options={[{ label: "코드 입력", value: CouponIssueType.BY_CODE }]}
           style={{ width: "100%" }}
-          disabled={true}
+          disabled
+        />
+      </DataDetailItem>
+      <DataDetailItem label="쿠폰코드" span={2} point>
+        <Input
+          placeholder="쿠폰코드를 입력하세요. (입력하지 않으면 자동 생성)"
+          value={body?.code || ""}
+          onChange={(e) => onChangeInputValue("code", e.target.value)}
+          disabled={isLoading}
         />
       </DataDetailItem>
 
@@ -189,6 +219,47 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
           disabled={isLoading}
         />
       </DataDetailItem>
+      <DataDetailItem label="쿠폰 적용 범위" span={2}>
+        <Select
+          value={applyType}
+          onChange={(e) => setApplyType(e)}
+          options={[
+            { label: "모든 장소", value: CouponApplyType.ALL },
+            { label: "선택", value: CouponApplyType.PARTIAL },
+          ]}
+          style={{ width: "100%" }}
+        />
+        {applyType === CouponApplyType.PARTIAL && (
+          <ApplyOptionWrapper>
+            <Button type="primary" onClick={() => setPlaceAllowModalOpen(true)}>
+              쿠폰 적용 상품 선택
+            </Button>
+            <CouponPlaceSearchModal
+              open={placeAllowModalOpen}
+              onClose={() => setPlaceAllowModalOpen(false)}
+              placeList={placeAllowList}
+              setPlaceList={setPlaceAllowList}
+              programList={programAllowList}
+              setProgramList={setProgramAllowList}
+            />
+          </ApplyOptionWrapper>
+        )}
+      </DataDetailItem>
+      <DataDetailItem label="사용 제외 상품" span={2}>
+        <ApplyOptionWrapper>
+          <Button type="primary" onClick={() => setPlaceBlockModalOpen(true)}>
+            쿠폰 적용 제외 상품 선택
+          </Button>
+          <CouponPlaceSearchModal
+            open={placeBlockModalOpen}
+            onClose={() => setPlaceBlockModalOpen(false)}
+            placeList={placeBlockList}
+            setPlaceList={setPlaceBlockList}
+            programList={programBlockList}
+            setProgramList={setProgramBlockList}
+          />
+        </ApplyOptionWrapper>
+      </DataDetailItem>
       <DataDetailItem label="사용 기간" span={2}>
         <DatePicker.RangePicker
           showTime
@@ -231,3 +302,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
 };
 
 export default CouponDetail;
+
+export const ApplyOptionWrapper = styled.div`
+  margin-top: 12px;
+`;

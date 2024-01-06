@@ -63,9 +63,78 @@ const listCoupons = async (req: ListCouponsRequest) => {
   } catch (error) {}
 };
 
+type SearchUserRequest = {
+  query: string;
+};
+
+type SearchUserResponse = {
+  value: {
+    id: string;
+    name: string;
+    phone: string;
+    email: string;
+    createdAt: string;
+  }[];
+};
+
+const searchUser = async (req: SearchUserRequest) => {
+  try {
+    const searchParams = new URLSearchParams();
+
+    if (req.query) searchParams.set("query", req.query);
+
+    const response = await axiosInstance.get<SearchUserResponse>(
+      `${API_URL}/coupon/user/search`,
+      {
+        params: searchParams,
+      }
+    );
+
+    return response.data.value;
+  } catch (error) {}
+};
+
+type SearchPlaceRequest = {
+  query: string;
+};
+
+type SearchPlaceResponse = {
+  value: PlaceResult[];
+};
+
+export type PlaceResult = {
+  id: string;
+  name: string;
+  programs: {
+    id: string;
+    name: string;
+  }[];
+};
+
+const searchPlace = async (req: SearchPlaceRequest) => {
+  try {
+    const searchParams = new URLSearchParams();
+
+    if (req.query) searchParams.set("query", req.query);
+
+    const response = await axiosInstance.get<SearchPlaceResponse>(
+      `${API_URL}/coupon/place/search`,
+      {
+        params: searchParams,
+      }
+    );
+
+    return response.data.value;
+  } catch (error) {
+    return [];
+  }
+};
+
 const CouponService = {
   registerCoupon,
   listCoupons,
+  searchUser,
+  searchPlace,
 };
 
 export default CouponService;
