@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, InputNumber, Select } from "antd";
+import { Button, DatePicker, Input, InputNumber, Radio, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import swal from "sweetalert";
 import DataDetailBody, {
@@ -26,8 +26,10 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
   const [notiMessage, setNotiMessage] = useState("");
   const [body, setBody] = useState<Partial<Coupon>>({
     issueType: CouponIssueType.BY_CODE,
+    discountType: CouponDiscountType.AMOUNT,
     startDate: dayjs().format(dateFormat),
     endDate: dayjs().format(dateFormat),
+    allowDuplicatePerUser: false,
   });
   const [amountByUser, setAmountByUser] = useState(1);
 
@@ -127,22 +129,12 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
         <Select
           value={body.issueType}
           onChange={(e) => onChangeInputValue("issueType", e)}
-          options={[
-            { label: "코드 입력", value: CouponIssueType.BY_CODE },
-            { label: "특정 유저에게 지급", value: CouponIssueType.TO_USER },
-            {
-              label: "모든 유저에게 지급",
-              value: CouponIssueType.TO_ALL_USERS,
-            },
-          ]}
+          options={[{ label: "코드 입력", value: CouponIssueType.BY_CODE }]}
           style={{ width: "100%" }}
-          disabled={isLoading}
+          disabled={true}
         />
       </DataDetailItem>
-      <DataDetailItem label="발행 대상" span={2}></DataDetailItem>
-      <DataDetailItem label="발행 수량" span={2}>
-        <Input disabled placeholder="개수제한 없음" />
-      </DataDetailItem>
+
       <DataDetailTitle title="사용 정보" />
       <DataDetailItem label="사용 혜택" span={2} point>
         <div style={{ display: "flex" }}>
@@ -223,20 +215,16 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
           }}
         />
       </DataDetailItem>
-      <DataDetailItem label="사용 횟수" span={2}>
-        <div
-          style={{ fontSize: "12px", display: "flex", alignItems: "center" }}
+      <DataDetailItem label="중복 발급 가능 여부" span={2}>
+        <Radio.Group
+          value={body?.allowDuplicatePerUser}
+          onChange={(e) =>
+            onChangeInputValue("allowDuplicatePerUser", e.target.value)
+          }
         >
-          동일 회원이 최대
-          <InputNumber
-            value={amountByUser}
-            min={1}
-            onChange={(e) => e && setAmountByUser(e)}
-            style={{ width: "70px", margin: "0 4px" }}
-            disabled={isLoading}
-          />
-          회까지 사용 가능
-        </div>
+          <Radio value={true}>가능</Radio>
+          <Radio value={false}>불가능</Radio>
+        </Radio.Group>
       </DataDetailItem>
     </DataDetailBody>
   );
