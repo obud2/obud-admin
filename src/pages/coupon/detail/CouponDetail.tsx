@@ -21,6 +21,7 @@ import {
 } from "../../../entities/coupon";
 import CouponPlaceSearchModal from "./CouponPlaceSearchModal";
 import { BsTrash, BsTrashFill } from "react-icons/bs";
+import CouponUserSearchModal from "./CouponUserSearchModal";
 
 /**
  * @param {*} id : Coupon Id
@@ -74,7 +75,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
   >([]);
 
   const [issueUserModalOpen, setIssueUserModalOpen] = useState(false);
-  const [issueUserList, setIssueUserList] = useState<UserResult["id"][]>([]);
+  const [issueUserList, setIssueUserList] = useState<UserResult[]>([]);
 
   const isActive =
     body.name && body.maxDiscountAmount && body.minOrderPriceAmount;
@@ -109,6 +110,8 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     setIsLoading(true);
     CouponService.registerCoupon({
       ...param,
+      userId: null,
+      userIds: issueUserList.map((user) => user.id),
       placeAllowList: placeAllowList.map((place) => place.id),
       programAllowList: programAllowList.map((program) => program.id),
       placeBlockList: placeBlockList.map((place) => place.id),
@@ -189,14 +192,55 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
           style={{ width: "100%" }}
         />
       </DataDetailItem>
-      <DataDetailItem label="쿠폰코드" span={2} point>
-        <Input
-          placeholder="쿠폰코드는 자동 생성됩니다"
-          onChange={(e) => onChangeInputValue("code", e.target.value)}
-          disabled
-        />
-      </DataDetailItem>
+      {/* 코드 생성 */}
+      {body.issueType === CouponIssueType.BY_CODE && (
+        <DataDetailItem label="쿠폰코드" span={2} point>
+          <Input
+            placeholder="쿠폰코드는 자동 생성됩니다"
+            onChange={(e) => onChangeInputValue("code", e.target.value)}
+            disabled
+          />
+        </DataDetailItem>
+      )}
+      {/* 특정 유저 */}
+      {body.issueType === CouponIssueType.TO_USER && (
+        <DataDetailItem label="회원 선택" span={2}>
+          <Button
+            type="primary"
+            onClick={() => setIssueUserModalOpen(true)}
+            disabled={isLoading}
+          >
+            회원 선택
+          </Button>
+          <CouponUserSearchModal
+            open={issueUserModalOpen}
+            onClose={() => setIssueUserModalOpen(false)}
+            userList={issueUserList}
+            setUserList={setIssueUserList}
+          />
+          {issueUserList.length > 0 && (
+            <UserWrapper>
+              <UserListWrapper>
+                {issueUserList.map((user) => (
+                  <UserItem key={user.id}>
+                    {user.name} / {user.email} / {user.phone}
+                    <BsTrash
+                      style={{ marginLeft: "4px", cursor: "pointer" }}
+                      onClick={() =>
+                        setIssueUserList(
+                          issueUserList.filter((item) => item.id !== user.id)
+                        )
+                      }
+                    />
+                  </UserItem>
+                ))}
+              </UserListWrapper>
+            </UserWrapper>
+          )}
+        </DataDetailItem>
+      )}
 
+      {/* 쿠폰 사용 정보 */}
       <DataDetailTitle title="사용 정보" />
       <DataDetailItem label="사용 혜택" span={2} point>
         <div style={{ display: "flex" }}>
@@ -439,6 +483,24 @@ const PlaceTitleWrapper = styled.div`
 const PlaceListWrapper = styled.div``;
 
 const PlaceItem = styled.div`
+  padding: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+`;
+
+const UserWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  max-height: 300px;
+`;
+
+const UserListWrapper = styled.div``;
+
+const UserItem = styled.div`
   padding: 4px;
   font-size: 13px;
   display: flex;

@@ -6,14 +6,30 @@ import styled from "styled-components";
 type Props = {
   open: boolean;
   onClose: () => void;
+  userList: UserResult[];
+  setUserList: (userList: UserResult[]) => void;
 };
 
-const CouponUserSearchModal = ({ open, onClose }: Props) => {
+const CouponUserSearchModal = ({
+  open,
+  onClose,
+  userList,
+  setUserList,
+}: Props) => {
   const [query, setQuery] = useState("");
   const [userResults, setUserResults] = useState<UserResult[]>([]);
+  const [tempUserList, setTempUserList] = useState<UserResult[]>([]);
 
   const handleClose = () => {
+    setQuery("");
+    setUserResults([]);
+    setTempUserList([]);
     onClose();
+  };
+
+  const handleSave = () => {
+    setUserList(Array.from(new Set([...userList, ...tempUserList])));
+    handleClose();
   };
 
   const onSearch = async () => {
@@ -32,7 +48,9 @@ const CouponUserSearchModal = ({ open, onClose }: Props) => {
       onCancel={handleClose}
       destroyOnClose
       footer={[
-        <Button key={"save"}>저장</Button>,
+        <Button key={"save"} onClick={handleSave}>
+          저장
+        </Button>,
         <Button key={"cancel"} onClick={handleClose}>
           취소
         </Button>,
@@ -50,11 +68,20 @@ const CouponUserSearchModal = ({ open, onClose }: Props) => {
       <ResultWrapper>
         {userResults.map((user) => (
           <ResultItem key={user.id}>
-            <Checkbox>
+            <Checkbox
+              checked={!!tempUserList.find((u) => u.id === user.id)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setTempUserList((prev) => [...prev, user]);
+                } else {
+                  setTempUserList((prev) =>
+                    prev.filter((prevUser) => prevUser.id !== user.id)
+                  );
+                }
+              }}
+            >
               <UserInfoWrapper>
-                <div>{user.name}</div>
-                <div>{user.email}</div>
-                <div>{user.phone}</div>
+                {user.name} / {user.email} / {user.phone}
               </UserInfoWrapper>
             </Checkbox>
           </ResultItem>
@@ -77,4 +104,6 @@ const ResultWrapper = styled.div``;
 
 const ResultItem = styled.div``;
 
-const UserInfoWrapper = styled.div``;
+const UserInfoWrapper = styled.div`
+  display: flex;
+`;
