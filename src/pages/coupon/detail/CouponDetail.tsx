@@ -95,6 +95,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     setProgramAllowList([]);
     setPlaceBlockList([]);
     setProgramBlockList([]);
+    setIssueUserList([]);
     onClose();
   };
 
@@ -119,13 +120,11 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     })
       .then(() => {
         setNotiMessage(`쿠폰 ${text} 되었습니다.`);
+        refresh();
+        handleClose();
       })
       .catch(() => {
         setNotiMessage("에러가 발생하였습니다. 잠시 후 다시시도해주세요.");
-      })
-      .finally(() => {
-        refresh();
-        handleClose();
         setIsLoading(false);
       });
   };
@@ -167,7 +166,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
       onClose={onClose}
       title={`쿠폰 ${id === "new" ? "등록" : "수정"}`}
       extra={renderButtons()}
-      subTitle={body.name}
       isLoading={isLoading}
       notiMessage={notiMessage}
     >
