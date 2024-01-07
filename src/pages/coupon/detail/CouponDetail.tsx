@@ -20,6 +20,7 @@ import {
   CouponIssueType,
 } from "../../../entities/coupon";
 import CouponPlaceSearchModal from "./CouponPlaceSearchModal";
+import { BsTrash, BsTrashFill } from "react-icons/bs";
 
 /**
  * @param {*} id : Coupon Id
@@ -61,15 +62,15 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     CouponApplyType.ALL
   );
   const [placeAllowModalOpen, setPlaceAllowModalOpen] = useState(false);
-  const [placeAllowList, setPlaceAllowList] = useState<PlaceResult["id"][]>([]);
+  const [placeAllowList, setPlaceAllowList] = useState<PlaceResult[]>([]);
   const [programAllowList, setProgramAllowList] = useState<
-    PlaceResult["programs"][number]["id"][]
+    PlaceResult["programs"][number][]
   >([]);
 
   const [placeBlockModalOpen, setPlaceBlockModalOpen] = useState(false);
-  const [placeBlockList, setPlaceBlockList] = useState<PlaceResult["id"][]>([]);
+  const [placeBlockList, setPlaceBlockList] = useState<PlaceResult[]>([]);
   const [programBlockList, setProgramBlockList] = useState<
-    PlaceResult["programs"][number]["id"][]
+    PlaceResult["programs"][number][]
   >([]);
 
   const [issueUserModalOpen, setIssueUserModalOpen] = useState(false);
@@ -97,7 +98,13 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     }
 
     setIsLoading(true);
-    CouponService.registerCoupon(param)
+    CouponService.registerCoupon({
+      ...param,
+      placeAllowList: placeAllowList.map((place) => place.id),
+      programAllowList: programAllowList.map((program) => program.id),
+      placeBlockList: placeBlockList.map((place) => place.id),
+      programBlockList: programBlockList.map((program) => program.id),
+    })
       .then(() => {
         setNotiMessage(`쿠폰 ${text} 되었습니다.`);
       })
@@ -258,6 +265,48 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
             />
           </ApplyOptionWrapper>
         )}
+        {placeAllowList.length > 0 && (
+          <PlaceWrapper>
+            <PlaceTitleWrapper>장소</PlaceTitleWrapper>
+            <PlaceListWrapper>
+              {placeAllowList.map((place) => (
+                <PlaceItem key={place.id}>
+                  {place.name}
+                  <BsTrash
+                    style={{ marginLeft: "4px", cursor: "pointer" }}
+                    onClick={() =>
+                      setPlaceAllowList(
+                        placeAllowList.filter((item) => item.id !== place.id)
+                      )
+                    }
+                  />
+                </PlaceItem>
+              ))}
+            </PlaceListWrapper>
+          </PlaceWrapper>
+        )}
+        {programAllowList.length > 0 && (
+          <PlaceWrapper>
+            <PlaceTitleWrapper>프로그램</PlaceTitleWrapper>
+            <PlaceListWrapper>
+              {programAllowList.map((program) => (
+                <PlaceItem key={program.id}>
+                  {program.name}
+                  <BsTrash
+                    style={{ marginLeft: "4px", cursor: "pointer" }}
+                    onClick={() =>
+                      setProgramAllowList(
+                        programAllowList.filter(
+                          (item) => item.id !== program.id
+                        )
+                      )
+                    }
+                  />
+                </PlaceItem>
+              ))}
+            </PlaceListWrapper>
+          </PlaceWrapper>
+        )}
       </DataDetailItem>
       <DataDetailItem label="사용 제외 상품" span={2}>
         <ApplyOptionWrapper>
@@ -273,6 +322,49 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
             setProgramList={setProgramBlockList}
           />
         </ApplyOptionWrapper>
+
+        {placeBlockList.length > 0 && (
+          <PlaceWrapper>
+            <PlaceTitleWrapper>장소</PlaceTitleWrapper>
+            <PlaceListWrapper>
+              {placeBlockList.map((place) => (
+                <PlaceItem key={place.id}>
+                  {place.name}
+                  <BsTrash
+                    style={{ marginLeft: "4px", cursor: "pointer" }}
+                    onClick={() =>
+                      setPlaceBlockList(
+                        placeBlockList.filter((item) => item.id !== place.id)
+                      )
+                    }
+                  />
+                </PlaceItem>
+              ))}
+            </PlaceListWrapper>
+          </PlaceWrapper>
+        )}
+        {programBlockList.length > 0 && (
+          <PlaceWrapper>
+            <PlaceTitleWrapper>프로그램</PlaceTitleWrapper>
+            <PlaceListWrapper>
+              {programBlockList.map((program) => (
+                <PlaceItem key={program.id}>
+                  {program.name}
+                  <BsTrash
+                    style={{ marginLeft: "4px", cursor: "pointer" }}
+                    onClick={() =>
+                      setProgramBlockList(
+                        programBlockList.filter(
+                          (item) => item.id !== program.id
+                        )
+                      )
+                    }
+                  />
+                </PlaceItem>
+              ))}
+            </PlaceListWrapper>
+          </PlaceWrapper>
+        )}
       </DataDetailItem>
       <DataDetailItem label="사용 기간" span={2}>
         <DatePicker.RangePicker
@@ -317,6 +409,29 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
 
 export default CouponDetail;
 
-export const ApplyOptionWrapper = styled.div`
+const ApplyOptionWrapper = styled.div`
   margin-top: 12px;
+`;
+
+const PlaceWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  max-height: 300px;
+`;
+
+const PlaceTitleWrapper = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+const PlaceListWrapper = styled.div``;
+
+const PlaceItem = styled.div`
+  padding: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
 `;
