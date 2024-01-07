@@ -42,3 +42,5 @@ export enum CouponApplyType {
   ALL = "ALL",
   PARTIAL = "PARTIAL",
 }
+
+export type CouponStatus = "PENDING" | "IN_PROGRESS" | "FINISHED" | "";

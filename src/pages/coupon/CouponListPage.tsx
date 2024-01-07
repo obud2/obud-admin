@@ -7,6 +7,7 @@ import {
   Coupon,
   CouponDiscountType,
   CouponIssueType,
+  CouponStatus,
 } from "../../entities/coupon";
 import CouponService from "../../services/CouponService";
 import { FILTER } from "./CouponListPage.option";
@@ -14,15 +15,15 @@ import CouponDetail from "./detail/CouponDetail";
 
 const CouponListPage = () => {
   const [detailId, setDetailId] = useState<any>("");
-  const [searchFilter, setSearchFilter] = useState({ value: "", filter: "" });
+  const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, refetch, isRefetching } = useCoupons(page);
-
-  const doSearch = (type: string, e: string) => {
-    setSearchFilter((prev) => ({ ...prev, [type]: e }));
-    refetch();
-  };
+  const { data, isLoading, refetch, isRefetching } = useCoupons({
+    page,
+    name,
+    status,
+  });
 
   const onDetail = (item: { id: string }) => {
     setDetailId({ id: item?.id || "new" });
@@ -116,8 +117,8 @@ const CouponListPage = () => {
   return (
     <>
       <DataTableHeader
-        doSearch={(e) => doSearch("value", e)}
-        doFilter={(e) => doSearch("filter", e)}
+        doSearch={(e) => setName(e)}
+        doFilter={(e) => setStatus(e)}
         resister={{ text: "쿠폰 등록", onClick: () => onDetail({ id: "new" }) }}
         title="쿠폰 관리"
         filter={FILTER}
@@ -146,10 +147,33 @@ const CouponListPage = () => {
 
 export default CouponListPage;
 
-const useCoupons = (page: number) => {
-  const query = useQuery(["coupons", page], () =>
-    CouponService.listCoupons({ page })
+const useCoupons = ({
+  page,
+  name,
+  status,
+}: {
+  page: number;
+  name?: string;
+  status?: string; // 'wait' | 'active' | 'done' | ''
+}) => {
+  return useQuery(["coupons", page, name, status], () =>
+    CouponService.listCoupons({
+      page,
+      name,
+      status: mapCouponStatus(status || ""),
+    })
   );
-
-  return query;
 };
+
+function mapCouponStatus(status: string): CouponStatus {
+  switch (status) {
+    case "wait":
+      return "PENDING";
+    case "active":
+      return "IN_PROGRESS";
+    case "done":
+      return "FINISHED";
+    default:
+      return "";
+  }
+}

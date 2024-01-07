@@ -5,6 +5,7 @@ import {
   Coupon,
   CouponDiscountType,
   CouponIssueType,
+  CouponStatus,
 } from "../entities/coupon";
 
 export type RegisterCouponRequest = {
@@ -41,7 +42,7 @@ const registerCoupon = async (params: RegisterCouponRequest) => {
 
 type ListCouponsRequest = {
   page?: number;
-  status?: "PENDING" | "IN_PROGRESS" | "FINISHED" | "";
+  status?: CouponStatus;
   name?: string;
 };
 
