@@ -88,6 +88,15 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     setBody((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleClose = () => {
+    setBody(initialBody);
+    setPlaceAllowList([]);
+    setProgramAllowList([]);
+    setPlaceBlockList([]);
+    setProgramBlockList([]);
+    onClose();
+  };
+
   const onSubmit = () => {
     const text = id === "new" ? "등록" : "수정";
     const param = body;
@@ -113,7 +122,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
       })
       .finally(() => {
         refresh();
-        setBody(initialBody);
+        handleClose();
         setIsLoading(false);
       });
   };
@@ -131,7 +140,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
       <Button
         key="cancel-btn"
         style={{ width: "70px", marginRight: "5px" }}
-        onClick={onClose}
+        onClick={handleClose}
       >
         취소
       </Button>,
