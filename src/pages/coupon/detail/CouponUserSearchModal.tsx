@@ -1,0 +1,80 @@
+import CouponService, { UserResult } from "@/services/CouponService";
+import { Button, Checkbox, Input, Modal, message } from "antd";
+import { useState } from "react";
+import styled from "styled-components";
+
+type Props = {
+  open: boolean;
+  onClose: () => void;
+};
+
+const CouponUserSearchModal = ({ open, onClose }: Props) => {
+  const [query, setQuery] = useState("");
+  const [userResults, setUserResults] = useState<UserResult[]>([]);
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  const onSearch = async () => {
+    try {
+      const data = await CouponService.searchUser({ query });
+      setUserResults(data);
+    } catch (err) {
+      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
+  return (
+    <Modal
+      title="회원 검색"
+      open={open}
+      onCancel={handleClose}
+      destroyOnClose
+      footer={[
+        <Button key={"save"}>저장</Button>,
+        <Button key={"cancel"} onClick={handleClose}>
+          취소
+        </Button>,
+      ]}
+    >
+      <InputWrapper>
+        <Input
+          value={query}
+          placeholder="이름, 연락처, 이메일 주소로 검색"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Button onClick={onSearch}>검색</Button>
+      </InputWrapper>
+
+      <ResultWrapper>
+        {userResults.map((user) => (
+          <ResultItem key={user.id}>
+            <Checkbox>
+              <UserInfoWrapper>
+                <div>{user.name}</div>
+                <div>{user.email}</div>
+                <div>{user.phone}</div>
+              </UserInfoWrapper>
+            </Checkbox>
+          </ResultItem>
+        ))}
+      </ResultWrapper>
+    </Modal>
+  );
+};
+
+export default CouponUserSearchModal;
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+
+const ResultWrapper = styled.div``;
+
+const ResultItem = styled.div``;
+
+const UserInfoWrapper = styled.div``;

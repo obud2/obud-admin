@@ -1,23 +1,39 @@
 import { API_URL } from "../constants/config";
 
 import axiosInstance from "../constants/axiosInstance";
-import { Coupon } from "../entities/coupon";
+import {
+  Coupon,
+  CouponDiscountType,
+  CouponIssueType,
+} from "../entities/coupon";
 
-type RegisterCouponRequest = {
+export type RegisterCouponRequest = {
   name: Coupon["name"];
-  issueType: Coupon["issueType"];
-  discountType: Coupon["discountType"];
+  issueType: CouponIssueType;
+  discountType: CouponDiscountType;
   discountAmount: Coupon["discountAmount"];
   maxDiscountAmount: Coupon["maxDiscountAmount"];
   minOrderPriceAmount: Coupon["minOrderPriceAmount"];
+  // YYYY-MM-DD (시간 X, 날짜만)
   startDate: Coupon["startDate"];
+  // YYYY-MM-DD (시간 X, 날짜만)
   endDate: Coupon["endDate"];
+  // 동일 회원의 중복 발급 가능 여부
+  allowDuplicatePerUser: Coupon["allowDuplicatePerUser"];
+  // 적용 대상 장소/프로그램
+  placeAllowList: Coupon["placeAllowList"];
+  programAllowList: Coupon["programAllowList"];
+  // 적용 제외 장소/프로그램
+  placeBlockList: Coupon["placeBlockList"];
+  programBlockList: Coupon["programBlockList"];
+  // 쿠폰 지급해줄 유저 id 리스트
+  userId: string | null;
+  userIds: string[];
 };
 
 const registerCoupon = async (params: RegisterCouponRequest) => {
   try {
-    const response = await axiosInstance.post(`${API_URL}/coupon`, params);
-    return response?.data;
+    await axiosInstance.post(`${API_URL}/coupon`, params);
   } catch (error) {
     throw error;
   }
@@ -68,13 +84,15 @@ type SearchUserRequest = {
 };
 
 type SearchUserResponse = {
-  value: {
-    id: string;
-    name: string;
-    phone: string;
-    email: string;
-    createdAt: string;
-  }[];
+  value: UserResult[];
+};
+
+export type UserResult = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  createdAt: string;
 };
 
 const searchUser = async (req: SearchUserRequest) => {
@@ -91,7 +109,9 @@ const searchUser = async (req: SearchUserRequest) => {
     );
 
     return response.data.value;
-  } catch (error) {}
+  } catch (error) {
+    return [];
+  }
 };
 
 type SearchPlaceRequest = {

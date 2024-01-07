@@ -1,5 +1,13 @@
+import CouponService, {
+  PlaceResult,
+  RegisterCouponRequest,
+  UserResult,
+} from "@/services/CouponService";
 import { Button, DatePicker, Input, InputNumber, Radio, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import locale from "antd/es/date-picker/locale/ko_KR";
+import dayjs from "dayjs";
+import { useState } from "react";
+import styled from "styled-components";
 import swal from "sweetalert";
 import DataDetailBody, {
   DataDetailItem,
@@ -11,12 +19,7 @@ import {
   CouponDiscountType,
   CouponIssueType,
 } from "../../../entities/coupon";
-import ProductService from "../../../services/ProductService";
-import locale from "antd/es/date-picker/locale/ko_KR";
-import dayjs from "dayjs";
-import styled from "styled-components";
 import CouponPlaceSearchModal from "./CouponPlaceSearchModal";
-import { PlaceResult } from "@/services/CouponService";
 
 /**
  * @param {*} id : Coupon Id
@@ -25,24 +28,38 @@ import { PlaceResult } from "@/services/CouponService";
 
 const dateFormat = "YYYY-MM-DD";
 
-const CouponDetail = ({ id, open, onClose, refresh }: any) => {
+const initialBody: RegisterCouponRequest = {
+  name: "",
+  issueType: CouponIssueType.BY_CODE,
+  discountType: CouponDiscountType.AMOUNT,
+  discountAmount: 0,
+  startDate: dayjs().format(dateFormat),
+  endDate: dayjs().format(dateFormat),
+  minOrderPriceAmount: 0,
+  maxDiscountAmount: 0,
+  allowDuplicatePerUser: false,
+  placeAllowList: [],
+  programAllowList: [],
+  placeBlockList: [],
+  programBlockList: [],
+  userId: null,
+  userIds: [],
+};
+
+type Props = {
+  id: string;
+  open: boolean;
+  onClose: () => void;
+  refresh: () => void;
+};
+
+const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
-  const [body, setBody] = useState<Partial<Coupon>>({
-    issueType: CouponIssueType.BY_CODE,
-    code: "",
-    discountType: CouponDiscountType.AMOUNT,
-    startDate: dayjs().format(dateFormat),
-    endDate: dayjs().format(dateFormat),
-    allowDuplicatePerUser: false,
-  });
+  const [body, setBody] = useState<RegisterCouponRequest>(initialBody);
   const [applyType, setApplyType] = useState<CouponApplyType>(
     CouponApplyType.ALL
   );
-  // placeAllowList: string[];
-  // programAllowList: string[];
-  // placeBlockList: string[];
-  // programBlockList: string[];
   const [placeAllowModalOpen, setPlaceAllowModalOpen] = useState(false);
   const [placeAllowList, setPlaceAllowList] = useState<PlaceResult["id"][]>([]);
   const [programAllowList, setProgramAllowList] = useState<
@@ -55,26 +72,22 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
     PlaceResult["programs"][number]["id"][]
   >([]);
 
+  const [issueUserModalOpen, setIssueUserModalOpen] = useState(false);
+  const [issueUserList, setIssueUserList] = useState<UserResult["id"][]>([]);
+
   const isActive =
     body.name && body.maxDiscountAmount && body.minOrderPriceAmount;
 
-  /** 기본정보 호출 */
-  useEffect(() => {
-    if (id && id !== "new") {
-      setIsLoading(true);
+  // TODO: 쿠폰 정보 수정
 
-      ProductService?.getStudio(id).then((res) => {
-        setBody(res);
-        setIsLoading(false);
-      });
-    }
-  }, [id]);
-
-  const onChangeInputValue = (type: keyof Coupon, e: Coupon[keyof Coupon]) => {
-    setBody((prev) => ({ ...prev, [type]: e }));
+  const onChangeInputValue = (
+    key: keyof Coupon,
+    value: Coupon[keyof Coupon]
+  ) => {
+    setBody((prev) => ({ ...prev, [key]: value }));
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     const text = id === "new" ? "등록" : "수정";
     const param = body;
 
@@ -84,15 +97,16 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
     }
 
     setIsLoading(true);
-    ProductService?.setStudio(id, param)
+    CouponService.registerCoupon(param)
       .then(() => {
-        setNotiMessage(`${text} 되었습니다.`);
+        setNotiMessage(`쿠폰 ${text} 되었습니다.`);
       })
       .catch(() => {
         setNotiMessage("에러가 발생하였습니다. 잠시 후 다시시도해주세요.");
       })
       .finally(() => {
         refresh();
+        setBody(initialBody);
         setIsLoading(false);
       });
   };
@@ -134,7 +148,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
       onClose={onClose}
       title={`쿠폰 ${id === "new" ? "등록" : "수정"}`}
       extra={renderButtons()}
-      subTitle={body?.id}
+      subTitle={body.name}
       isLoading={isLoading}
       notiMessage={notiMessage}
     >
@@ -142,7 +156,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
       <DataDetailItem label="쿠폰명" span={2} point>
         <Input
           placeholder="쿠폰명을 입력하세요."
-          value={body?.name || ""}
+          value={body.name || ""}
           onChange={(e) => onChangeInputValue("name", e.target.value)}
           disabled={isLoading}
         />
@@ -151,17 +165,19 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
         <Select
           value={body.issueType}
           onChange={(e) => onChangeInputValue("issueType", e)}
-          options={[{ label: "코드 입력", value: CouponIssueType.BY_CODE }]}
+          options={[
+            { label: "코드 입력", value: CouponIssueType.BY_CODE },
+            { label: "전체 회원", value: CouponIssueType.TO_ALL_USERS },
+            { label: "특정 회원", value: CouponIssueType.TO_USER },
+          ]}
           style={{ width: "100%" }}
-          disabled
         />
       </DataDetailItem>
       <DataDetailItem label="쿠폰코드" span={2} point>
         <Input
-          placeholder="쿠폰코드를 입력하세요. (입력하지 않으면 자동 생성)"
-          value={body?.code || ""}
+          placeholder="쿠폰코드는 자동 생성됩니다"
           onChange={(e) => onChangeInputValue("code", e.target.value)}
-          disabled={isLoading}
+          disabled
         />
       </DataDetailItem>
 
@@ -178,7 +194,11 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
             style={{ width: "200px" }}
             disabled={isLoading}
           />
-          <Input
+          <InputNumber
+            min={100}
+            style={{ width: "100%", marginLeft: "4px" }}
+            value={body.discountAmount}
+            onChange={(e) => e && onChangeInputValue("discountAmount", e)}
             placeholder={
               body.discountType === CouponDiscountType.AMOUNT
                 ? "할인 금액을 입력하세요."
@@ -186,12 +206,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
             }
             addonAfter={
               body.discountType === CouponDiscountType.AMOUNT ? "원" : "%"
-            }
-            min={100}
-            style={{ width: "100%", marginLeft: "4px" }}
-            value={body?.discountAmount}
-            onChange={(e) =>
-              e && onChangeInputValue("discountAmount", e.target.value)
             }
             disabled={isLoading}
           />
@@ -203,7 +217,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
           addonAfter="원"
           min={100}
           style={{ width: "100%" }}
-          value={body?.maxDiscountAmount}
+          value={body.maxDiscountAmount}
           onChange={(e) => e && onChangeInputValue("maxDiscountAmount", e)}
           disabled={isLoading}
         />
@@ -214,7 +228,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
           addonAfter="원"
           min={100}
           style={{ width: "100%" }}
-          value={body?.minOrderPriceAmount}
+          value={body.minOrderPriceAmount}
           onChange={(e) => e && onChangeInputValue("minOrderPriceAmount", e)}
           disabled={isLoading}
         />
@@ -271,8 +285,8 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
           style={{ width: "100%" }}
           format={dateFormat}
           value={[
-            dayjs(body?.startDate ?? "", dateFormat),
-            dayjs(body?.endDate ?? "", dateFormat),
+            dayjs(body.startDate ?? "", dateFormat),
+            dayjs(body.endDate ?? "", dateFormat),
           ]}
           onChange={(_, dateString) => {
             onChangeInputValue(
@@ -288,7 +302,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: any) => {
       </DataDetailItem>
       <DataDetailItem label="중복 발급 가능 여부" span={2}>
         <Radio.Group
-          value={body?.allowDuplicatePerUser}
+          value={body.allowDuplicatePerUser}
           onChange={(e) =>
             onChangeInputValue("allowDuplicatePerUser", e.target.value)
           }
