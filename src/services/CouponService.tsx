@@ -10,6 +10,7 @@ import {
 
 export type RegisterCouponRequest = {
   name: Coupon["name"];
+  code: Coupon["code"];
   issueType: CouponIssueType;
   discountType: CouponDiscountType;
   discountAmount: Coupon["discountAmount"];

@@ -7,6 +7,7 @@ import { Button, DatePicker, Input, InputNumber, Radio, Select } from "antd";
 import locale from "antd/es/date-picker/locale/ko_KR";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { BsTrash } from "react-icons/bs";
 import styled from "styled-components";
 import swal from "sweetalert";
 import DataDetailBody, {
@@ -20,7 +21,6 @@ import {
   CouponIssueType,
 } from "../../../entities/coupon";
 import CouponPlaceSearchModal from "./CouponPlaceSearchModal";
-import { BsTrash, BsTrashFill } from "react-icons/bs";
 import CouponUserSearchModal from "./CouponUserSearchModal";
 
 /**
@@ -32,6 +32,7 @@ const dateFormat = "YYYY-MM-DD";
 
 const initialBody: RegisterCouponRequest = {
   name: "",
+  code: null,
   issueType: CouponIssueType.BY_CODE,
   discountType: CouponDiscountType.AMOUNT,
   discountAmount: 0,
@@ -111,6 +112,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     setIsLoading(true);
     CouponService.registerCoupon({
       ...param,
+      code: param.code?.trim()?.toLocaleUpperCase() || null,
       userId: null,
       userIds: issueUserList.map((user) => user.id),
       placeAllowList: placeAllowList.map((place) => place.id),
@@ -158,8 +160,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     ];
   };
 
-  console.log(body);
-
   return (
     <DataDetailBody
       open={open}
@@ -194,9 +194,8 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
       {body.issueType === CouponIssueType.BY_CODE && (
         <DataDetailItem label="쿠폰코드" span={2} point>
           <Input
-            placeholder="쿠폰코드는 자동 생성됩니다"
+            placeholder="영어 대문자 + 숫자 조합으로 최대 5자리. 미입력시 자동 생성"
             onChange={(e) => onChangeInputValue("code", e.target.value)}
-            disabled
           />
         </DataDetailItem>
       )}
@@ -253,7 +252,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
             disabled={isLoading}
           />
           <InputNumber
-            min={100}
             style={{ width: "100%", marginLeft: "4px" }}
             value={body.discountAmount}
             onChange={(e) => e && onChangeInputValue("discountAmount", e)}
@@ -273,7 +271,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
         <InputNumber
           placeholder="최대 할인 금액을 입력하세요."
           addonAfter="원"
-          min={100}
           style={{ width: "100%" }}
           value={body.maxDiscountAmount}
           onChange={(e) => e && onChangeInputValue("maxDiscountAmount", e)}
@@ -284,7 +281,6 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
         <InputNumber
           placeholder="최소 주문 금액을 입력하세요."
           addonAfter="원"
-          min={100}
           style={{ width: "100%" }}
           value={body.minOrderPriceAmount}
           onChange={(e) => e && onChangeInputValue("minOrderPriceAmount", e)}
