@@ -50,13 +50,13 @@ const initialBody: RegisterCouponRequest = {
 };
 
 type Props = {
-  id: string;
+  coupon: Coupon | null;
   open: boolean;
   onClose: () => void;
   refresh: () => void;
 };
 
-const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
+const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [body, setBody] = useState<RegisterCouponRequest>(initialBody);
@@ -101,7 +101,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
   };
 
   const onSubmit = () => {
-    const text = id === "new" ? "등록" : "수정";
+    const text = !!coupon ? "조회" : "등록";
     const param = body;
 
     if (!param?.name) {
@@ -155,7 +155,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
         disabled={!isActive}
         onClick={onSubmit}
       >
-        {id === "new" ? "등록" : "수정"}
+        {!!coupon ? "조회" : "등록"}
       </Button>,
     ];
   };
@@ -164,7 +164,7 @@ const CouponDetail = ({ id, open, onClose, refresh }: Props) => {
     <DataDetailBody
       open={open}
       onClose={onClose}
-      title={`쿠폰 ${id === "new" ? "등록" : "수정"}`}
+      title={`쿠폰 ${!!coupon ? "조회" : "등록"}`}
       extra={renderButtons()}
       isLoading={isLoading}
       notiMessage={notiMessage}

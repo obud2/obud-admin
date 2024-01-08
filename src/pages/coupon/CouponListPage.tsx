@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
@@ -14,7 +14,8 @@ import { FILTER } from "./CouponListPage.option";
 import CouponDetail from "./detail/CouponDetail";
 
 const CouponListPage = () => {
-  const [detailId, setDetailId] = useState<any>("");
+  const [coupon, setCoupon] = useState<Coupon | null>(null);
+  const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [name, setName] = useState("");
   const [page, setPage] = useState(1);
@@ -25,14 +26,16 @@ const CouponListPage = () => {
     status,
   });
 
-  const onDetail = (item: { id: string }) => {
-    setDetailId({ id: item?.id || "new" });
+  const onDetail = (item: Coupon | null) => {
+    setCoupon(item);
+    setOpen(true);
   };
 
   const onDetailClose = (refresh: boolean) => {
     if (refresh) refetch();
 
-    setDetailId("");
+    setCoupon(null);
+    setOpen(false);
   };
 
   const isAllLoading = isLoading || isRefetching;
@@ -100,6 +103,14 @@ const CouponListPage = () => {
         <div>{dayjs(item.updatedAt).format("YYYY-MM-DD")}</div>
       ),
     },
+    {
+      title: "상세",
+      render: (item: Coupon) => (
+        <div>
+          <Button onClick={() => onDetail(item)}>상세</Button>
+        </div>
+      ),
+    },
   ];
 
   const dataSource = data?.map((item) => ({
@@ -119,7 +130,7 @@ const CouponListPage = () => {
       <DataTableHeader
         doSearch={(e) => setName(e)}
         doFilter={(e) => setStatus(e)}
-        resister={{ text: "쿠폰 등록", onClick: () => onDetail({ id: "new" }) }}
+        resister={{ text: "쿠폰 등록", onClick: () => onDetail(null) }}
         title="쿠폰 관리"
         filter={FILTER}
         searchPlaceholder="쿠폰 이름으로 검색하세요."
@@ -136,8 +147,8 @@ const CouponListPage = () => {
         }}
       />
       <CouponDetail
-        id={detailId?.id || ""}
-        open={detailId}
+        coupon={coupon}
+        open={open}
         onClose={() => onDetailClose(false)}
         refresh={() => onDetailClose(true)}
       />
