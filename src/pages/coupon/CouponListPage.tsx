@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button, Table, message } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
@@ -36,6 +36,18 @@ const CouponListPage = () => {
 
     setCoupon(null);
     setOpen(false);
+  };
+
+  const onDisableCoupon = async (couponId: string) => {
+    console.log(couponId);
+    try {
+      await CouponService.disableCoupon({ couponId });
+      refetch();
+      message.success("쿠폰이 비활성화 되었습니다.");
+    } catch (err) {
+      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      console.error(err);
+    }
   };
 
   const isAllLoading = isLoading || isRefetching;
@@ -104,13 +116,21 @@ const CouponListPage = () => {
       ),
     },
     {
-      title: "상세",
-      render: (item: Coupon) => (
+      title: "비활성화",
+      render: (item: Coupon & { key: Coupon["id"] }) => (
         <div>
-          <Button onClick={() => onDetail(item)}>상세</Button>
+          <Button onClick={() => onDisableCoupon(item.key)}>비활성화</Button>
         </div>
       ),
     },
+    // {
+    //   title: "상세",
+    //   render: (item: Coupon) => (
+    //     <div>
+    //       <Button onClick={() => onDetail(item)}>상세</Button>
+    //     </div>
+    //   ),
+    // },
   ];
 
   const dataSource = data?.map((item) => ({

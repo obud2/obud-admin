@@ -152,11 +152,31 @@ const searchPlace = async (req: SearchPlaceRequest) => {
   }
 };
 
+// DELETE /coupon?couponId={:user_coupon_id}
+type DisableCouponRequest = {
+  couponId: string;
+};
+
+const disableCoupon = async (req: DisableCouponRequest) => {
+  try {
+    const searchParams = new URLSearchParams();
+
+    if (req.couponId) searchParams.set("couponId", req.couponId);
+
+    await axiosInstance.delete(`${API_URL}/coupon`, {
+      params: searchParams,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const CouponService = {
   registerCoupon,
   listCoupons,
   searchUser,
   searchPlace,
+  disableCoupon,
 };
 
 export default CouponService;
