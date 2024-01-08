@@ -16,6 +16,7 @@ const CouponUserSearchModal = ({
   userList,
   setUserList,
 }: Props) => {
+  const [showResults, setShowResults] = useState(false);
   const [query, setQuery] = useState("");
   const [userResults, setUserResults] = useState<UserResult[]>([]);
   const [tempUserList, setTempUserList] = useState<UserResult[]>([]);
@@ -36,10 +37,13 @@ const CouponUserSearchModal = ({
     try {
       const data = await CouponService.searchUser({ query });
       setUserResults(data);
+      setShowResults(true);
     } catch (err) {
       message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
     }
   };
+
+  const emptyResult = userResults.length === 0 && query;
 
   return (
     <Modal
@@ -60,12 +64,16 @@ const CouponUserSearchModal = ({
         <Input
           value={query}
           placeholder="이름, 연락처, 이메일 주소로 검색"
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setShowResults(false);
+          }}
         />
         <Button onClick={onSearch}>검색</Button>
       </InputWrapper>
 
       <ResultWrapper>
+        {showResults && emptyResult && <div>검색 결과가 없습니다.</div>}
         {userResults.map((user) => (
           <ResultItem key={user.id}>
             <Checkbox

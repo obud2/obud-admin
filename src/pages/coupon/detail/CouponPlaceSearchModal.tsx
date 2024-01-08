@@ -20,6 +20,7 @@ const CouponPlaceSearchModal = ({
   programList,
   setProgramList,
 }: Props) => {
+  const [showResults, setShowResults] = useState(false);
   const [query, setQuery] = useState("");
   const [placeResults, setPlaceResults] = useState<PlaceResult[]>([]);
   const [tempPlaceList, setTempPlaceList] = useState<PlaceResult[]>([]);
@@ -53,10 +54,13 @@ const CouponPlaceSearchModal = ({
           })),
         }))
       );
+      setShowResults(true);
     } catch (err) {
       message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
     }
   };
+
+  const emptyResult = placeResults.length === 0 && query;
 
   return (
     <Modal
@@ -74,11 +78,18 @@ const CouponPlaceSearchModal = ({
       ]}
     >
       <InputWrapper>
-        <Input value={query} onChange={(e) => setQuery(e.target.value)} />
+        <Input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setShowResults(false);
+          }}
+        />
         <Button onClick={onSearch}>검색</Button>
       </InputWrapper>
 
       <ResultWrapper>
+        {showResults && emptyResult && <div>검색 결과가 없습니다.</div>}
         {placeResults.map((result) => (
           <ResultItem key={result.id}>
             <Checkbox
