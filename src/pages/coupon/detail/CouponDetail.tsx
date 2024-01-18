@@ -123,6 +123,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
       .then(() => {
         setNotiMessage(`쿠폰 ${text} 되었습니다.`);
         refresh();
+        setIsLoading(false);
         handleClose();
       })
       .catch(() => {
