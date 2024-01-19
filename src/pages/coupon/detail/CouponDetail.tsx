@@ -77,8 +77,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
   const [issueUserModalOpen, setIssueUserModalOpen] = useState(false);
   const [issueUserList, setIssueUserList] = useState<UserResult[]>([]);
 
-  const isActive =
-    body.name && body.maxDiscountAmount && body.minOrderPriceAmount;
+  const isActive = body.name
 
   // TODO: 쿠폰 정보 수정
 
