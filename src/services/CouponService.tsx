@@ -29,7 +29,6 @@ export type RegisterCouponRequest = {
   placeBlockList: Coupon["placeBlockList"];
   programBlockList: Coupon["programBlockList"];
   // 쿠폰 지급해줄 유저 id 리스트
-  userId: string | null;
   userIds: string[];
 };
 

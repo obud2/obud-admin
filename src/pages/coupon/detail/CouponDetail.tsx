@@ -45,7 +45,6 @@ const initialBody: RegisterCouponRequest = {
   programAllowList: [],
   placeBlockList: [],
   programBlockList: [],
-  userId: null,
   userIds: [],
 };
 
@@ -113,7 +112,6 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
     CouponService.registerCoupon({
       ...param,
       code: param.code?.trim()?.toLocaleUpperCase() || null,
-      userId: null,
       userIds: issueUserList.map((user) => user.id),
       placeAllowList: placeAllowList.map((place) => place.id),
       programAllowList: programAllowList.map((program) => program.id),
