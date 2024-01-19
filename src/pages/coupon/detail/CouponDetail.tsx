@@ -77,7 +77,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
   const [issueUserModalOpen, setIssueUserModalOpen] = useState(false);
   const [issueUserList, setIssueUserList] = useState<UserResult[]>([]);
 
-  const isActive = body.name
+  const isActive = body.name && body.discountAmount > 0
 
   // TODO: 쿠폰 정보 수정
 
@@ -108,7 +108,6 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
     }
 
     setIsLoading(true);
-    console.log("sdds")
     CouponService.registerCoupon({
       ...param,
       code: param.code?.trim()?.toLocaleUpperCase() || null,
@@ -129,7 +128,6 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
         setIsLoading(false);
       })
       .finally(() => {
-        console.log("jhii")
         setIsLoading(false)
       });
   };
