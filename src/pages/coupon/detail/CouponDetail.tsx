@@ -109,6 +109,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
     }
 
     setIsLoading(true);
+    console.log("sdds")
     CouponService.registerCoupon({
       ...param,
       code: param.code?.trim()?.toLocaleUpperCase() || null,
@@ -120,13 +121,17 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
     })
       .then(() => {
         setNotiMessage(`쿠폰 ${text} 되었습니다.`);
-        refresh();
         setIsLoading(false);
+        refresh();
         handleClose();
       })
       .catch(() => {
         setNotiMessage("에러가 발생하였습니다. 잠시 후 다시시도해주세요.");
         setIsLoading(false);
+      })
+      .finally(() => {
+        console.log("jhii")
+        setIsLoading(false)
       });
   };
 
@@ -194,7 +199,10 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
         <DataDetailItem label="쿠폰코드" span={2} point>
           <Input
             placeholder="영어 대문자 + 숫자 조합으로 최대 5자리. 미입력시 자동 생성"
-            onChange={(e) => onChangeInputValue("code", e.target.value)}
+            onChange={(e) => {
+              const code = e.target.value.trim().slice(0, 5).toUpperCase();
+              onChangeInputValue("code", code)
+            }}
           />
         </DataDetailItem>
       )}
