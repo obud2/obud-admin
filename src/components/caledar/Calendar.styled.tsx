@@ -58,12 +58,12 @@ export const SCalendar = styled.div`
     justify-content: center;
 
     gap: 10px;
-    margin-bottom: 5px;
+    margin: 20px 0;
 
     position: absolute;
 
     ${smLayout} {
-      position: relative;
+      display: none;
     }
 
     .calendar-box {
@@ -78,6 +78,42 @@ export const SCalendar = styled.div`
         width: 30px;
         height: 20px;
       }
+    }
+  }
+  ${smLayout} {
+    .fc-event {
+      display: none;
+    }
+  }
+
+  .mobile-schedule-list {
+    margin-top: 30px;
+    display: none;
+    ${smLayout} {
+      display: block;
+    }
+
+    .mobile-schedule-list-date {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .mobile-schedule-list-item {
+      padding: 10px 0;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .mobile-schedule-list-item-label {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+    .mobile-schedule-list-item-reservation {
+      margin-right: 2rem;
     }
   }
 `;

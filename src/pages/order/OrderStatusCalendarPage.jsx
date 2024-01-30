@@ -1,13 +1,13 @@
-import moment from "moment";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import Calendar from "../../components/caledar/Calendar";
-import DataTableHeader from "../../components/dataTable/DataTableHeader";
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
-import ProductService from "../../services/ProductService";
-import ProductPlanResevationList from "../product/detail/ProductPlanResevationList";
-import OrderStatusCalendarPalnList from "./status/OrderStatusCalendarPalnList";
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import Calendar from '../../components/caledar/Calendar';
+import DataTableHeader from '../../components/dataTable/DataTableHeader';
+import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
+import ProductService from '../../services/ProductService';
+import ProductPlanResevationList from '../product/detail/ProductPlanResevationList';
+import OrderStatusCalendarPalnList from './status/OrderStatusCalendarPalnList';
 
 /**
  * @brief 일정(Plan) 페이지
@@ -16,18 +16,18 @@ import OrderStatusCalendarPalnList from "./status/OrderStatusCalendarPalnList";
 const OrderStatusCalendarPage = () => {
   const { id } = useParams();
 
-  const dateFormat = "YYYY-MM";
+  const dateFormat = 'YYYY-MM';
 
-  const [detailId, setDetailId] = useState("");
-  const [reservationId, setReservationId] = useState("");
-  const [searchFilter, setSearchFilter] = useState({ value: "", filter: "" });
+  const [detailId, setDetailId] = useState('');
+  const [reservationId, setReservationId] = useState('');
+  const [searchFilter, setSearchFilter] = useState({ value: '', filter: '' });
   const [month, setMonth] = useState(moment().format(dateFormat));
-  const [notiMessage, setNotiMessage] = useState("");
+  const [notiMessage, setNotiMessage] = useState('');
 
   useEffect(() => {
     if (notiMessage) {
       setTimeout(() => {
-        setNotiMessage("");
+        setNotiMessage('');
       }, [2000]);
     }
   }, [notiMessage]);
@@ -37,15 +37,11 @@ const OrderStatusCalendarPage = () => {
   };
 
   const fetchLessonData = async () => {
-    const res = await ProductService?.getPlanCaledar(
-      id,
-      month,
-      searchFilter?.filter
-    );
+    const res = await ProductService?.getPlanCaledar(id, month, searchFilter?.filter);
 
     if (!res) return;
 
-    const lessonList = [{ id: "", label: "전체" }];
+    const lessonList = [{ id: '', label: '전체' }];
     const sortDate = [];
 
     // 클래스 필터
@@ -56,11 +52,7 @@ const OrderStatusCalendarPage = () => {
       });
     });
 
-    const dayDetails = await Promise.all(
-      Object.entries(res.sortDate).map((a) =>
-        ProductService?.getPlanCaledarDayInfo(id, a?.[0])
-      )
-    );
+    const dayDetails = await Promise.all(Object.entries(res.sortDate).map((a) => ProductService?.getPlanCaledarDayInfo(id, a?.[0])));
 
     dayDetails.forEach((details) => {
       details.forEach((detail) => {
@@ -68,17 +60,14 @@ const OrderStatusCalendarPage = () => {
         detail.planList?.forEach((plan) => {
           sortDate.push({
             id: `${plan.id}`,
-            date: moment(plan.startDate).format("YYYY-MM-DD"),
-            start: moment(plan.startDate).format("YYYY-MM-DD"),
-            end: moment(plan.endDate).format("YYYY-MM-DD"),
-            title: `${moment(plan.startDate).format(
-              "HH:mm"
-            )} ${detail.title?.substring(0, 6)} ${plan.currentMember}/${
-              plan.maxMember
-            }`,
-            backgroundColor: "#34423599",
-            borderColor: "#34423599",
-            textColor: "#ffffff",
+            date: moment(plan.startDate).format('YYYY-MM-DD'),
+            start: moment(plan.startDate).format('YYYY-MM-DD'),
+            startDate: plan.startDate,
+            end: moment(plan.endDate).format('YYYY-MM-DD'),
+            endDate: plan.endDate,
+            title: `${moment(plan.startDate).format('HH:mm')} ${detail.title?.substring(0, 10)} ${plan.currentMember}/${plan.maxMember}`,
+            numberOfPeople: `${plan.currentMember}/${plan.maxMember}`,
+            mobileTitle: `${detail.title}`,
           });
         });
       });
@@ -90,14 +79,8 @@ const OrderStatusCalendarPage = () => {
     };
   };
 
-  const { data: studio, isLoading: isStudioLoading } = useQuery(
-    ["order-status-studio-item", id],
-    fetchStudioData
-  );
-  const { data, isLoading, refetch, isRefetching } = useQuery(
-    ["status-lesson-items", id, month],
-    fetchLessonData
-  );
+  const { data: studio, isLoading: isStudioLoading } = useQuery(['order-status-studio-item', id], fetchStudioData);
+  const { data, isLoading, refetch, isRefetching } = useQuery(['status-lesson-items', id, month], fetchLessonData);
 
   const doSearch = (type, e) => {
     setSearchFilter((prev) => ({ ...prev, [type]: e }));
@@ -113,13 +96,15 @@ const OrderStatusCalendarPage = () => {
   };
 
   const onDetail = (data) => {
-    setDetailId({ id: data?.date || "new" });
+    setDetailId({ id: data?.date || 'new' });
     setReservationId(data?.id);
   };
 
   const eventContent = (eventInfo) => {
     return (
-      <div style={{ padding: 3, fontSize: 11 }}>{eventInfo?.event?.title}</div>
+      <>
+        <div style={{ padding: 3, fontSize: 11, whiteSpace: 'normal' }}>{eventInfo?.event?.title}</div>
+      </>
     );
   };
 
@@ -133,8 +118,8 @@ const OrderStatusCalendarPage = () => {
     <>
       <DataTableHeader
         title="예약현황"
-        subTitle={studio?.title || ""}
-        doFilter={(e) => doSearch("filter", e)}
+        subTitle={studio?.title || ''}
+        doFilter={(e) => doSearch('filter', e)}
         isLoading={isAllLoading}
         notiMessage={notiMessage}
       />
@@ -162,13 +147,7 @@ const OrderStatusCalendarPage = () => {
       /> */}
 
       {/* 예약자 현황 */}
-      <ProductPlanResevationList
-        id={reservationId}
-        open={reservationId}
-        onClose={() => setReservationId()}
-        studio={studio}
-        lesson={id}
-      />
+      <ProductPlanResevationList id={reservationId} open={reservationId} onClose={() => setReservationId()} studio={studio} lesson={id} />
     </>
   );
 };

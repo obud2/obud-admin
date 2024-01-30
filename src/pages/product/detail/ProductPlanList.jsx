@@ -17,7 +17,7 @@ import ProductService from '../../../services/ProductService';
  * @param {*} id : 상품 등록 ID 값 new
  * @returns
  */
-const ProductPlanList = ({ data, open, onDetail, onResevation, onClose, month, setNotiMessage, lessonId, refetch }) => {
+const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage, lessonId, refetch }) => {
   const dateFormat = 'YYYYMMDDHHmmss';
   moment.lang('ko', {
     weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
@@ -153,13 +153,6 @@ const ProductPlanList = ({ data, open, onDetail, onResevation, onClose, month, s
             disabled={isDisabled}
           />
         );
-      },
-    },
-    {
-      id: 'id',
-      label: '예약자 명단',
-      customBodyRender: (_, data) => {
-        return <Button onClick={() => onResevation(data)}>보기</Button>;
       },
     },
     {

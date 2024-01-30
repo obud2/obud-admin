@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { smLayout } from "../../styles/VariablesStyles";
+import styled, { css } from 'styled-components';
+import { smLayout } from '../../styles/VariablesStyles';
 
 export const SDataDetailBody = styled.div<{ padding?: boolean }>`
   width: 100%;
@@ -15,10 +15,6 @@ export const SDataDetailBody = styled.div<{ padding?: boolean }>`
 
   ${smLayout} {
     padding-bottom: 200px;
-  }
-
-  .calendar-wrapper {
-    min-width: 900px;
   }
 
   .detail-body-loading {

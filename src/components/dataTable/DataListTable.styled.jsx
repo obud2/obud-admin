@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { smLayout } from "../../styles/VariablesStyles";
+import { smLayout } from '../../styles/VariablesStyles';
 
 export const SDataListTable = styled.div`
   width: 100%;
@@ -20,7 +20,7 @@ export const SDataListTable = styled.div`
 
   ${smLayout} {
     overflow-y: none;
-    overflow-x: auto;
+    /* overflow-x: auto; */
   }
 
   .data-option-container {
@@ -30,10 +30,6 @@ export const SDataListTable = styled.div`
 
     gap: 5px;
     padding: 10px 15px;
-
-    ${smLayout} {
-      min-width: 1140px;
-    }
 
     .data-sort-btn-tooltip {
       font-size: 0.8em;
@@ -52,10 +48,6 @@ export const SDataListTable = styled.div`
     padding: 10px 16px 10px 25px;
 
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
-    ${smLayout} {
-      min-width: 1140px;
-    }
 
     .data-list-header-field {
       flex: 1;
@@ -91,10 +83,6 @@ export const SDataListTable = styled.div`
     color: rgba(0, 0, 0, 0.87);
 
     background-color: #ffffff;
-
-    ${smLayout} {
-      min-width: 1140px;
-    }
 
     .empty-list-item {
       text-align: center;

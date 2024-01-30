@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import moment from "moment";
+import moment from 'moment';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-import { useQuery } from "react-query";
-import ProductService from "../../services/ProductService";
+import { useQuery } from 'react-query';
+import ProductService from '../../services/ProductService';
 
-import ProductShellTitle from "./ProductStudio";
-import ProductPlanDetail from "./detail/ProductPlanDetail";
+import ProductShellTitle from './ProductStudio';
+import ProductPlanDetail from './detail/ProductPlanDetail';
 
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
+import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
 
-import Calendar from "../../components/caledar/Calendar";
+import Calendar from '../../components/caledar/Calendar';
 
-import ProductPlanList from "./detail/ProductPlanList";
-import ProductPlanResevationList from "./detail/ProductPlanResevationList";
-import ProductPlanMultiDetail from "./detail/ProductPlanMultiDetail";
+import ProductPlanList from './detail/ProductPlanList';
+import ProductPlanResevationList from './detail/ProductPlanResevationList';
+import ProductPlanMultiDetail from './detail/ProductPlanMultiDetail';
 
-import DataTableHeader from "../../components/dataTable/DataTableHeader";
+import DataTableHeader from '../../components/dataTable/DataTableHeader';
 
 /**
  *
@@ -27,22 +27,22 @@ import DataTableHeader from "../../components/dataTable/DataTableHeader";
 const ProductLessonPage = () => {
   const { id, studioId } = useParams();
 
-  const dateFormat = "YYYY-MM";
+  const dateFormat = 'YYYY-MM';
 
   const [isOpen, setIsOpen] = useState(false);
   const [isMultiOpen, setIsMultiOpen] = useState(false);
 
-  const [detailId, setDetailId] = useState("");
-  const [reservationId, setReservationId] = useState("");
+  const [detailId, setDetailId] = useState('');
+  const [reservationId, setReservationId] = useState('');
 
   const [month, setMonth] = useState(moment().format(dateFormat));
 
-  const [notiMessage, setNotiMessage] = useState("");
+  const [notiMessage, setNotiMessage] = useState('');
 
   useEffect(() => {
     if (notiMessage) {
       setTimeout(() => {
-        setNotiMessage("");
+        setNotiMessage('');
       }, [2000]);
     }
   }, [notiMessage]);
@@ -52,36 +52,29 @@ const ProductLessonPage = () => {
     const list = res?.value || [];
 
     list?.map((a) => {
-      const start = moment(a.startDate).format("YYYY-MM-DD");
-      const end = moment(a.endDate).format("YYYY-MM-DD");
-      const startTime = moment(a.startDate).format("HH:mm");
-      const endTime = moment(a.endDate).format("HH:mm");
+      const start = moment(a.startDate).format('YYYY-MM-DD');
+      const end = moment(a.endDate).format('YYYY-MM-DD');
+      const startTime = moment(a.startDate).format('HH:mm');
+      const endTime = moment(a.endDate).format('HH:mm');
 
       const currentMember = a?.currentMember || 0;
       const maxMember = a?.maxMember || 0;
 
-      a["start"] = start;
-      a["end"] = end;
-      a["allDay"] = true;
-      a["title"] = `${startTime}-${endTime} :: ${currentMember} / ${maxMember}`;
+      a['start'] = start;
+      a['end'] = end;
+      a['allDay'] = true;
+      a['title'] = `${startTime}-${endTime} :: ${currentMember} / ${maxMember}`;
+      a['numberOfPeople'] = `${currentMember} / ${maxMember}`;
     });
 
     return list;
   };
 
-  const { data: studio, isLoading: isStudioLoading } = useQuery(
-    ["product-studio-detail", id],
-    () => ProductService?.getStudio(id)
+  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', id], () => ProductService?.getStudio(id));
+  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', studioId], () =>
+    ProductService?.getLesson(studioId),
   );
-  const { data: lesson, isLoading: isLessonLoading } = useQuery(
-    ["product-lesson-detail", studioId],
-    () => ProductService?.getLesson(studioId)
-  );
-  const {
-    data: plan,
-    isLoading: isPlanLoading,
-    refetch,
-  } = useQuery([`product-paln-list-${studioId}`, month], () => fetchData());
+  const { data: plan, isLoading: isPlanLoading, refetch } = useQuery([`product-paln-list-${studioId}`, month], () => fetchData());
 
   const onChangeDate = async (e) => {
     const currentDate = e.view.getCurrentData().currentDate;
@@ -96,11 +89,7 @@ const ProductLessonPage = () => {
   };
 
   const onDetail = (_, info) => {
-    setDetailId({ id: info || "new" });
-  };
-
-  const onResevation = (data) => {
-    setReservationId(data?.id);
+    setDetailId({ id: info || 'new' });
   };
 
   const onList = () => {
@@ -110,7 +99,7 @@ const ProductLessonPage = () => {
   const onDetailClose = (refresh) => {
     if (refresh) refetch();
 
-    setDetailId("");
+    setDetailId('');
   };
 
   const onMultiPlanClose = (refresh) => {
@@ -120,9 +109,7 @@ const ProductLessonPage = () => {
   };
 
   const eventContent = (eventInfo) => {
-    return (
-      <div style={{ padding: 3, fontSize: 11 }}>{eventInfo?.event?.title}</div>
-    );
+    return <div style={{ padding: 3, fontSize: 11 }}>{eventInfo?.event?.title}</div>;
   };
 
   const isAllLoading = isStudioLoading || isLessonLoading || isPlanLoading;
@@ -130,14 +117,9 @@ const ProductLessonPage = () => {
   return (
     <React.Fragment>
       <DataTableHeader
-        addResister={{ text: "반복등록", onClick: () => onClickMultiOpen() }}
-        resister={{ text: "일정등록", onClick: () => onDetail() }}
-        title={
-          <ProductShellTitle
-            title={studio?.title || ""}
-            subTitle={lesson?.title || ""}
-          />
-        }
+        addResister={{ text: '반복등록', onClick: () => onClickMultiOpen() }}
+        resister={{ text: '일정등록', onClick: () => onDetail() }}
+        title={<ProductShellTitle title={studio?.title || ''} subTitle={lesson?.title || ''} />}
         isLoading={isAllLoading}
         notiMessage={notiMessage}
       />
@@ -146,7 +128,7 @@ const ProductLessonPage = () => {
         <div className="calendar-wrapper">
           <Calendar
             list={plan || []}
-            resister={{ text: "일정보기", onClick: () => onList() }}
+            resister={{ text: '일정보기', onClick: () => onList() }}
             eventContent={eventContent}
             onClick={onDetail}
             onChangeDate={onChangeDate}
@@ -157,21 +139,20 @@ const ProductLessonPage = () => {
 
       {/* 일정보기 리스트 */}
       <ProductPlanList
-        lessonId={lesson?.id || ""}
+        lessonId={lesson?.id || ''}
         data={plan}
         open={isOpen}
         onClose={() => setIsOpen(false)}
         month={month}
         onDetail={onDetail}
-        onResevation={onResevation}
         setNotiMessage={setNotiMessage}
         refetch={refetch}
       />
 
       {/* 플랜 상세 */}
       <ProductPlanDetail
-        id={detailId?.id || ""}
-        lessonId={lesson?.id || ""}
+        id={detailId?.id || ''}
+        lessonId={lesson?.id || ''}
         open={detailId}
         onClose={() => onDetailClose(false)}
         refetch={() => onDetailClose(true)}
@@ -182,7 +163,7 @@ const ProductLessonPage = () => {
         open={isMultiOpen}
         onClose={() => onMultiPlanClose(false)}
         refetch={() => onMultiPlanClose(true)}
-        lessonId={lesson?.id || ""}
+        lessonId={lesson?.id || ''}
       />
 
       {/* 예약자 현황 */}
