@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 // import { smLayout } from '../../styles/VariablesStyles';
 
@@ -16,7 +16,7 @@ const optionAnimation = keyframes`
 export const SDataListItem = styled.div`
   display: flex;
 
-  font-weight: 500;
+  /* font-weight: 500; */
   font-size: 1.3rem;
   line-height: 1.5rem;
 
