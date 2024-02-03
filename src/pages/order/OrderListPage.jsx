@@ -80,7 +80,8 @@ const OrderListPage = () => {
         isLoading={isLoading || isRefetching}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}
-        sorted={false}
+        sorted={true}
+        sortId="orderId"
         excel={true}
         excelCols={EXEL_HEADER}
         useDetail={false}
