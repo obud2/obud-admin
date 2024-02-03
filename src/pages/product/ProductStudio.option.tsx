@@ -9,7 +9,7 @@ import ProductService from '../../services/ProductService';
 export const LIST_HEADER = [
   {
     id: 'title',
-    label: '수업명',
+    label: '프로그램명',
     flex: 'none',
     width: '40%',
     customBodyRender: (value: any, data: any, onClick: any) => {
@@ -75,7 +75,7 @@ export const EXEL_HEADER = [
   { id: 'lessonType', label: '분류' },
   {
     id: 'title',
-    label: '수업명',
+    label: '프로그램명',
   },
   {
     id: 'isShow',

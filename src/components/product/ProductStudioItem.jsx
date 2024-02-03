@@ -117,10 +117,10 @@ const ProductStudioItem = ({
 };
 
 const Option = [
-  { id: "edit", title: "수정" },
-  { id: "copy", title: "복제" },
-  { id: "delete", title: "삭제" },
-  { id: "detail", title: "수업목록" },
+  { id: "edit", title: "장소 수정" },
+  { id: "copy", title: "장소 복제" },
+  { id: "delete", title: "장소 삭제" },
+  { id: "detail", title: "프로그램 목록" },
 ];
 
 const ProductShellDragButton = () => {

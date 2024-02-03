@@ -111,7 +111,7 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
       return;
     }
     if (!param?.title) {
-      emptyCheck("수업명을 입력해주세요.");
+      emptyCheck("프로그램명을 입력해주세요.");
       return;
     }
 
@@ -168,7 +168,7 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
     <DataDetailBody
       open={open}
       onClose={onClose}
-      title={`수업 ${id === "new" ? "등록" : "수정"}`}
+      title={`프로그램 ${id === "new" ? "등록" : "수정"}`}
       extra={renderButtons()}
       subTitle={body?.id}
       isLoading={isAllLoading}
@@ -200,9 +200,9 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
         </Radio.Group>
       </DataDetailItem>
 
-      <DataDetailItem label="수업명" span={2} point>
+      <DataDetailItem label="프로그램명" span={2} point>
         <Input
-          placeholder="수업명을 입력하세요."
+          placeholder="프로그램명을 입력하세요."
           value={body?.title || ""}
           onChange={(e) => onChangeInputValue("title", e.target.value)}
           disabled={isAllLoading}

@@ -1,5 +1,5 @@
 export const LIST_HEADER = [
-  { id: 'date', label: '수업일' },
+  { id: 'date', label: '프로그램일' },
   { id: 'date', label: '시작' },
   { id: 'date', label: '종료' },
   { id: 'date', label: '가격' },

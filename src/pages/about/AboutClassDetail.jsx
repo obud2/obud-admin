@@ -149,7 +149,7 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
         />
       </DataDetailItem>
 
-      <DataDetailItem label="수업스타일">
+      <DataDetailItem label="프로그램스타일">
         <Input
           value={body?.classStyle || "-"}
           onChange={(e) => onChangeBody("classStyle", e.target.value)}

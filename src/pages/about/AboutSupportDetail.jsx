@@ -163,7 +163,7 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
         />
       </DataDetailItem>
 
-      <DataDetailItem label="수업경력" span={2}>
+      <DataDetailItem label="프로그램경력" span={2}>
         <Input
           value={body?.career || "-"}
           onChange={(e) => onChangeBody("career", e.target.value)}
@@ -171,7 +171,7 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
         />
       </DataDetailItem>
 
-      <DataDetailItem label="가능 요가수업" span={2}>
+      <DataDetailItem label="가능 요가프로그램" span={2}>
         <Input
           value={body?.yogaStyle || "-"}
           onChange={(e) => onChangeBody("yogaStyle", e.target.value)}

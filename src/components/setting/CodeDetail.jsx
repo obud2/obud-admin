@@ -7,8 +7,8 @@ import SubMain from '../../sub-main';
 
 const TYPE_CHECK = {
   convenience: '장소 - 편의시설',
-  type: '수업 - 분류',
-  category: '수업 - 카테고리',
+  type: '프로그램 - 분류',
+  category: '프로그램 - 카테고리',
 };
 
 const CodeDetail = ({ isOpen, isClose, list, type, data, onAdd }) => {

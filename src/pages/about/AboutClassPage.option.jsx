@@ -32,7 +32,7 @@ export const EXEL_HEADER = [
   { id: "num", label: "인원" },
   { id: "date", label: "시간대" },
   { id: "yogaStyle", label: "요가스타일" },
-  { id: "classStyle", label: "수업스타일" },
+  { id: "classStyle", label: "프로그램스타일" },
   { id: "etc", label: "기타요청사항" },
   {
     id: "process",

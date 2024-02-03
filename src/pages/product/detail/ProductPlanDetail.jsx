@@ -110,11 +110,11 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     };
 
     if (!param?.startDate) {
-      emptyCheck('수업일을 입력해주세요.');
+      emptyCheck('프로그램일을 입력해주세요.');
       return;
     }
     if (!param?.endDate) {
-      emptyCheck('수업일을 입력해주세요.');
+      emptyCheck('프로그램일을 입력해주세요.');
       return;
     }
     if (param?.price < 0) {
@@ -246,7 +246,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
         <Switch style={{ width: '50px' }} checked={body?.isShow || false} onChange={(e) => onChangeInputValue('isShow', e)} />
       </DataDetailItem>
 
-      <DataDetailItem label="수업일" point span={2}>
+      <DataDetailItem label="프로그램일" point span={2}>
         <DatePicker.RangePicker
           showTime
           hourStep={1}

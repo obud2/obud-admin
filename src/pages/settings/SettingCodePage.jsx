@@ -214,7 +214,7 @@ const SettingCodePage = () => {
         </SDataDetailBody>
 
         <SDataDetailBody padding>
-          <Typography.Text>수업관리 설정</Typography.Text>
+          <Typography.Text>프로그램관리 설정</Typography.Text>
           <Spacing />
 
           <Card

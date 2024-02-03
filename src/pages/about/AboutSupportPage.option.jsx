@@ -28,8 +28,8 @@ export const EXEL_HEADER = [
   { id: "phone", label: "연락처" },
   { id: "sns", label: "SNS" },
   { id: "region", label: "희망(거주)지역" },
-  { id: "career", label: "수업경력" },
-  { id: "yogaStyle", label: "가능 요가수업" },
+  { id: "career", label: "프로그램경력" },
+  { id: "yogaStyle", label: "가능 요가프로그램" },
   { id: "classStyle", label: "추가 가능컨텐츠" },
   {
     id: "process",

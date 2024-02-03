@@ -146,14 +146,14 @@ const ProductStudioPage = () => {
         refresh={refetch}
         doSearch={(e) => doSearch("value", e)}
         doFilter={(e) => doSearch("filter", e)}
-        resister={{ text: "수업등록", onClick: () => onDetail() }}
+        resister={{ text: "프로그램등록", onClick: () => onDetail() }}
         title={
           <ProductShellTitle
             title={studio?.title || ""}
             link={studio?.id || ""}
           />
         }
-        searchPlaceholder="수업명으로 검색하세요."
+        searchPlaceholder="프로그램명으로 검색하세요."
         isLoading={isAllLoading}
       />
 

@@ -184,7 +184,7 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
               ))}
           </div>
         ) : (
-          <div className="mobile-schedule-list-item">등록된 수업이 없습니다</div>
+          <div className="mobile-schedule-list-item">등록된 프로그램이 없습니다</div>
         )}
       </section>
       <div></div>
