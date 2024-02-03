@@ -15,7 +15,9 @@ export const getMonthPlans = async (lessonId: string, month: string, keyword = '
     });
 };
 export const getPlan = async (id: string) => {
-  return await axiosInstance.get<LegacyCommonResponse<any>>(`${API_URL}/studios/plan/${id}`).then((response) => response.data.value || {});
+  return await axiosInstance
+    .get<LegacyCommonResponse<Schedule>>(`${API_URL}/studios/plan/${id}`)
+    .then((response): Schedule => response.data.value);
 };
 /**
  *

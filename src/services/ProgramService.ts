@@ -88,6 +88,10 @@ export const createProgramTitlePreset = async (body: { programId: string; title:
   await axiosInstance.post(`${API_URL}/v2/program/preset`, body);
 };
 
+export const updateProgramTitlePreset = async (presetId: number, body: { title: string; description: string }) => {
+  await axiosInstance.put(`${API_URL}/v2/program/preset/${presetId}`, body);
+};
+
 export const deleteProgramTitlePreset = async (presetId: number) => {
   await axiosInstance.delete(`${API_URL}/v2/program/preset/${presetId}`);
 };

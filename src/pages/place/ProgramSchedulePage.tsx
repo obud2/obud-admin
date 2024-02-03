@@ -20,8 +20,14 @@ import ProductPlanMultiDetail from './detail/ProductPlanMultiDetail';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import { getStudio } from '@/services/PlaceService';
 import { getMonthPlans } from '@/services/ScheduleService';
-import { createProgramTitlePreset, deleteProgramTitlePreset, getProgram, getProgramTitlePresets } from '@/services/ProgramService';
-import { Schedule } from '@/entities/schedule';
+import {
+  createProgramTitlePreset,
+  deleteProgramTitlePreset,
+  getProgram,
+  getProgramTitlePresets,
+  updateProgramTitlePreset,
+} from '@/services/ProgramService';
+import { Schedule, ScheduleTitlePreset } from '@/entities/schedule';
 import { DatesSetArg } from '@fullcalendar/core';
 import { Button, Input, Modal, Popconfirm, Table, Tabs, Typography } from 'antd';
 import { toast } from 'react-hot-toast';
@@ -36,9 +42,6 @@ function RegisterSchedulePresetModal({ programId, open, close }: { programId: st
   const register = async () => {
     if (!title) {
       return toast.error('회차명을 입력해주세요.');
-    }
-    if (!description) {
-      return toast.error('회차 상세정보를 입력해주세요.');
     }
     setRegisterPresetLoading(true);
     createProgramTitlePreset({ programId, title, description })
@@ -84,6 +87,69 @@ function RegisterSchedulePresetModal({ programId, open, close }: { programId: st
   );
 }
 
+function UpdateSchedulePresetModal({ preset, open, close }: { preset?: ScheduleTitlePreset; open: boolean; close: () => void }) {
+  const [updatePresetLoading, setUpdatePresetLoading] = useState(false);
+  const [title, setTitle] = useState(preset?.title ?? '');
+  const [description, setDescription] = useState(preset?.description ?? '');
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!preset) return;
+    setTitle(preset.title);
+    setDescription(preset.description);
+  }, [preset]);
+
+  const register = async () => {
+    if (!preset) {
+      return;
+    }
+    if (!title) {
+      return toast.error('회차명을 입력해주세요.');
+    }
+    setUpdatePresetLoading(true);
+    updateProgramTitlePreset(preset.id, { title, description })
+      .then(() => {
+        toast.success('회차 프리셋을 수정했습니다.');
+        queryClient.invalidateQueries('/program/preset');
+        close();
+      })
+      .catch((e) => {
+        toast.error(`회차 프리셋을 수정하는데 실패했습니다: ${e}`);
+      })
+      .finally(() => {
+        setUpdatePresetLoading(false);
+      });
+  };
+
+  return (
+    <Modal title="회차 정보 수정" open={open} confirmLoading={updatePresetLoading} onOk={register} onCancel={close}>
+      <div>
+        <Typography.Title level={5}>회차명</Typography.Title>
+        <Input
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          showCount
+          maxLength={15}
+        />
+      </div>
+      <div style={{ paddingBottom: '12px' }}>
+        <Typography.Title level={5}>회차 설명</Typography.Title>
+        <TextArea
+          value={description}
+          onChange={(e) => {
+            setDescription(e.target.value);
+          }}
+          rows={6}
+          showCount
+          maxLength={200}
+        />
+      </div>
+    </Modal>
+  );
+}
+
 const ProgramSchedulePage = () => {
   const { programId, placeId } = useParams();
   const navigator = useNavigate();
@@ -95,11 +161,13 @@ const ProgramSchedulePage = () => {
 
   const [detailId, setDetailId] = useState('');
   const [reservationId, setReservationId] = useState('');
+  const [preset, setPreset] = useState<ScheduleTitlePreset>();
 
   const [month, setMonth] = useState(moment().format(dateFormat));
 
   const [notiMessage, setNotiMessage] = useState('');
   const [registerPresetOpen, setRegisterPresetOpen] = useState(false);
+  const [updatePresetOpen, setUpdatePresetOpen] = useState(false);
 
   useEffect(() => {
     if (notiMessage) {
@@ -244,6 +312,21 @@ const ProgramSchedulePage = () => {
             render: (updatedAt: string) => moment(updatedAt).format('YYYY-MM-DD HH:mm'),
           },
           {
+            title: '수정',
+            dataIndex: 'id',
+            key: 'id',
+            render: (_: number, record: ScheduleTitlePreset) => (
+              <Button
+                onClick={() => {
+                  setPreset(record);
+                  setUpdatePresetOpen(true);
+                }}
+              >
+                수정
+              </Button>
+            ),
+          },
+          {
             title: '삭제',
             dataIndex: 'id',
             key: 'id',
@@ -275,6 +358,7 @@ const ProgramSchedulePage = () => {
       />
 
       <RegisterSchedulePresetModal programId={programId!} open={registerPresetOpen} close={() => setRegisterPresetOpen(false)} />
+      <UpdateSchedulePresetModal preset={preset} open={updatePresetOpen} close={() => setUpdatePresetOpen(false)} />
 
       <DataTableHeader
         addResister={{ text: '반복등록', onClick: () => onClickMultiOpen() }}

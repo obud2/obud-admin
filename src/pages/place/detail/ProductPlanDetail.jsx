@@ -63,6 +63,15 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     enabled: !!lessonId,
   });
 
+  const reset = () => {
+    setBody(defaultBody);
+    setOption({});
+    setIsLoading(false);
+    setNotiMessage('');
+    setIsOption(false);
+    setIsDisabled(false);
+  };
+
   /** 기본정보 호출 */
   useEffect(() => {
     if (id && id !== 'new') {
@@ -165,6 +174,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     setPlan(id, param)
       .then(() => {
         setNotiMessage(`${text} 되었습니다.`);
+        reset();
       })
       .catch((res) => {
         setNotiMessage(res?.data?.meta || res?.data?.message);
@@ -271,7 +281,8 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
             const start = dateString?.[0];
             const end = `${date}T${endTime}`;
 
-            onChangeInputValue('startDate', start), onChangeInputValue('endDate', end);
+            onChangeInputValue('startDate', start);
+            onChangeInputValue('endDate', end);
           }}
         />
       </DataDetailItem>
@@ -282,6 +293,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
             placeholder="(선택) 회차명을 선택해주세요."
             style={{ width: '100%' }}
             disabled={isAllLoading}
+            value={body.scheduleTitlePresetId}
             onChange={(id) => {
               setBody((prev) => ({ ...prev, scheduleTitlePresetId: id }));
             }}
