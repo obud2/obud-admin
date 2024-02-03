@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import Calendar from '../../components/caledar/Calendar';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
-import ProductPlanResevationList from '../product/detail/ProductPlanResevationList';
+import ProductPlanResevationList from '../place/detail/ProductPlanResevationList';
 import { getStudio } from '@/services/PlaceService';
 import { getPlanCaledar, getPlanCaledarDayInfo } from '@/services/ScheduleService';
 

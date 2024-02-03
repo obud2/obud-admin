@@ -115,7 +115,7 @@ const CouponListPage = () => {
     // },
   ];
 
-  const dataSource = data?.map((item) => ({
+  const dataSource = data?.data.map((item) => ({
     key: item.id,
     name: item.name,
     issueType: item.issueType,
@@ -145,6 +145,8 @@ const CouponListPage = () => {
         pagination={{
           position: ['bottomRight'],
           current: page,
+          total: data?.meta.total,
+          pageSize: 30,
           onChange: (page) => setPage(page),
         }}
       />

@@ -52,24 +52,22 @@ type ListCouponsResponse = {
   };
 };
 
-const listCoupons = async (req: ListCouponsRequest) => {
-  try {
-    const searchParams = new URLSearchParams();
+const listCoupons = async (req: ListCouponsRequest): Promise<ListCouponsResponse['value']> => {
+  const searchParams = new URLSearchParams();
 
-    if (req.page) {
-      searchParams.set('page', req.page.toString());
-    } else {
-      searchParams.set('page', '1');
-    }
-    if (req.status) searchParams.set('status', req.status);
-    if (req.name) searchParams.set('name', req.name);
+  if (req.page) {
+    searchParams.set('page', req.page.toString());
+  } else {
+    searchParams.set('page', '1');
+  }
+  if (req.status) searchParams.set('status', req.status);
+  if (req.name) searchParams.set('name', req.name);
 
-    const response = await axiosInstance.get<ListCouponsResponse>(`${API_URL}/coupon`, {
-      params: searchParams,
-    });
+  const response = await axiosInstance.get<ListCouponsResponse>(`${API_URL}/coupon`, {
+    params: searchParams,
+  });
 
-    return response.data.value.data;
-  } catch (error) {}
+  return response.data.value;
 };
 
 type SearchUserRequest = {
