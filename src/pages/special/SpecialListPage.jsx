@@ -61,9 +61,9 @@ const SpecialListPage = () => {
         refresh={refetch}
         doSearch={(e) => doSearch('value', e)}
         doFilter={(e) => doSearch('filter', e)}
-        title="Special"
+        title="특별 프로그램 관리"
         filter={FILTER}
-        searchPlaceholder="상품명으로 검색하세요."
+        searchPlaceholder="프로그램 명으로 검색하세요."
         isLoading={isAllLoading}
       />
 
