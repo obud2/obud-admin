@@ -130,7 +130,7 @@ const SettingCodePage = () => {
 
       <Flex gap="20px" flexDirection={matchese ? "column" : "row"}>
         <SDataDetailBody padding>
-          <Typography.Text>공간관리 설정</Typography.Text>
+          <Typography.Text>장소관리 설정</Typography.Text>
           <Spacing />
 
           <Card
@@ -161,7 +161,7 @@ const SettingCodePage = () => {
 
           <Card type="inner" title="이용안내" bordered>
             <Typography.Text code type="secondary">
-              공간등록 페이지 하단 "이용안내" 폼에 나타나는 문구입니다. 비워두면
+              장소등록 페이지 하단 "이용안내" 폼에 나타나는 문구입니다. 비워두면
               나타나지 않습니다.
             </Typography.Text>
             <Spacing spacing="5" />
@@ -180,7 +180,7 @@ const SettingCodePage = () => {
 
           <Card type="inner" title="환불규정" bordered>
             <Typography.Text code type="secondary">
-              공간등록 페이지 하단 "환불규정" 폼에 나타나는 문구입니다. 비워두면
+              장소등록 페이지 하단 "환불규정" 폼에 나타나는 문구입니다. 비워두면
               나타나지 않습니다.
             </Typography.Text>
             <Spacing spacing="5" />

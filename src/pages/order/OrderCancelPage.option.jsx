@@ -30,7 +30,7 @@ export const LIST_HEADER = [
   {
     id: "studiosTitle",
     flex: 2,
-    label: "공간/수업/시간",
+    label: "장소/수업/시간",
     customBodyRender: (value, data) => {
       const date = moment(data?.startDate)?.format("YYYY.MM.DD");
       const startTime = moment(data?.startDate)?.format("HH:ss");
@@ -148,7 +148,7 @@ export const EXEL_HEADER = [
   {
     id: "studiosTitle",
     flex: 2,
-    label: "공간/수업/시간",
+    label: "장소/수업/시간",
     customBodyRender: (value, data) => {
       const date = moment(data?.startDate)?.format("YYYY.MM.DD");
       const startTime = moment(data?.startDate)?.format("HH:ss");

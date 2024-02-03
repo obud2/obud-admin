@@ -6,7 +6,7 @@ import { Button, Input, Typography } from 'antd';
 import SubMain from '../../sub-main';
 
 const TYPE_CHECK = {
-  convenience: '공간 - 편의시설',
+  convenience: '장소 - 편의시설',
   type: '수업 - 분류',
   category: '수업 - 카테고리',
 };

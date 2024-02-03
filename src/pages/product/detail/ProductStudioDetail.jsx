@@ -246,7 +246,7 @@ const ProductShellDetail = ({ id, open, onClose, refresh }) => {
     <DataDetailBody
       open={open}
       onClose={onClose}
-      title={`공간 ${id === "new" ? "등록" : "수정"}`}
+      title={`장소 ${id === "new" ? "등록" : "수정"}`}
       extra={renderButtons()}
       subTitle={body?.id}
       isLoading={isAllLoading}
@@ -279,9 +279,9 @@ const ProductShellDetail = ({ id, open, onClose, refresh }) => {
           ))}
       </DataDetailItem>
 
-      <DataDetailItem label="공간명" point span={2}>
+      <DataDetailItem label="장소명" point span={2}>
         <Input
-          placeholder="공간명을 입력하세요."
+          placeholder="장소명을 입력하세요."
           value={body?.title || ""}
           onChange={(e) => onChangeInputValue("title", e.target.value)}
           disabled={isAllLoading}

@@ -136,7 +136,7 @@ export const NavigationMenu = [
     id: "product",
     key: "product",
     iconType: "ant",
-    title: "상품관리",
+    title: "프로그램 관리",
     type: "collapse",
     icon: "Shopping",
     isShow: false,
@@ -144,7 +144,7 @@ export const NavigationMenu = [
       {
         id: "product-list",
         key: "product-list",
-        title: "공간 별 수업목록",
+        title: "장소/프로그램 관리",
         type: "item",
         url: "/pages/product",
         exact: true,

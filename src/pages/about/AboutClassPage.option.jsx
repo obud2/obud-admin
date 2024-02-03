@@ -4,7 +4,7 @@ export const LIST_HEADER = [
   { id: "name", label: "이름" },
   // { id: 'email', label: '이메일' },
   { id: "phone", label: "연락처" },
-  { id: "region", label: "공간" },
+  { id: "region", label: "장소" },
   { id: "num", label: "인원" },
   { id: "date", label: "요청날짜" },
   {

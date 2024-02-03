@@ -74,10 +74,10 @@ const ProductListPage = () => {
         refresh={refetch}
         doSearch={(e) => doSearch('value', e)}
         doFilter={(e) => doSearch('filter', e)}
-        resister={{ text: '공간등록', onClick: () => onDetail() }}
-        title="공간 별 수업등록"
+        resister={{ text: '장소 신규등록', onClick: () => onDetail() }}
+        title="장소별 프로그램/스케줄 관리"
         filter={FILTER}
-        searchPlaceholder="상품명으로 검색하세요."
+        searchPlaceholder="장소명으로 검색하세요."
         isLoading={isAllLoading}
       />
 

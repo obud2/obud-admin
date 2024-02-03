@@ -106,7 +106,7 @@ const AboutRegisterDetail = ({ open, onClose, id, refresh }) => {
       </DataDetailItem>
       <DataDetailItem />
 
-      <DataDetailItem label="공간 이름" span={2}>
+      <DataDetailItem label="장소명" span={2}>
         <Input
           value={body?.placeTitle || "-"}
           onChange={(e) => onChangeBody("placeTitle", e.target.value)}
