@@ -22,7 +22,7 @@ import { getProgram, setProgram } from '@/services/ProgramService';
  * @returns
  */
 
-const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
+const ProductClassDetailModal = ({ open, onClose, id, studiosId, refresh }) => {
   const defaultBody = { lessonType: 'Regular' };
 
   const fileRef = useRef();
@@ -196,4 +196,4 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
   );
 };
 
-export default ProductClassDetail;
+export default ProductClassDetailModal;

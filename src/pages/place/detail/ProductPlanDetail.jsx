@@ -15,7 +15,7 @@ import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/
 
 import { clonePlan, deletePlan, getPlan, setPlan } from '@/services/ScheduleService';
 import { Flex } from '@/styles/CommonStyles';
-import { getProgramTitlePresets } from '@/services/ProgramService.js';
+import { getProgramTitlePresets } from '@/services/ProgramService';
 
 /**
  *

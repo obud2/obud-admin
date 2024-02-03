@@ -74,13 +74,13 @@ const DataListTable = ({
       const copyArr = [];
 
       if (data?.pages) {
-        data?.pages?.map((page) =>
-          page?.result?.map((a) => {
+        data?.pages?.forEach((page) =>
+          page?.result?.forEach((a) => {
             copyArr.push(a);
           }),
         );
       } else {
-        data?.map((a) => {
+        data?.forEach((a) => {
           copyArr.push(a);
         });
       }

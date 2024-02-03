@@ -19,7 +19,7 @@ import { Button, DatePicker, Input, InputNumber, Select, Space, Switch, TimePick
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
 
 import { setMultiPlan } from '@/services/ScheduleService';
-import { getProgramTitlePresets } from '@/services/ProgramService.js';
+import { getProgramTitlePresets } from '@/services/ProgramService';
 
 const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   const dateFormat = 'YYYY-MM-DD';
@@ -35,10 +35,10 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
 
     const instructorArray = [{ label: '선택안함', value: '' }];
 
-    res?.map((a) => {
+    res?.forEach((a) => {
       instructorArray.push({
-        label: a?.name,
-        value: a?.id,
+        label: a.name,
+        value: a.id,
       });
     });
 
@@ -184,7 +184,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
 
     setIsLoading(true);
     setMultiPlan(param)
-      .then((res) => {
+      .then(() => {
         setNotiMessage('등록 되었습니다.');
       })
       .catch((message) => {
@@ -250,7 +250,8 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
               const start = dateString?.[0];
               const end = dateString?.[1];
 
-              onChangeInputValue('startDate', start), onChangeInputValue('endDate', end);
+              onChangeInputValue('startDate', start);
+              onChangeInputValue('endDate', end);
             }}
           />
 

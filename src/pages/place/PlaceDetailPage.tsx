@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { LIST_HEADER, EXEL_HEADER } from './ProductStudio.option';
 
 import ProductShellTitle from './ProductStudio';
-import ProductClassDetail from './detail/ProductClassDetail';
+import ProductClassDetailModal from './detail/ProductClassDetailModal';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
@@ -45,7 +45,10 @@ const PlaceDetailPage = () => {
   };
 
   const onDetail = (item?: { id: string }) => {
-    setDetailId(item?.id || 'new');
+    if (!item) {
+      return setDetailId('new');
+    }
+    navigation(`/pages/places/${placeId}/programs/${item.id}`);
   };
 
   const onSort = async (borderId: string, after: { sortOrder: number }, before: { sortOrder: number }) => {
@@ -91,7 +94,7 @@ const PlaceDetailPage = () => {
   };
 
   const onLessonDetail = (data: Program) => {
-    navigation(`/pages/places/${data.studiosId || ''}/programs/${data.id || ''}`);
+    navigation(`/pages/places/${data.studiosId || ''}/programs/${data.id || ''}/schedules`);
   };
 
   const useOption = [
@@ -136,7 +139,7 @@ const PlaceDetailPage = () => {
         isFetchingNextPage={isRefetching}
       />
 
-      <ProductClassDetail
+      <ProductClassDetailModal
         id={detailId || ''}
         studiosId={placeId}
         open={detailId}

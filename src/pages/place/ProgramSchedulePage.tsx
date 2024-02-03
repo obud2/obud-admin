@@ -355,6 +355,9 @@ const ProgramSchedulePage = () => {
           pageSize: 5,
           total: presets?.length,
         }}
+        locale={{
+          emptyText: '회차 정보를 등록해주세요',
+        }}
       />
 
       <RegisterSchedulePresetModal programId={programId!} open={registerPresetOpen} close={() => setRegisterPresetOpen(false)} />

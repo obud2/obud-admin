@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -9,7 +11,7 @@ import { SEditor } from './Editor.styled';
  * @returns
  *
  */
-const Editor = forwardRef(({ value, disabled }, ref) => {
+const Editor = forwardRef<HTMLDivElement, { value: string; disabled: boolean }>(({ value, disabled }, ref) => {
   const editorRef = useRef('');
   const oEditors = useRef([]);
 
@@ -98,7 +100,7 @@ const Editor = forwardRef(({ value, disabled }, ref) => {
           bSkipXssFilter: true,
 
           // 페이지 벗어 날 시 이벤트 삭제
-          fOnBeforeUnload: function () {},
+          fOnBeforeUnload() {},
         },
       });
     }

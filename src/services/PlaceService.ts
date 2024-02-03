@@ -1,11 +1,12 @@
 import { API_URL } from '../constants/config';
 import axiosInstance from '../constants/axiosInstance';
 import { LegacyCommonResponse } from '@/entities/common';
+import { Studio } from '@/entities/studio';
 
 export const getStudios = async (keyword: string) => {
   const keywordTemp = keyword ? `?keyword=${keyword}` : '';
 
-  return axiosInstance.get<LegacyCommonResponse<any>>(`${API_URL}/studios/all${keywordTemp}`).then((response) => {
+  return axiosInstance.get<LegacyCommonResponse<Studio[]>>(`${API_URL}/studios/all${keywordTemp}`).then((response) => {
     if (response.data && response.data.value) {
       const val = response.data.value.sort((a: { sortOrder: number }, b: { sortOrder: number }) => (a.sortOrder > b.sortOrder ? -1 : 1));
 
@@ -15,14 +16,9 @@ export const getStudios = async (keyword: string) => {
 };
 
 export const getStudio = async (id: string) => {
-  return axiosInstance
-    .get<LegacyCommonResponse<any>>(`${API_URL}/studios/${id}`)
-    .then((response) => {
-      return response?.data?.value || {};
-    })
-    .catch(() => {
-      return {};
-    });
+  return axiosInstance.get<LegacyCommonResponse<Studio>>(`${API_URL}/studios/${id}`).then((response) => {
+    return response.data.value;
+  });
 };
 
 /**

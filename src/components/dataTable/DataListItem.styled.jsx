@@ -120,6 +120,7 @@ export const SDataListItem = styled.div`
 
     .data-list-option-item {
       width: 100%;
+      white-space: nowrap;
 
       padding: 8px 14px;
       font-size: 12px;

@@ -48,12 +48,12 @@ const ProductStudioList = ({ data, isLoading, option, sorted, sortApi, onClick, 
           list={datas}
           setList={setList}
           animation={200}
-          delayOnTouchStart={true}
+          delayOnTouchStart
           delay={1}
           handle=".product-shell-item-drag-button"
         >
-          {datas && datas?.length > 0 ? (
-            datas?.map((item) => (
+          {datas && datas.length > 0 ? (
+            datas.map((item) => (
               <ProductStudioItem
                 key={item?.id}
                 data={item || {}}
