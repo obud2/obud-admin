@@ -10,7 +10,8 @@ import moment from 'moment';
 
 import DataDetailBody from '../../../components/detailTable/DataDetailBody';
 import DataListTable from '../../../components/dataTable/DataListTable';
-import { clonePlan, deletePlan, setPlan } from '@/services/PlaceService';
+
+import { clonePlan, deletePlan, setPlan } from '@/services/ScheduleService';
 
 /**
  *

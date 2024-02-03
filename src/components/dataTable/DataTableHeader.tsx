@@ -21,7 +21,7 @@ import DataTableFilter from './DataTableFilter';
  */
 
 type Props = {
-  title: string;
+  title: string | React.ReactNode;
   subTitle?: string;
   resister?: { text: string; onClick: () => void };
   addResister?: { text: string; onClick: () => void };

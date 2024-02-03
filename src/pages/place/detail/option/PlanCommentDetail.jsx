@@ -5,7 +5,7 @@ import SubMain from '../../../../sub-main';
 import { SPlanCommentDetail } from './PlanCommentDetail.styled';
 import { Button, Input } from 'antd';
 
-import { onComment } from '@/services/PlaceService.ts';
+import { onComment } from '@/services/ScheduleService';
 
 const PlanCommentDetail = ({ isOpen, onClose, data, refetch }) => {
   const [value, setValue] = useState('');

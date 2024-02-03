@@ -15,7 +15,8 @@ import { Flex } from '../../../styles/CommonStyles';
 import { Button, DatePicker, Input, InputNumber, Select, Space, Switch, TimePicker, Typography } from 'antd';
 
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
-import { setMultiPlan } from '@/services/PlaceService';
+
+import { setMultiPlan } from '@/services/ScheduleService';
 
 const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   const dateFormat = 'YYYY-MM-DD';

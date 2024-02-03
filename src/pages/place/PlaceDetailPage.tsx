@@ -14,7 +14,8 @@ import ProductClassDetail from './detail/ProductClassDetail';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
 import swal from 'sweetalert';
-import { sortLesson, cloneLesson, getStudio, deleteLesson, getLessons, getLessonsAll } from '@/services/PlaceService';
+import { getStudio } from '@/services/PlaceService';
+import { cloneProgram, deleteProgram, getPrograms, getProgramsAll, sortProgram } from '@/services/ProgramService';
 
 const PlaceDetailPage = () => {
   const navigation = useNavigate();
@@ -28,7 +29,7 @@ const PlaceDetailPage = () => {
   const { data: studio } = useQuery(['product-studio-detail', id], () => getStudio(id));
 
   const fetchData = async (cursor) => {
-    const res = await getLessons(id, cursor?.pageParam, searchFilter?.value || '');
+    const res = await getPrograms(id, cursor?.pageParam, searchFilter?.value || '');
 
     if (searchFilter?.filter) {
       res.value = res?.value.filter((a) => a?.lessonType === searchFilter?.filter);
@@ -72,7 +73,7 @@ const PlaceDetailPage = () => {
     };
 
     setIsSortLoading(true);
-    await sortLesson(param);
+    await sortProgram(param);
     await setIsSortLoading(false);
     refetch();
   };
@@ -85,7 +86,7 @@ const PlaceDetailPage = () => {
       icon: 'info',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await cloneLesson(id);
+        await cloneProgram(id);
         refetch();
       }
     });
@@ -99,7 +100,7 @@ const PlaceDetailPage = () => {
       icon: 'warning',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await deleteLesson(id);
+        await deleteProgram(id);
         refetch();
       }
     });
@@ -150,7 +151,7 @@ const PlaceDetailPage = () => {
         useDetail={false}
         useOption={useOption}
         excelCols={EXEL_HEADER}
-        onExcelListApi={() => getLessonsAll(id)}
+        onExcelListApi={() => getProgramsAll(id)}
       />
 
       <ProductClassDetail

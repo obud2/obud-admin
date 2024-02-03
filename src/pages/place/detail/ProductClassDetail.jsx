@@ -13,7 +13,8 @@ import CodeService from '../../../services/CodeService';
 import UploadBtn from '../../../components/common/uploadBtn/UploadBtn';
 import FileUpload from '../../../components/fileUpload/FileUpload.tsx';
 import swal from 'sweetalert';
-import { getLesson, setLesson } from '@/services/PlaceService';
+
+import { getProgram, setProgram } from '@/services/ProgramService';
 
 /**
  *
@@ -62,7 +63,7 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
     if (id && id !== 'new') {
       setIsLoading(true);
 
-      getLesson(id).then((res) => {
+      getProgram(id).then((res) => {
         setBody(res);
         setFiles(res?.images);
         setIsLoading(false);
@@ -112,7 +113,7 @@ const ProductClassDetail = ({ open, onClose, id, studiosId, refresh }) => {
     param.images = files.images || [];
 
     setIsLoading(true);
-    setLesson(id, param)
+    setProgram(id, param)
       .then(() => {
         setNotiMessage(`${text} 되었습니다.`);
       })

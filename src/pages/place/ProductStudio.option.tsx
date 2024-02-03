@@ -3,7 +3,8 @@ import { GoLinkExternal } from 'react-icons/go';
 import { useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import { APP_URL, setCreatedAt } from '../../constants/config';
-import { getLesson, setLesson } from '@/services/PlaceService';
+
+import { getProgram, setProgram } from '@/services/ProgramService';
 
 // TODO: Strict Typing
 export const LIST_HEADER = [
@@ -35,8 +36,8 @@ export const LIST_HEADER = [
 
       // TODO: Improve Logic
       async function updateShow(isShow: boolean) {
-        getLesson(data.id).then((data) => {
-          setLesson('update', {
+        getProgram(data.id).then((data) => {
+          setProgram('update', {
             ...data,
             isShow,
           }).finally(() => queryClient.invalidateQueries(['product-studio-lesson-list']));

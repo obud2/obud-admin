@@ -21,10 +21,10 @@ import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import { getStudio } from '@/services/PlaceService';
 import { getMonthPlans } from '@/services/ScheduleService';
 import { getProgram } from '@/services/ProgramService';
-import { DatesSetArg } from '@fullcalendar/core';
 import { Schedule } from '@/entities/schedule';
+import { DatesSetArg } from '@fullcalendar/core';
 
-const ProgramDetailPage = () => {
+const ProgramSchedulePage = () => {
   const { id, studioId } = useParams();
 
   const dateFormat = 'YYYY-MM';
@@ -32,7 +32,7 @@ const ProgramDetailPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMultiOpen, setIsMultiOpen] = useState(false);
 
-  const [detailId, setDetailId] = useState('');
+  const [detailId, setDetailId] = useState<string>('');
   const [reservationId, setReservationId] = useState('');
 
   const [month, setMonth] = useState(moment().format(dateFormat));
@@ -48,18 +48,17 @@ const ProgramDetailPage = () => {
   }, [notiMessage]);
 
   const fetchData = async (placeId: string) => {
-    const schedules = await getMonthPlans(placeId, month);
-    return schedules.map((a) => {
-      const start = moment(a.startDate).format('YYYY-MM-DD');
-      const end = moment(a.endDate).format('YYYY-MM-DD');
-      const startTime = moment(a.startDate).format('HH:mm');
-      const endTime = moment(a.endDate).format('HH:mm');
+    const list = await getMonthPlans(placeId, month);
+    return list.map((it) => {
+      const start = moment(it.startDate).format('YYYY-MM-DD');
+      const end = moment(it.endDate).format('YYYY-MM-DD');
+      const startTime = moment(it.startDate).format('HH:mm');
+      const endTime = moment(it.endDate).format('HH:mm');
 
-      const currentMember = a?.currentMember || 0;
-      const maxMember = a?.maxMember || 0;
-
+      const currentMember = it?.currentMember || 0;
+      const maxMember = it?.maxMember || 0;
       return {
-        ...a,
+        ...it,
         start,
         end,
         allDay: true,
@@ -76,18 +75,18 @@ const ProgramDetailPage = () => {
     enabled: !!studioId,
   });
   const {
-    data: plan,
+    data: plans,
     isLoading: isPlanLoading,
     refetch,
   } = useQuery([`product-paln-list-${studioId}`, month], () => fetchData(studioId!), {
     enabled: !!studioId,
   });
 
-  const onChangeDate: (arg: DatesSetArg & { view: { getCurrentData: () => { currentDate: Date } } }) => void = (args) => {
-    const currentDate = args.view.getCurrentData().currentDate;
+  const onChangeDate = async (e: DatesSetArg & { view: { getCurrentData: () => { currentDate: string } } }) => {
+    const currentDate = e.view.getCurrentData().currentDate;
     const formatDate = moment(currentDate).format(dateFormat);
 
-    setMonth(formatDate);
+    await setMonth(formatDate);
     refetch();
   };
 
@@ -115,7 +114,11 @@ const ProgramDetailPage = () => {
     setIsMultiOpen(false);
   };
 
-  const eventContent = (eventInfo?: { event?: { title: string } }) => {
+  const eventContent = (eventInfo?: {
+    event?: {
+      title: string;
+    };
+  }) => {
     return <div style={{ padding: 3, fontSize: 11 }}>{eventInfo?.event?.title}</div>;
   };
 
@@ -135,7 +138,7 @@ const ProgramDetailPage = () => {
       <SDataDetailBody padding>
         <div className="calendar-wrapper">
           <Calendar
-            list={plan || []}
+            list={plans || []}
             resister={{ text: '일정보기', onClick: () => onList() }}
             eventContent={eventContent}
             onClick={onDetail}
@@ -148,7 +151,7 @@ const ProgramDetailPage = () => {
       {/* 일정보기 리스트 */}
       <ProductPlanList
         lessonId={lesson?.id || ''}
-        data={plan}
+        data={plans}
         open={isOpen}
         onClose={() => setIsOpen(false)}
         month={month}
@@ -159,9 +162,9 @@ const ProgramDetailPage = () => {
 
       {/* 플랜 상세 */}
       <ProductPlanDetail
-        id={detailId || ''}
+        id={detailId}
         lessonId={lesson?.id || ''}
-        open={detailId}
+        open={!!detailId}
         onClose={() => onDetailClose(false)}
         refetch={() => onDetailClose(true)}
       />
@@ -175,9 +178,9 @@ const ProgramDetailPage = () => {
       />
 
       {/* 예약자 현황 */}
-      <ProductPlanResevationList id={reservationId} open={reservationId} onClose={() => setReservationId('')} lesson={lesson} />
+      <ProductPlanResevationList id={reservationId} open={!!reservationId} onClose={() => setReservationId('')} lesson={lesson} />
     </React.Fragment>
   );
 };
 
-export default ProgramDetailPage;
+export default ProgramSchedulePage;

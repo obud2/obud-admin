@@ -10,6 +10,7 @@ import FullCalendar from '@fullcalendar/react'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
 import koLocale from '@fullcalendar/core/locales/ko';
+import { Schedule } from '@/entities/schedule';
 
 const startColor = {
   backgroundColor: '#dff2ff',
@@ -158,7 +159,7 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
         eventDisplay="auto"
         eventClick={(info) => {
           onClick(
-            list.find((e: any) => e.id === info.event.id),
+            list.find((e: Schedule) => e.id === info.event.id),
             info.event.id,
           );
         }}

@@ -13,14 +13,14 @@ import SideBar from '../../../components/sidebar/SideBar';
 import DataListTable from '../../../components/dataTable/DataListTable';
 
 import PlanCommentDetail from './option/PlanCommentDetail';
-import { getPlan, onAttendance } from '@/services/PlaceService.ts';
+import { getPlan, onAttendance } from '@/services/ScheduleService';
 
 /**
  *
  * @param {*} id : 상품 등록 ID 값 new
  * @returns
  */
-const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
+const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
   const [isCommentOpen, setIsCommentOpen] = useState('');
 
   const {
@@ -63,7 +63,7 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
             isAttendance: !value,
           };
 
-          onAttendance(param).then((res) => {
+          onAttendance(param).then(() => {
             refetch();
           });
         };

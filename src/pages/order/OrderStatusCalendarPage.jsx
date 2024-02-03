@@ -6,7 +6,8 @@ import Calendar from '../../components/caledar/Calendar';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
 import ProductPlanResevationList from '../product/detail/ProductPlanResevationList';
-import { getPlanCaledar, getPlanCaledarDayInfo, getStudio } from '@/services/PlaceService';
+import { getStudio } from '@/services/PlaceService';
+import { getPlanCaledar, getPlanCaledarDayInfo } from '@/services/ScheduleService';
 
 /**
  * @brief 일정(Plan) 페이지

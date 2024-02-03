@@ -11,7 +11,8 @@ import moment from 'moment';
 import DataDetailBody from '../../../components/detailTable/DataDetailBody';
 import DataListTable from '../../../components/dataTable/DataListTable';
 import DetailHeader from '../../../components/detailTable/DetailHeader';
-import { getPlanCaledarDayInfo } from '@/services/PlaceService';
+
+import { getPlanCaledarDayInfo } from '@/services/ScheduleService';
 
 /**
  *

@@ -52,6 +52,7 @@ const OrderStatusCalendarPage = lazy(() => import('./pages/order/OrderStatusCale
 const PlaceListPage = lazy(() => import('./pages/place/PlaceListPage'));
 const PlaceDetailPage = lazy(() => import('./pages/place/PlaceDetailPage'));
 const ProgramDetailPage = lazy(() => import('./pages/place/ProgramDetailPage'));
+const ProgramSchedulePage = lazy(() => import('./pages/place/ProgramSchedulePage'));
 
 /* Coupon */
 const CouponListPage = lazy(() => import('./pages/coupon/CouponListPage'));
@@ -118,6 +119,7 @@ const App = () => {
             <Route path="/pages/place" element={<PlaceListPage />} />
             <Route path="/pages/places/:id" element={<PlaceDetailPage />} />
             <Route path="/pages/places/:id/programs/:studioId" element={<ProgramDetailPage />} />
+            <Route path="/pages/places/:id/programs/:studioId/schedules" element={<ProgramSchedulePage />} />
 
             {/* Coupon */}
             <Route path="/pages/coupon/list" element={<CouponListPage />} />

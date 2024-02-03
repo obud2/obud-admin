@@ -87,6 +87,7 @@
 
     "no-useless-catch": "warn",
     "no-empty": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
     "import/no-cycle": "off",
     "import/no-named-as-default": "off",
     "import/no-named-as-default-member": "off",

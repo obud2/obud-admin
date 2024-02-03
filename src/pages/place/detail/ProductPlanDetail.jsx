@@ -12,7 +12,8 @@ import locale from 'antd/es/date-picker/locale/ko_KR';
 import { Button, DatePicker, Input, InputNumber, Select, Switch } from 'antd';
 
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
-import { clonePlan, deletePlan, getPlan, setPlan } from '@/services/PlaceService';
+
+import { clonePlan, deletePlan, getPlan, setPlan } from '@/services/ScheduleService';
 
 /**
  *
