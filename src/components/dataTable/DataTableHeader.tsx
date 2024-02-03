@@ -23,7 +23,7 @@ import DataTableFilter from './DataTableFilter';
 type Props = {
   title: string | React.ReactNode;
   subTitle?: string;
-  resister?: { text: string; onClick: () => void };
+  register?: { text: string; onClick: () => void };
   addResister?: { text: string; onClick: () => void };
   filter?: any;
   doFilter?: (value: string) => void;
@@ -33,6 +33,7 @@ type Props = {
   disabled?: boolean;
   notiMessage?: string;
   notiDescription?: string;
+  searchDisabled?: boolean;
 };
 
 const DataTableHeader = ({
@@ -41,13 +42,14 @@ const DataTableHeader = ({
   filter,
   doFilter,
   addResister,
-  resister,
+  register,
   doSearch,
   disabled,
   searchPlaceholder,
   isLoading,
   notiMessage,
   notiDescription,
+  searchDisabled = false,
 }: Props) => {
   const [api, contextHolder] = notification.useNotification();
 
@@ -73,12 +75,12 @@ const DataTableHeader = ({
         title={title}
         subTitle={subTitle}
         addResister={addResister}
-        resister={resister}
+        resister={register}
         isLoading={isLoading}
         disabled={disabled}
       />
       {filter && <DataTableFilter filter={filter} onChangeFilter={doFilter} />}
-      <DataSearchBox doSearch={doSearch} placeholder={searchPlaceholder} isLoading={isLoading} disabled={disabled} />
+      {!searchDisabled && <DataSearchBox doSearch={doSearch} placeholder={searchPlaceholder} isLoading={isLoading} disabled={disabled} />}
     </React.Fragment>
   );
 };

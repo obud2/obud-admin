@@ -14,6 +14,8 @@ import { Button, DatePicker, Input, InputNumber, Select, Switch } from 'antd';
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
 
 import { clonePlan, deletePlan, getPlan, setPlan } from '@/services/ScheduleService';
+import { Flex } from '@/styles/CommonStyles';
+import { getProgramTitlePresets } from '@/services/ProgramService.js';
 
 /**
  *
@@ -56,6 +58,10 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
   const [isOption, setIsOption] = useState(false);
 
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const { data: presets } = useQuery(['/program/preset', { programId: lessonId }], () => getProgramTitlePresets(lessonId), {
+    enabled: !!lessonId,
+  });
 
   /** 기본정보 호출 */
   useEffect(() => {
@@ -247,7 +253,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
         <Switch style={{ width: '50px' }} checked={body?.isShow || false} onChange={(e) => onChangeInputValue('isShow', e)} />
       </DataDetailItem>
 
-      <DataDetailItem label="프로그램일" point span={2}>
+      <DataDetailItem label="일정" point span={2}>
         <DatePicker.RangePicker
           showTime
           hourStep={1}
@@ -268,6 +274,25 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
             onChangeInputValue('startDate', start), onChangeInputValue('endDate', end);
           }}
         />
+      </DataDetailItem>
+
+      <DataDetailItem label="(선택) 회차명" span={2}>
+        <Flex flexDirection="column" gap="5px">
+          <Select
+            placeholder="(선택) 회차명을 선택해주세요."
+            style={{ width: '100%' }}
+            disabled={isAllLoading}
+            onChange={(id) => {
+              setBody((prev) => ({ ...prev, scheduleTitlePresetId: id }));
+            }}
+          >
+            {(presets ?? []).map((it) => (
+              <Select.Option key={it.id} value={it.id}>
+                {it.title}
+              </Select.Option>
+            ))}
+          </Select>
+        </Flex>
       </DataDetailItem>
 
       <DataDetailItem label="가격" point span={2}>

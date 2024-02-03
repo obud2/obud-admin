@@ -50,7 +50,7 @@ const UserListPage = () => {
     return {
       result: res?.value || [],
       nextPage: res?.cursor,
-      isLast: res?.cursor ? false : true,
+      isLast: !res?.cursor,
     };
   };
 
@@ -138,7 +138,7 @@ const UserListPage = () => {
     <React.Fragment>
       <DataTableHeader
         refresh={refetch}
-        resister={user?.group === STUDIO ? { text: '강사등록', onClick: onClickRegistOpen } : ''} // 스튜디오 관리자 강사 등록 폼 추가
+        register={user?.group === STUDIO ? { text: '강사등록', onClick: onClickRegistOpen } : ''} // 스튜디오 관리자 강사 등록 폼 추가
         doSearch={(e) => doSearch('value', e)}
         doFilter={(headerId) => {
           doSearch('filter', headerId);
@@ -155,7 +155,7 @@ const UserListPage = () => {
         data={data || []}
         header={header}
         onClick={onDetail}
-        isFilterData={searchFilter?.length > 0 ? true : false}
+        isFilterData={searchFilter?.length > 0}
         isLoading={isLoading || isRefetching}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}

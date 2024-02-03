@@ -42,7 +42,7 @@ const HomeSectionSettingPage = () => {
     <Wrapper>
       <DataTableHeader
         title="홈 화면 섹션 관리"
-        resister={{
+        register={{
           text: '저장',
           onClick: () => onSaveSectionInfo(sectionWithItems),
         }}

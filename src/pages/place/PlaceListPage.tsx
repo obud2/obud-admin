@@ -76,7 +76,7 @@ const PlaceListPage = () => {
         refresh={refetch}
         doSearch={(v) => doSearch('value', v)}
         doFilter={(v) => doSearch('filter', v)}
-        resister={{ text: '장소 신규등록', onClick: () => onDetail() }}
+        register={{ text: '장소 신규등록', onClick: () => onDetail() }}
         title="장소별 프로그램/스케줄 관리"
         filter={FILTER}
         searchPlaceholder="장소명으로 검색하세요."

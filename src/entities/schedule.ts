@@ -39,3 +39,10 @@ export type Schedule = LegacyFullTimestamp & {
       }
     | Record<string, never>;
 };
+
+export type ScheduleTitlePreset = LegacyFullTimestamp & {
+  id: number;
+  programId: string;
+  title: string;
+  description: string;
+};

@@ -37,7 +37,7 @@ const TemplateList = (props) => {
       dataIndex: 'approval',
       key: 'approval',
       render: (_) => {
-        //N:등록완료, I:검수중, R:부결(반려),
+        // N:등록완료, I:검수중, R:부결(반려),
         // Y:검수완료, M:사용요청중, A:승인완료
         const colorSet = {
           N: 'green',
@@ -87,7 +87,7 @@ const TemplateList = (props) => {
 
   return (
     <React.Fragment>
-      <DataTableHeader title="알림톡 템플릿 목록" resister={{ text: '템플릿 등록', onClick: () => onDetail() }} />
+      <DataTableHeader title="알림톡 템플릿 목록" register={{ text: '템플릿 등록', onClick: () => onDetail() }} />
       <Descriptions size="small" column={1}>
         <Descriptions.Item label="">템플릿 등록 후 심사에 1~3일 소요됩니다.</Descriptions.Item>
         <Descriptions.Item label="">

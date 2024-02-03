@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import ProductShellTitle from './ProductStudio';
 import ProductPlanDetail from './detail/ProductPlanDetail';
@@ -20,24 +20,86 @@ import ProductPlanMultiDetail from './detail/ProductPlanMultiDetail';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import { getStudio } from '@/services/PlaceService';
 import { getMonthPlans } from '@/services/ScheduleService';
-import { getProgram } from '@/services/ProgramService';
+import { createProgramTitlePreset, deleteProgramTitlePreset, getProgram, getProgramTitlePresets } from '@/services/ProgramService';
 import { Schedule } from '@/entities/schedule';
 import { DatesSetArg } from '@fullcalendar/core';
+import { Button, Input, Modal, Popconfirm, Table, Tabs, Typography } from 'antd';
+import { toast } from 'react-hot-toast';
+import TextArea from 'antd/es/input/TextArea';
+
+function RegisterSchedulePresetModal({ programId, open, close }: { programId: string; open: boolean; close: () => void }) {
+  const [registerPresetLoading, setRegisterPresetLoading] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const queryClient = useQueryClient();
+
+  const register = async () => {
+    if (!title) {
+      return toast.error('회차명을 입력해주세요.');
+    }
+    if (!description) {
+      return toast.error('회차 상세정보를 입력해주세요.');
+    }
+    setRegisterPresetLoading(true);
+    createProgramTitlePreset({ programId, title, description })
+      .then(() => {
+        toast.success('회차 프리셋을 추가했습니다.');
+        queryClient.invalidateQueries('/program/preset');
+        close();
+      })
+      .catch((e) => {
+        toast.error(`회차 프리셋을 추가하는데 실패했습니다: ${e}`);
+      })
+      .finally(() => {
+        setRegisterPresetLoading(false);
+      });
+  };
+
+  return (
+    <Modal title="회차 정보 등록" open={open} confirmLoading={registerPresetLoading} onOk={register} onCancel={close}>
+      <div>
+        <Typography.Title level={5}>회차명</Typography.Title>
+        <Input
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          showCount
+          maxLength={15}
+        />
+      </div>
+      <div style={{ paddingBottom: '12px' }}>
+        <Typography.Title level={5}>회차 설명</Typography.Title>
+        <TextArea
+          value={description}
+          onChange={(e) => {
+            setDescription(e.target.value);
+          }}
+          rows={6}
+          showCount
+          maxLength={200}
+        />
+      </div>
+    </Modal>
+  );
+}
 
 const ProgramSchedulePage = () => {
-  const { id, studioId } = useParams();
+  const { programId, placeId } = useParams();
+  const navigator = useNavigate();
 
   const dateFormat = 'YYYY-MM';
 
   const [isOpen, setIsOpen] = useState(false);
   const [isMultiOpen, setIsMultiOpen] = useState(false);
 
-  const [detailId, setDetailId] = useState<string>('');
+  const [detailId, setDetailId] = useState('');
   const [reservationId, setReservationId] = useState('');
 
   const [month, setMonth] = useState(moment().format(dateFormat));
 
   const [notiMessage, setNotiMessage] = useState('');
+  const [registerPresetOpen, setRegisterPresetOpen] = useState(false);
 
   useEffect(() => {
     if (notiMessage) {
@@ -47,18 +109,19 @@ const ProgramSchedulePage = () => {
     }
   }, [notiMessage]);
 
-  const fetchData = async (placeId: string) => {
-    const list = await getMonthPlans(placeId, month);
-    return list.map((it) => {
-      const start = moment(it.startDate).format('YYYY-MM-DD');
-      const end = moment(it.endDate).format('YYYY-MM-DD');
-      const startTime = moment(it.startDate).format('HH:mm');
-      const endTime = moment(it.endDate).format('HH:mm');
+  const fetchData = async (id: string) => {
+    const schedules = await getMonthPlans(id, month);
+    return schedules.map((a) => {
+      const start = moment(a.startDate).format('YYYY-MM-DD');
+      const end = moment(a.endDate).format('YYYY-MM-DD');
+      const startTime = moment(a.startDate).format('HH:mm');
+      const endTime = moment(a.endDate).format('HH:mm');
 
-      const currentMember = it?.currentMember || 0;
-      const maxMember = it?.maxMember || 0;
+      const currentMember = a?.currentMember || 0;
+      const maxMember = a?.maxMember || 0;
+
       return {
-        ...it,
+        ...a,
         start,
         end,
         allDay: true,
@@ -68,25 +131,30 @@ const ProgramSchedulePage = () => {
     });
   };
 
-  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', id], () => getStudio(id!), {
-    enabled: !!id,
+  const queryClient = useQueryClient();
+  const { data: presets } = useQuery(['/program/preset', { programId }], () => getProgramTitlePresets(programId!), {
+    enabled: !!programId,
   });
-  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', studioId], () => getProgram(studioId!), {
-    enabled: !!studioId,
+
+  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', placeId], () => getStudio(placeId!), {
+    enabled: !!placeId,
+  });
+  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', programId], () => getProgram(programId!), {
+    enabled: !!programId,
   });
   const {
-    data: plans,
+    data: plan,
     isLoading: isPlanLoading,
     refetch,
-  } = useQuery([`product-paln-list-${studioId}`, month], () => fetchData(studioId!), {
-    enabled: !!studioId,
+  } = useQuery([`product-paln-list-${programId}`, month], () => fetchData(programId!), {
+    enabled: !!programId,
   });
 
-  const onChangeDate = async (e: DatesSetArg & { view: { getCurrentData: () => { currentDate: string } } }) => {
-    const currentDate = e.view.getCurrentData().currentDate;
+  const onChangeDate: (arg: DatesSetArg & { view: { getCurrentData: () => { currentDate: Date } } }) => void = (args) => {
+    const currentDate = args.view.getCurrentData().currentDate;
     const formatDate = moment(currentDate).format(dateFormat);
 
-    await setMonth(formatDate);
+    setMonth(formatDate);
     refetch();
   };
 
@@ -114,31 +182,114 @@ const ProgramSchedulePage = () => {
     setIsMultiOpen(false);
   };
 
-  const eventContent = (eventInfo?: {
-    event?: {
-      title: string;
-    };
-  }) => {
+  const eventContent = (eventInfo?: { event?: { title: string } }) => {
     return <div style={{ padding: 3, fontSize: 11 }}>{eventInfo?.event?.title}</div>;
   };
 
   const isAllLoading = isStudioLoading || isLessonLoading || isPlanLoading;
 
+  const onDeletePreset = (presetId: number) => {
+    deleteProgramTitlePreset(presetId).then(() => {
+      queryClient.invalidateQueries('/program/preset');
+      toast.success('삭제가 완료되었습니다.');
+    });
+  };
+
   return (
     <React.Fragment>
+      <Tabs
+        defaultActiveKey="schedule"
+        items={[
+          { label: '프로그램 정보', key: 'program' },
+          { label: '스케줄 관리', key: 'schedule' },
+        ]}
+        onChange={(key: string) => {
+          if (key === 'program') {
+            return navigator(`/pages/places/${placeId}/programs/${programId}`);
+          }
+        }}
+      />
+
+      <DataTableHeader
+        title="회차별 상세 정보 등록"
+        subTitle="각 회차별 상세 정보를 입력할 때 사용합니다. 상세정보가 없으면 입력하지 않아도 됩니다."
+        register={{ text: '회차 정보 추가', onClick: () => setRegisterPresetOpen(true) }}
+        doSearch={() => {}}
+        searchDisabled
+      />
+
+      <Table
+        dataSource={presets ?? []}
+        columns={[
+          {
+            title: '회차명',
+            dataIndex: 'title',
+            key: 'title',
+          },
+          {
+            title: '상세정보',
+            dataIndex: 'description',
+            key: 'description',
+          },
+          {
+            title: '등록일',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (createdAt: string) => moment(createdAt).format('YYYY-MM-DD HH:mm'),
+          },
+          {
+            title: '수정일',
+            dataIndex: 'updatedAt',
+            key: 'updatedAt',
+            render: (updatedAt: string) => moment(updatedAt).format('YYYY-MM-DD HH:mm'),
+          },
+          {
+            title: '삭제',
+            dataIndex: 'id',
+            key: 'id',
+            render: (id: number) => (
+              <Popconfirm
+                title="회차 정보를 삭제하시겠습니까?"
+                description={
+                  <p className="whitespace-pre-wrap">
+                    - 삭제하면 회차정보를 사용하고있는 내용이 모두 삭제됩니다.
+                    <br />- 삭제 후 복구가 불가합니다.
+                  </p>
+                }
+                onConfirm={() => onDeletePreset(id)}
+                okText="확인"
+                cancelText="취소"
+              >
+                <Button>삭제</Button>
+              </Popconfirm>
+            ),
+          },
+        ]}
+        rowKey="id"
+        style={{ marginBottom: 20 }}
+        pagination={{
+          size: 'small',
+          pageSize: 5,
+          total: presets?.length,
+        }}
+      />
+
+      <RegisterSchedulePresetModal programId={programId!} open={registerPresetOpen} close={() => setRegisterPresetOpen(false)} />
+
       <DataTableHeader
         addResister={{ text: '반복등록', onClick: () => onClickMultiOpen() }}
-        resister={{ text: '스케줄 등록', onClick: () => setDetailId('new') }}
+        register={{ text: '스케줄 등록', onClick: () => setDetailId('new') }}
         title={<ProductShellTitle title={studio?.title || ''} subTitle={lesson?.title || ''} link={undefined} />}
         isLoading={isAllLoading}
         notiMessage={notiMessage}
         doSearch={() => {}}
+        searchDisabled
       />
 
       <SDataDetailBody padding>
         <div className="calendar-wrapper">
           <Calendar
-            list={plans || []}
+            list={plan || []}
             resister={{ text: '일정보기', onClick: () => onList() }}
             eventContent={eventContent}
             onClick={onDetail}
@@ -151,7 +302,7 @@ const ProgramSchedulePage = () => {
       {/* 일정보기 리스트 */}
       <ProductPlanList
         lessonId={lesson?.id || ''}
-        data={plans}
+        data={plan}
         open={isOpen}
         onClose={() => setIsOpen(false)}
         month={month}
@@ -162,9 +313,9 @@ const ProgramSchedulePage = () => {
 
       {/* 플랜 상세 */}
       <ProductPlanDetail
-        id={detailId}
+        id={detailId || ''}
         lessonId={lesson?.id || ''}
-        open={!!detailId}
+        open={detailId}
         onClose={() => onDetailClose(false)}
         refetch={() => onDetailClose(true)}
       />
@@ -178,7 +329,7 @@ const ProgramSchedulePage = () => {
       />
 
       {/* 예약자 현황 */}
-      <ProductPlanResevationList id={reservationId} open={!!reservationId} onClose={() => setReservationId('')} lesson={lesson} />
+      <ProductPlanResevationList id={reservationId} open={reservationId} onClose={() => setReservationId('')} lesson={lesson} />
     </React.Fragment>
   );
 };

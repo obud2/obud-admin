@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useQuery } from 'react-query';
 
@@ -23,9 +23,11 @@ import { getMonthPlans } from '@/services/ScheduleService';
 import { getProgram } from '@/services/ProgramService';
 import { DatesSetArg } from '@fullcalendar/core';
 import { Schedule } from '@/entities/schedule';
+import { Tabs } from 'antd';
 
 const ProgramDetailPage = () => {
-  const { id, studioId } = useParams();
+  const { programId, placeId } = useParams();
+  const navigator = useNavigate();
 
   const dateFormat = 'YYYY-MM';
 
@@ -47,8 +49,8 @@ const ProgramDetailPage = () => {
     }
   }, [notiMessage]);
 
-  const fetchData = async (placeId: string) => {
-    const schedules = await getMonthPlans(placeId, month);
+  const fetchData = async (id: string) => {
+    const schedules = await getMonthPlans(id, month);
     return schedules.map((a) => {
       const start = moment(a.startDate).format('YYYY-MM-DD');
       const end = moment(a.endDate).format('YYYY-MM-DD');
@@ -69,18 +71,18 @@ const ProgramDetailPage = () => {
     });
   };
 
-  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', id], () => getStudio(id!), {
-    enabled: !!id,
+  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', placeId], () => getStudio(placeId!), {
+    enabled: !!placeId,
   });
-  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', studioId], () => getProgram(studioId!), {
-    enabled: !!studioId,
+  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', programId], () => getProgram(programId!), {
+    enabled: !!programId,
   });
   const {
     data: plan,
     isLoading: isPlanLoading,
     refetch,
-  } = useQuery([`product-paln-list-${studioId}`, month], () => fetchData(studioId!), {
-    enabled: !!studioId,
+  } = useQuery([`product-paln-list-${programId}`, month], () => fetchData(programId!), {
+    enabled: !!programId,
   });
 
   const onChangeDate: (arg: DatesSetArg & { view: { getCurrentData: () => { currentDate: Date } } }) => void = (args) => {
@@ -123,9 +125,22 @@ const ProgramDetailPage = () => {
 
   return (
     <React.Fragment>
+      <Tabs
+        defaultActiveKey="program"
+        items={[
+          { label: '프로그램 정보', key: 'program' },
+          { label: '스케줄 관리', key: 'schedule' },
+        ]}
+        onChange={(key: string) => {
+          if (key === 'schedule') {
+            return navigator(`/pages/places/${placeId}/programs/${programId}/schedules`);
+          }
+        }}
+      />
+
       <DataTableHeader
         addResister={{ text: '반복등록', onClick: () => onClickMultiOpen() }}
-        resister={{ text: '스케줄 등록', onClick: () => setDetailId('new') }}
+        register={{ text: '스케줄 등록', onClick: () => setDetailId('new') }}
         title={<ProductShellTitle title={studio?.title || ''} subTitle={lesson?.title || ''} link={undefined} />}
         isLoading={isAllLoading}
         notiMessage={notiMessage}

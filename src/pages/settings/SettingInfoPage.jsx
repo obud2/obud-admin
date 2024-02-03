@@ -53,7 +53,7 @@ const SettingInfoPage = () => {
     <React.Fragment>
       <DataTableHeader
         title="기본정보"
-        resister={{ text: '저장', onClick: onClickSubmit }}
+        register={{ text: '저장', onClick: onClickSubmit }}
         notiMessage={notiMessage}
         isLoading={isLoading}
       />

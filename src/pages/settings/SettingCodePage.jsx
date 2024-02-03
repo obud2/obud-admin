@@ -64,7 +64,7 @@ const SettingCodePage = () => {
 
   const onClickOpenCodeList = (type, data) => {
     if (isLoading) return;
-    setCodeBody({ isOpen: true, type: type, data: data || '' });
+    setCodeBody({ isOpen: true, type, data: data || '' });
   };
 
   const onClickCloseCodeList = () => {
@@ -117,7 +117,7 @@ const SettingCodePage = () => {
     <React.Fragment>
       <DataTableHeader
         title="상품 환경설정"
-        resister={{ text: '저장', onClick: onClickSubmit }}
+        register={{ text: '저장', onClick: onClickSubmit }}
         notiMessage={notiMessage}
         isLoading={isAllLoading}
       />

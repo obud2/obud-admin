@@ -8,6 +8,7 @@ import weekday from 'dayjs/plugin/weekday';
 import { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Layout from './layout/Layout';
+import { Toaster } from 'react-hot-toast';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -91,6 +92,7 @@ const App = () => {
           </div>
         }
       >
+        <Toaster />
         <Layout>
           <Routes>
             {/* Dashboard */}
@@ -117,9 +119,9 @@ const App = () => {
 
             {/* Product */}
             <Route path="/pages/places" element={<PlaceListPage />} />
-            <Route path="/pages/places/:id" element={<PlaceDetailPage />} />
-            <Route path="/pages/places/:id/programs/:studioId" element={<ProgramDetailPage />} />
-            <Route path="/pages/places/:id/programs/:studioId/schedules" element={<ProgramSchedulePage />} />
+            <Route path="/pages/places/:placeId" element={<PlaceDetailPage />} />
+            <Route path="/pages/places/:placeId/programs/:programId" element={<ProgramDetailPage />} />
+            <Route path="/pages/places/:placeId/programs/:programId/schedules" element={<ProgramSchedulePage />} />
 
             {/* Coupon */}
             <Route path="/pages/coupon/list" element={<CouponListPage />} />

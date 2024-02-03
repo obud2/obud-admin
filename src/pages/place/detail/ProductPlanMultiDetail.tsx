@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
@@ -17,6 +19,7 @@ import { Button, DatePicker, Input, InputNumber, Select, Space, Switch, TimePick
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
 
 import { setMultiPlan } from '@/services/ScheduleService';
+import { getProgramTitlePresets } from '@/services/ProgramService.js';
 
 const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   const dateFormat = 'YYYY-MM-DD';
@@ -124,6 +127,9 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     setIsOption(e);
   };
 
+  const { data: presets } = useQuery(['/program/preset', { programId: lessonId }], () => getProgramTitlePresets(lessonId!), {
+    enabled: !!lessonId,
+  });
   const onSubmit = async () => {
     const param = {
       ...body,
@@ -281,6 +287,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
             timeList?.length > 0 &&
             timeList?.map((item, index) => (
               <TimeCheck
+                key={index}
                 value={item}
                 instructor={instructor}
                 isDelete={index > 0}
@@ -293,6 +300,25 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
           <Button style={{ width: '90px' }} type="primary" size="small" disabled={isAllLoading} onClick={onClickAddTime}>
             시간대 추가
           </Button>
+        </Flex>
+      </DataDetailItem>
+
+      <DataDetailItem label="(선택) 회차명" span={2}>
+        <Flex flexDirection="column" gap="5px">
+          <Select
+            placeholder="(선택) 회차명을 선택해주세요."
+            style={{ width: '100%' }}
+            disabled={isAllLoading}
+            onChange={(id) => {
+              setBody((prev) => ({ ...prev, scheduleTitlePresetId: id }));
+            }}
+          >
+            {(presets ?? []).map((it) => (
+              <Select.Option key={it.id} value={it.id}>
+                {it.title}
+              </Select.Option>
+            ))}
+          </Select>
         </Flex>
       </DataDetailItem>
 

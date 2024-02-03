@@ -68,10 +68,10 @@ const MainSettingPage = () => {
       }
 
       const web = await fileRef.current.upload('main');
-      param['images'] = web.images || [];
+      param.images = web.images || [];
 
       const mobile = await fileMobileRef.current.upload('main');
-      param['images_m'] = mobile.images || [];
+      param.images_m = mobile.images || [];
     } else if (body?.bannerType === 'video') {
       // 비디오 업로드
       if (!video?.length > 0) {
@@ -82,10 +82,10 @@ const MainSettingPage = () => {
       }
 
       const web = await videoRef.current.upload('main');
-      param['video'] = web.images || [];
+      param.video = web.images || [];
 
       const mobile = await videoMobileRef.current.upload('main');
-      param['video_m'] = mobile.images || [];
+      param.video_m = mobile.images || [];
     }
 
     BannerService.saveItem('edit', param)
@@ -104,7 +104,7 @@ const MainSettingPage = () => {
     <React.Fragment>
       <DataTableHeader
         title="메인화면관리"
-        resister={{ text: '저장', onClick: onClickSubmit }}
+        register={{ text: '저장', onClick: onClickSubmit }}
         notiMessage={notiMessage}
         isLoading={isLoading || bannerLoading}
       />

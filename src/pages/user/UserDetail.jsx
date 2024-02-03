@@ -279,7 +279,7 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
           </DataDetailItem>
 
           <DataTableHeader
-            resister={{ text: '강사추가', onClick: onClickRegistOpen }} // 스튜디오 관리자 강사 등록 폼 추가
+            register={{ text: '강사추가', onClick: onClickRegistOpen }} // 스튜디오 관리자 강사 등록 폼 추가
             title="강사 목록"
             isLoading={isLoading}
           />

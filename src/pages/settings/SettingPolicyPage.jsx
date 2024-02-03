@@ -47,7 +47,7 @@ const SettingPolicyPage = () => {
 
     const param = {
       id: 'policy',
-      terms: terms,
+      terms,
       privacyPolicy: personal,
     };
 
@@ -67,7 +67,7 @@ const SettingPolicyPage = () => {
     <React.Fragment>
       <DataTableHeader
         title="약관관리"
-        resister={{ text: '저장', onClick: onClickSubmit }}
+        register={{ text: '저장', onClick: onClickSubmit }}
         isLoading={isLoading}
         notiMessage={notiMessage}
       />

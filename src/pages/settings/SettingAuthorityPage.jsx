@@ -72,7 +72,7 @@ const SettingAuthorityPage = () => {
     <React.Fragment>
       <DataTableHeader
         title="권한설정"
-        resister={{ text: '저장', onClick: onClickSubmit }}
+        register={{ text: '저장', onClick: onClickSubmit }}
         notiMessage={notiMessage}
         isLoading={isLoading}
         disabled={!auth}

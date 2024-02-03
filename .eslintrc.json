@@ -38,6 +38,7 @@
     "typescript-eslint/no-empty-function": "off",
     "react/no-children-prop": "off",
     "prefer-template": "warn",
+    "react/jsx-wrap-multilines": "off",
 
     // General
     "no-var": "error", // var 금지

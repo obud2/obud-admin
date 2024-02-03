@@ -132,7 +132,7 @@ const CouponListPage = () => {
       <DataTableHeader
         doSearch={(e) => setName(e)}
         doFilter={(e) => setStatus(e)}
-        resister={{ text: '쿠폰 등록', onClick: () => onDetail(null) }}
+        register={{ text: '쿠폰 등록', onClick: () => onDetail(null) }}
         title="쿠폰 관리"
         filter={FILTER}
         searchPlaceholder="쿠폰 이름으로 검색하세요."

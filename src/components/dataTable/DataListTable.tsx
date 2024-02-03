@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 
 import { Spin } from 'antd';
@@ -47,6 +49,21 @@ const DataListTable = ({
   sorted,
   sortApi,
   sortId = 'sortOrder',
+}: {
+  data: any;
+  header: any;
+  onClick: any;
+  useDetail?: boolean;
+  useOption?: any;
+  isLoading: boolean;
+  fetchNextPage: any;
+  isFetchingNextPage: boolean;
+  excel?: boolean;
+  excelCols?: any;
+  onExcelListApi: any;
+  sorted: boolean;
+  sortApi: any;
+  sortId?: string;
 }) => {
   const [select, setSelect] = useState('');
 
@@ -141,7 +158,7 @@ const DataListTable = ({
           list={datas}
           setList={setList}
           animation={200}
-          delayOnTouchStart={true}
+          delayOnTouchStart
           delay={1}
           handle=".data-list-item-drag-button"
         >

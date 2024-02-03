@@ -7,20 +7,24 @@ import axiosInstance from '@/constants/axiosInstance';
 import { API_URL } from '@/constants/config';
 import { LegacyCommonResponse } from '@/entities/common';
 import { LIMIT } from '@/services/ScheduleService';
+import { Program } from '@/entities/program';
+import { ScheduleTitlePreset } from '@/entities/schedule';
 
-export const getProgramsAll = async (studioId: string) => {
-  return axiosInstance.get<LegacyCommonResponse<any>>(`${API_URL}/studios/lesson/all?studiosId=${studioId}`).then((response) => {
+export const getProgramsAll = async (placeId?: string): Promise<Program[]> => {
+  if (!placeId) {
+    return [];
+  }
+  return axiosInstance.get<LegacyCommonResponse<Program[]>>(`${API_URL}/studios/lesson/all?studiosId=${placeId}`).then((response) => {
     return response.data?.value || [];
   });
 };
-export const getPrograms = async (studioId: string, cursor: any, keyword = '') => {
+export const getPrograms = async (studioId: string, keyword = '') => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
-  const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
   return axiosInstance
-    .get<LegacyCommonResponse<any>>(`${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${LIMIT}${cursorTemp}${keywordTemp}`)
+    .get<LegacyCommonResponse<Program[]>>(`${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${LIMIT}${keywordTemp}`)
     .then((response) => {
-      return response.data;
+      return response.data.value || [];
     });
 };
 export const getProgram = async (id: string) => {
@@ -67,4 +71,23 @@ export const deleteProgram = async (id: string) => {
   return axiosInstance.delete(`${API_URL}/studios/lesson/${id}`).then((response) => {
     return response?.data?.value || {};
   });
+};
+
+/**
+ * 회차 프리셋
+ */
+export const getProgramTitlePresets = async (programId: string) => {
+  return axiosInstance
+    .get<LegacyCommonResponse<ScheduleTitlePreset[]>>(`${API_URL}/v2/program/preset?programId=${programId}`)
+    .then((response) => {
+      return response.data.value || {};
+    });
+};
+
+export const createProgramTitlePreset = async (body: { programId: string; title: string; description: string }) => {
+  await axiosInstance.post(`${API_URL}/v2/program/preset`, body);
+};
+
+export const deleteProgramTitlePreset = async (presetId: number) => {
+  await axiosInstance.delete(`${API_URL}/v2/program/preset/${presetId}`);
 };
