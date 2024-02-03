@@ -18,15 +18,12 @@ const Header = () => {
 
   return (
     <SOftadehAppBar>
-      <Button
-        type='text'
-        onClick={onClickGoMenuPage}
-      >
+      <Button type="text" onClick={onClickGoMenuPage}>
         <MenuOutlined style={{ fontSize: '18px' }} />
       </Button>
 
-      <p className='header-title'>
-        <img src='/img/obud_logo.png' />
+      <p className="header-title">
+        <img src="/img/obud_logo.png" />
       </p>
 
       <AvatarMenu />

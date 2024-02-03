@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const SNavCollapse = styled.div<{ active?: boolean; open?: boolean }>`
   width: 100%;
@@ -48,7 +48,9 @@ export const SNavCollapse = styled.div<{ active?: boolean; open?: boolean }>`
     margin: 0;
 
     white-space: nowrap;
-    transition: width 180ms, opacity 180ms;
+    transition:
+      width 180ms,
+      opacity 180ms;
 
     ${(props) =>
       props.open &&

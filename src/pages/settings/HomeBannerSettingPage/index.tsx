@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import BannerService from "@/services/BannerService";
+import BannerService from '@/services/BannerService';
 
-import DataTableHeader from "@/components/dataTable/DataTableHeader";
+import DataTableHeader from '@/components/dataTable/DataTableHeader';
 
-import { Banner } from "@/entities/banner";
-import { Button, message } from "antd";
-import { ReactSortable } from "react-sortablejs";
-import styled from "styled-components";
-import BannerAddModal from "./BannerAddModal";
-import BannerItem from "./BannerItem";
+import { Banner } from '@/entities/banner';
+import { Button, message } from 'antd';
+import { ReactSortable } from 'react-sortablejs';
+import styled from 'styled-components';
+import BannerAddModal from './BannerAddModal';
+import BannerItem from './BannerItem';
 
 const HomeBannerSettingPage = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -39,33 +39,25 @@ const HomeBannerSettingPage = () => {
       bannerOrders: orderItems,
     });
 
-    message.success("저장되었습니다.");
+    message.success('저장되었습니다.');
   };
 
   return (
     <Wrapper>
-      <DataTableHeader
-        title="홈 배너 관리"
-        resister={{ text: "저장", onClick: handleChangeOrder }}
-      />
+      <DataTableHeader title="홈 배너 관리" resister={{ text: '저장', onClick: handleChangeOrder }} doSearch={() => {}} />
 
       <div className="button-wrapper">
         <Button type="primary" onClick={() => setAddModalOpen(true)}>
           배너 추가
         </Button>
-        <BannerAddModal
-          open={addModalOpen}
-          onClose={() => setAddModalOpen(false)}
-          lastOrder={banners.length}
-          refetch={refetch}
-        />
+        <BannerAddModal open={addModalOpen} onClose={() => setAddModalOpen(false)} lastOrder={banners.length} refetch={refetch} />
       </div>
       <ReactSortable
         className="banner-list"
         list={banners}
         setList={setBanners}
         animation={200}
-        delayOnTouchStart={true}
+        delayOnTouchStart
         delay={1}
         handle=".banner-list-item-drag-button"
       >

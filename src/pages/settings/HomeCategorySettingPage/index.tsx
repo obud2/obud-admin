@@ -1,8 +1,7 @@
-import DataTableHeader from "@/components/dataTable/DataTableHeader";
-import { StudioCategory } from "@/entities/place";
-import { ReactSortable } from "react-sortablejs";
-import styled from "styled-components";
-import CategoryItem from "./CategoryItem";
+import DataTableHeader from '@/components/dataTable/DataTableHeader';
+import { StudioCategory } from '@/entities/place';
+import styled from 'styled-components';
+import CategoryItem from './CategoryItem';
 
 const CategoryItems = [
   {
@@ -26,14 +25,10 @@ const CategoryItems = [
 const HomeCategorySettingPage = () => {
   return (
     <div>
-      <DataTableHeader title="홈 화면 카테고리 관리" />
+      <DataTableHeader title="홈 화면 카테고리 관리" doSearch={() => {}} />
       <ItemWrapper>
         {CategoryItems.map((item) => (
-          <CategoryItem
-            key={item.id}
-            categoryId={item.id}
-            category={item.name}
-          />
+          <CategoryItem key={item.id} categoryId={item.id} category={item.name} />
         ))}
       </ItemWrapper>
     </div>

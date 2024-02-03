@@ -1,18 +1,18 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
-import CodeService from "../services/CodeService";
+import CodeService from '../services/CodeService';
 
 const useCode = create(
   devtools((set, get) => ({
-    code: "",
+    code: '',
 
     fetchCode: async () => {
       try {
         if (!get()?.code) {
           const res = await CodeService.getList();
 
-          set({ code: res?.value || "" });
+          set({ code: res?.value || '' });
         }
       } catch (error) {
         console.log(error);
@@ -23,12 +23,12 @@ const useCode = create(
       try {
         const res = await CodeService.getList();
 
-        set({ code: res?.value || "" });
+        set({ code: res?.value || '' });
       } catch (error) {
         console.log(error);
       }
     },
-  }))
+  })),
 );
 
 useCode.getState().fetchCode();

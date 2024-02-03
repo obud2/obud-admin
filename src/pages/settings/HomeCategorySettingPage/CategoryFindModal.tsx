@@ -1,9 +1,9 @@
-import { SectionItem, SectionItemType } from "@/entities/place";
-import PlaceService from "@/services/PlaceService";
-import { Button, Checkbox, Input, Modal, Tag, message } from "antd";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { CategoryPlaceInfo } from "./CategoryEditModal";
+import { SectionItem, SectionItemType } from '@/entities/place';
+import { listSectionItems } from '@/services/PlaceV2Service';
+import { Button, Checkbox, Input, Modal, message } from 'antd';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { CategoryPlaceInfo } from './CategoryEditModal';
 
 type Props = {
   open: boolean;
@@ -12,12 +12,12 @@ type Props = {
 };
 
 const CategoryFindModal = ({ open, onClose, addCategoryPlaceInfos }: Props) => {
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [items, setItems] = useState<SectionItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<SectionItem[]>([]);
 
   const handleClose = () => {
-    setKeyword("");
+    setKeyword('');
     setItems([]);
     setSelectedItems([]);
     onClose();
@@ -47,14 +47,12 @@ const CategoryFindModal = ({ open, onClose, addCategoryPlaceInfos }: Props) => {
 
   const onSearch = async () => {
     try {
-      const sectionItems = await PlaceService.listSectionItems({ keyword });
+      const sectionItems = await listSectionItems({ keyword });
       // TODO: 장소만 필터링하는게 맞는지 확인
-      setItems(
-        sectionItems.filter((item) => item.type === SectionItemType.PLACE)
-      );
+      setItems(sectionItems.filter((item) => item.type === SectionItemType.PLACE));
       setSelectedItems([]);
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -65,21 +63,17 @@ const CategoryFindModal = ({ open, onClose, addCategoryPlaceInfos }: Props) => {
       open={open}
       onCancel={handleClose}
       footer={[
-        <Button key={"add"} onClick={handleAddItems}>
+        <Button key="add" onClick={handleAddItems}>
           추가
         </Button>,
-        <Button key={"cancel"} onClick={handleClose}>
+        <Button key="cancel" onClick={handleClose}>
           취소
         </Button>,
       ]}
     >
       <DetailItemWrapper>
         <Wrapper>
-          <Input
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            placeholder="장소명"
-          />
+          <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="장소명" />
           <Button onClick={onSearch}>검색</Button>
         </Wrapper>
       </DetailItemWrapper>
@@ -90,11 +84,7 @@ const CategoryFindModal = ({ open, onClose, addCategoryPlaceInfos }: Props) => {
           {items.map((item) => (
             <Item key={`${item.id}-${item.type}`}>
               <Checkbox
-                checked={
-                  !!selectedItems.find(
-                    (i) => i.id === item.id && i.type === item.type
-                  )
-                }
+                checked={!!selectedItems.find((i) => i.id === item.id && i.type === item.type)}
                 onChange={() => toggleItemSelection(item)}
               >
                 <div>{item.name}</div>

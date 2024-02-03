@@ -27,20 +27,20 @@ export type Coupon = {
 };
 
 export enum CouponIssueType {
-  BY_CODE = "BY_CODE",
-  TO_USER = "TO_USER",
-  TO_ALL_USERS = "TO_ALL_USERS",
-  WHEN_SIGNUP = "WHEN_SIGNUP",
+  BY_CODE = 'BY_CODE',
+  TO_USER = 'TO_USER',
+  TO_ALL_USERS = 'TO_ALL_USERS',
+  WHEN_SIGNUP = 'WHEN_SIGNUP',
 }
 
 export enum CouponDiscountType {
-  PERCENTAGE = "PERCENTAGE",
-  AMOUNT = "AMOUNT",
+  PERCENTAGE = 'PERCENTAGE',
+  AMOUNT = 'AMOUNT',
 }
 
 export enum CouponApplyType {
-  ALL = "ALL",
-  PARTIAL = "PARTIAL",
+  ALL = 'ALL',
+  PARTIAL = 'PARTIAL',
 }
 
-export type CouponStatus = "PENDING" | "IN_PROGRESS" | "FINISHED" | "";
+export type CouponStatus = 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | '';

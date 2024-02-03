@@ -1,7 +1,7 @@
-import CouponService, { UserResult } from "@/services/CouponService";
-import { Button, Checkbox, Input, Modal, message } from "antd";
-import { useState } from "react";
-import styled from "styled-components";
+import CouponService, { UserResult } from '@/services/CouponService';
+import { Button, Checkbox, Input, Modal, message } from 'antd';
+import { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   open: boolean;
@@ -10,19 +10,14 @@ type Props = {
   setUserList: (userList: UserResult[]) => void;
 };
 
-const CouponUserSearchModal = ({
-  open,
-  onClose,
-  userList,
-  setUserList,
-}: Props) => {
+const CouponUserSearchModal = ({ open, onClose, userList, setUserList }: Props) => {
   const [showResults, setShowResults] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [userResults, setUserResults] = useState<UserResult[]>([]);
   const [tempUserList, setTempUserList] = useState<UserResult[]>([]);
 
   const handleClose = () => {
-    setQuery("");
+    setQuery('');
     setUserResults([]);
     setTempUserList([]);
     onClose();
@@ -39,7 +34,7 @@ const CouponUserSearchModal = ({
       setUserResults(data);
       setShowResults(true);
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -52,10 +47,10 @@ const CouponUserSearchModal = ({
       onCancel={handleClose}
       destroyOnClose
       footer={[
-        <Button key={"save"} onClick={handleSave}>
+        <Button key="save" onClick={handleSave}>
           저장
         </Button>,
-        <Button key={"cancel"} onClick={handleClose}>
+        <Button key="cancel" onClick={handleClose}>
           취소
         </Button>,
       ]}
@@ -82,9 +77,7 @@ const CouponUserSearchModal = ({
                 if (e.target.checked) {
                   setTempUserList((prev) => [...prev, user]);
                 } else {
-                  setTempUserList((prev) =>
-                    prev.filter((prevUser) => prevUser.id !== user.id)
-                  );
+                  setTempUserList((prev) => prev.filter((prevUser) => prevUser.id !== user.id));
                 }
               }}
             >

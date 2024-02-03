@@ -36,10 +36,10 @@ export type SectionOrderItem = {
 };
 
 export enum SectionItemType {
-  //studios
-  PLACE = "PLACE",
-  //lesson
-  PROGRAM = "PROGRAM",
+  // studios
+  PLACE = 'PLACE',
+  // lesson
+  PROGRAM = 'PROGRAM',
 }
 
 export type SectionItem = {
@@ -58,8 +58,8 @@ export type SectionWithItems = {
 
 // TODO: Move this to src/entities/studio/index.ts if needed.
 export enum StudioCategory {
-  YOGA = "요가",
-  TEA = "차",
-  MEDITATION = "명상",
-  ETC = "기타",
+  YOGA = '요가',
+  TEA = '차',
+  MEDITATION = '명상',
+  ETC = '기타',
 }

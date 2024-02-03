@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { notification } from "antd";
+import { notification } from 'antd';
 
-import { SDataDetail } from "./DataDetail.styled";
-import { bodyHiddenToggle } from "../../constants/config";
+import { SDataDetail } from './DataDetail.styled';
+import { bodyHiddenToggle } from '../../constants/config';
 
 const DataDetail = ({ open, children, notiMessage, notiDescription }) => {
   const [api, contextHolder] = notification.useNotification();
@@ -20,7 +20,7 @@ const DataDetail = ({ open, children, notiMessage, notiDescription }) => {
 
   useEffect(() => {
     if (notiMessage || notiDescription) {
-      openNotification(notiMessage, notiDescription, "bottomRight");
+      openNotification(notiMessage, notiDescription, 'bottomRight');
     }
   }, [notiMessage, notiDescription]);
 
@@ -36,10 +36,8 @@ const DataDetail = ({ open, children, notiMessage, notiDescription }) => {
     <React.Fragment>
       {contextHolder}
       <SDataDetail>
-        <div className={`detail-body-background ${open ? "active" : ""}`}>
-          <div className={`detail-body-container ${open ? "active" : ""}`}>
-            {children}
-          </div>
+        <div className={`detail-body-background ${open ? 'active' : ''}`}>
+          <div className={`detail-body-container ${open ? 'active' : ''}`}>{children}</div>
         </div>
       </SDataDetail>
     </React.Fragment>

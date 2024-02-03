@@ -1,23 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Tree, Select, Typography } from "antd";
-import { MenuContext } from "../../context/MenuContext";
+import { Tree, Select, Typography } from 'antd';
+import { MenuContext } from '../../context/MenuContext';
 
-import { Flex } from "../../styles/CommonStyles";
-import { USER_ROLE } from "../../constants/config";
+import { Flex } from '../../styles/CommonStyles';
+import { USER_ROLE } from '../../constants/config';
 
-import { SDataDetailBody } from "../../components/detailTable/DataDetailBody.styled.tsx";
-import DataTableHeader from "../../components/dataTable/DataTableHeader";
+import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
+import DataTableHeader from '../../components/dataTable/DataTableHeader';
 
-import GroupService from "../../services/GroupService";
+import GroupService from '../../services/GroupService';
 
 const SettingAuthorityPage = () => {
   const { menu } = useContext(MenuContext);
 
-  const [auth, setAuth] = useState("");
+  const [auth, setAuth] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
-  const [notiMessage, setNotiMessage] = useState("");
+  const [notiMessage, setNotiMessage] = useState('');
 
   const [checkedKeys, setCheckedKeys] = useState([]);
 
@@ -25,7 +25,7 @@ const SettingAuthorityPage = () => {
     if (notiMessage) {
       setTimeout(() => {
         setIsLoading(false);
-        setNotiMessage("");
+        setNotiMessage('');
       }, [2000]);
     }
   }, [notiMessage]);
@@ -58,10 +58,10 @@ const SettingAuthorityPage = () => {
 
     GroupService.updateItem(param)
       .then(() => {
-        setNotiMessage("수정 되었습니다.");
+        setNotiMessage('수정 되었습니다.');
       })
       .catch(() => {
-        setNotiMessage("에러가 발생하였습니다. 잠시 후 다시시도해주세요.");
+        setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
       })
       .finally(() => {
         setIsLoading(false);
@@ -72,7 +72,7 @@ const SettingAuthorityPage = () => {
     <React.Fragment>
       <DataTableHeader
         title="권한설정"
-        resister={{ text: "저장", onClick: onClickSubmit }}
+        resister={{ text: '저장', onClick: onClickSubmit }}
         notiMessage={notiMessage}
         isLoading={isLoading}
         disabled={!auth}
@@ -89,13 +89,8 @@ const SettingAuthorityPage = () => {
             disabled={isLoading}
             loading={isLoading}
           />
-          <Typography.Text type="warning">
-            * 해당 권한에게 노출하고 싶은 메뉴를 지정할 수 있습니다.
-          </Typography.Text>
-          <Typography.Text type="danger">
-            * 해당 권한을 부여하면 해당 페이지에 읽기/ 쓰기/ 수정/ 삭제가
-            가능해집니다.
-          </Typography.Text>
+          <Typography.Text type="warning">* 해당 권한에게 노출하고 싶은 메뉴를 지정할 수 있습니다.</Typography.Text>
+          <Typography.Text type="danger">* 해당 권한을 부여하면 해당 페이지에 읽기/ 쓰기/ 수정/ 삭제가 가능해집니다.</Typography.Text>
         </Flex>
 
         {menu && menu?.length > 0 && (

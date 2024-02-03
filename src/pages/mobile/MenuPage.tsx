@@ -1,5 +1,5 @@
-import { SMenuPage } from "./MenuPage.styled";
-import Navigation from "../../layout/Navigation";
+import { SMenuPage } from './MenuPage.styled';
+import Navigation from '../../layout/Navigation';
 
 const MenuPage = () => {
   return (

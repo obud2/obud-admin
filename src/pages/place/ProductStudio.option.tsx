@@ -3,7 +3,7 @@ import { GoLinkExternal } from 'react-icons/go';
 import { useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import { APP_URL, setCreatedAt } from '../../constants/config';
-import ProductService from '../../services/ProductService';
+import { getLesson, setLesson } from '@/services/PlaceService';
 
 // TODO: Strict Typing
 export const LIST_HEADER = [
@@ -35,10 +35,10 @@ export const LIST_HEADER = [
 
       // TODO: Improve Logic
       async function updateShow(isShow: boolean) {
-        ProductService.getLesson(data.id).then((data) => {
-          ProductService.setLesson(data.id, {
+        getLesson(data.id).then((data) => {
+          setLesson('update', {
             ...data,
-            isShow: isShow,
+            isShow,
           }).finally(() => queryClient.invalidateQueries(['product-studio-lesson-list']));
         });
       }
@@ -50,7 +50,7 @@ export const LIST_HEADER = [
     id: '',
     label: '스케줄 등록',
     customBodyRender: (value: any, data: any) => (
-      <Link to={`/pages/product/studio/${data?.studiosId || ''}/${data?.id || ''}`}>
+      <Link to={`/pages/places/${data?.studiosId || ''}/programs/${data?.id || ''}`}>
         <Button type="default">등록</Button>
       </Link>
     ),

@@ -9,6 +9,6 @@ export type Banner = {
 };
 
 export type BannerOrderItem = {
-  id: Banner["id"];
+  id: Banner['id'];
   order: number;
 };

@@ -1,16 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react';
 
-import Amplify, { Auth } from "aws-amplify";
-import awsmobile from "../../aws-exports";
+import Amplify, { Auth } from 'aws-amplify';
+import awsmobile from '../../aws-exports';
 
-import { useNavigate } from "react-router-dom";
-import { MenuContext } from "../context/MenuContext";
-import { UserContext } from "../context/UserContext";
-import { userLogout } from "../constants/config";
+import { useNavigate } from 'react-router-dom';
+import { MenuContext } from '../context/MenuContext';
+import { UserContext } from '../context/UserContext';
+import { userLogout } from '../constants/config';
 
-import swal from "sweetalert";
+import swal from 'sweetalert';
 
-import GroupService from "../services/GroupService";
+import GroupService from '../services/GroupService';
 
 Amplify.configure(awsmobile);
 
@@ -32,12 +32,12 @@ const useMenuByRole = () => {
 
           if (!select?.length > 0) {
             swal({
-              text: "접근이 불가능합니다.",
+              text: '접근이 불가능합니다.',
             }).then(() => {
               userLogout();
 
               Auth.signOut().then((r) => {
-                navigate("/pages/auth/login");
+                navigate('/pages/auth/login');
               });
             });
 
@@ -45,12 +45,12 @@ const useMenuByRole = () => {
           }
 
           menu?.forEach((a) => {
-            if (select.includes(a?.key)) a["isShow"] = true;
-            else a["isShow"] = false;
+            if (select.includes(a?.key)) a['isShow'] = true;
+            else a['isShow'] = false;
 
             a?.children?.forEach((b) => {
               // TODO: Why this code is needed. we have to fix
-              b["isShow"] = true;
+              b['isShow'] = true;
             });
           });
 
@@ -66,7 +66,7 @@ const useMenuByRole = () => {
   useEffect(() => {
     if (navigation && navigation?.length > 0) {
       const pathname = location.pathname;
-      let nowPage = "";
+      let nowPage = '';
 
       navigation?.map((a) => {
         if (a?.url === pathname) {
@@ -83,7 +83,7 @@ const useMenuByRole = () => {
       });
 
       // 모바일 Drawer 접근 처리
-      if (pathname === "/mobile/menu") {
+      if (pathname === '/mobile/menu') {
         nowPage = {
           isShow: true,
         };

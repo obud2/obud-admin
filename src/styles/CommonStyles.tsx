@@ -1,11 +1,11 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 /* ////////////////////////////////////////////
                   Spacing
 //////////////////////////////////////////// */
 export const Spacing = styled.nav<{ spacing?: string }>`
   width: 100%;
-  height: ${(props) => (props.spacing ? `${props.spacing}px` : "15px")};
+  height: ${(props) => (props.spacing ? `${props.spacing}px` : '15px')};
   display: block;
 `;
 

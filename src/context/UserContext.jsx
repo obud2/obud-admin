@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { ADMIN, getUserId } from "../constants/config";
+import { ADMIN, getUserId } from '../constants/config';
 
-import UserService from "../services/UserService";
+import UserService from '../services/UserService';
 
 export const UserContext = React.createContext();
 
@@ -12,9 +12,9 @@ export const UserContext = React.createContext();
  * @returns 로그인 유저 정보
  */
 const UserContextPrivider = (props) => {
-  const userId = getUserId() || "";
+  const userId = getUserId() || '';
 
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

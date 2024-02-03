@@ -3,10 +3,7 @@ import './OrderStatusCalendarPalnList.css';
 
 import { Button, InputNumber } from 'antd';
 
-import _ from 'lodash';
-
 import { useQuery } from 'react-query';
-import ProductService from '../../../services/ProductService';
 
 import 'moment/locale/ko';
 import moment from 'moment';
@@ -14,6 +11,7 @@ import moment from 'moment';
 import DataDetailBody from '../../../components/detailTable/DataDetailBody';
 import DataListTable from '../../../components/dataTable/DataListTable';
 import DetailHeader from '../../../components/detailTable/DetailHeader';
+import { getPlanCaledarDayInfo } from '@/services/PlaceService';
 
 /**
  *
@@ -27,7 +25,7 @@ const OrderStatusCalendarPalnList = ({ month, open, onClose, onResevation, lesso
   });
 
   const fetchData = async () => {
-    const res = await ProductService?.getPlanCaledarDayInfo(lessonId, month);
+    const res = await getPlanCaledarDayInfo(lessonId, month);
 
     return res;
   };

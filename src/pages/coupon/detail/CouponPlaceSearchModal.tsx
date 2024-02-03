@@ -1,35 +1,26 @@
-import CouponService, { PlaceResult } from "@/services/CouponService";
-import { Button, Checkbox, Input, Modal, message } from "antd";
-import { useState } from "react";
-import styled from "styled-components";
+import CouponService, { PlaceResult } from '@/services/CouponService';
+import { Button, Checkbox, Input, Modal, message } from 'antd';
+import { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   open: boolean;
   onClose: () => void;
   placeList: PlaceResult[];
   setPlaceList: (placeList: PlaceResult[]) => void;
-  programList: PlaceResult["programs"][number][];
-  setProgramList: (programList: PlaceResult["programs"][number][]) => void;
+  programList: PlaceResult['programs'][number][];
+  setProgramList: (programList: PlaceResult['programs'][number][]) => void;
 };
 
-const CouponPlaceSearchModal = ({
-  open,
-  onClose,
-  placeList,
-  setPlaceList,
-  programList,
-  setProgramList,
-}: Props) => {
+const CouponPlaceSearchModal = ({ open, onClose, placeList, setPlaceList, programList, setProgramList }: Props) => {
   const [showResults, setShowResults] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [placeResults, setPlaceResults] = useState<PlaceResult[]>([]);
   const [tempPlaceList, setTempPlaceList] = useState<PlaceResult[]>([]);
-  const [tempProgramList, setTempProgramList] = useState<
-    PlaceResult["programs"][number][]
-  >([]);
+  const [tempProgramList, setTempProgramList] = useState<PlaceResult['programs'][number][]>([]);
 
   const handleClose = () => {
-    setQuery("");
+    setQuery('');
     setPlaceResults([]);
     setTempPlaceList([]);
     setTempProgramList([]);
@@ -52,11 +43,11 @@ const CouponPlaceSearchModal = ({
             ...program,
             name: `${place.name} - ${program.name}`,
           })),
-        }))
+        })),
       );
       setShowResults(true);
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -69,10 +60,10 @@ const CouponPlaceSearchModal = ({
       onCancel={handleClose}
       destroyOnClose
       footer={[
-        <Button key={"save"} onClick={handleSave}>
+        <Button key="save" onClick={handleSave}>
           저장
         </Button>,
-        <Button key={"cancel"} onClick={handleClose}>
+        <Button key="cancel" onClick={handleClose}>
           취소
         </Button>,
       ]}
@@ -99,15 +90,8 @@ const CouponPlaceSearchModal = ({
                   setTempPlaceList((prev) => [...prev, result]);
                   setTempProgramList((prev) => [...prev, ...result.programs]);
                 } else {
-                  setTempPlaceList((prev) =>
-                    prev.filter((place) => place.id !== result.id)
-                  );
-                  setTempProgramList((prev) =>
-                    prev.filter(
-                      (program) =>
-                        !result.programs.find((p) => p.id === program.id)
-                    )
-                  );
+                  setTempPlaceList((prev) => prev.filter((place) => place.id !== result.id));
+                  setTempProgramList((prev) => prev.filter((program) => !result.programs.find((p) => p.id === program.id)));
                 }
               }}
             >
@@ -122,9 +106,7 @@ const CouponPlaceSearchModal = ({
                       if (e.target.checked) {
                         setTempProgramList((prev) => [...prev, program]);
                       } else {
-                        setTempProgramList((prev) =>
-                          prev.filter((p) => p.id !== program.id)
-                        );
+                        setTempProgramList((prev) => prev.filter((p) => p.id !== program.id));
                       }
                     }}
                   >

@@ -3,10 +3,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useQuery } from 'react-query';
-import ProductService from '../../services/ProductService';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import ProductStudioList from '../../components/product/ProductStudioList';
+import { getStudios } from '@/services/PlaceService.ts';
 
 /**
  *
@@ -16,7 +16,7 @@ const OrderStatusPage = () => {
   const navigation = useNavigate();
 
   const fetchList = async () => {
-    const response = await ProductService.getStudios();
+    const response = await getStudios();
 
     return response || [];
   };

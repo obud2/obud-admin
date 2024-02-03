@@ -1,7 +1,7 @@
-import { API_URL } from "../constants/config";
+import { API_URL } from '../constants/config';
 
-import axiosInstance from "../constants/axiosInstance";
-import { Banner, BannerOrderItem } from "@/entities/banner";
+import axiosInstance from '../constants/axiosInstance';
+import { Banner, BannerOrderItem } from '@/entities/banner';
 
 const info = (id: any) => {
   return new Promise((resolve) => {
@@ -16,7 +16,7 @@ const saveItem = (type: string, param: { createdAt: any }) => {
     if (param.createdAt) delete param.createdAt;
     axiosInstance
       .request({
-        method: type === "new" ? "post" : "put",
+        method: type === 'new' ? 'post' : 'put',
         url: `${API_URL}/banner/`,
         data: param,
       })
@@ -34,9 +34,7 @@ type ListBannersResponse = {
 };
 
 const listBanners = async () => {
-  const response = await axiosInstance.get<ListBannersResponse>(
-    `${API_URL}/v2/banner/all`
-  );
+  const response = await axiosInstance.get<ListBannersResponse>(`${API_URL}/v2/banner/all`);
   return response.data.value;
 };
 
@@ -72,9 +70,7 @@ type UpdateBannerVisibilityRequest = {
   isShow: boolean;
 };
 
-const updateBannerVisibility = async (
-  request: UpdateBannerVisibilityRequest
-) => {
+const updateBannerVisibility = async (request: UpdateBannerVisibilityRequest) => {
   await axiosInstance.put(`${API_URL}/v2/banner/${request.bannerId}`, {
     isShow: request.isShow,
   });

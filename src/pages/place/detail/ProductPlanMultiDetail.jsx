@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 import UserService from '../../../services/UserService';
-import ProductService from '../../../services/ProductService';
 
 import _ from 'lodash';
 import dayjs from 'dayjs';
@@ -10,13 +9,13 @@ import swal from 'sweetalert';
 
 import 'dayjs/locale/ko';
 import locale from 'antd/es/date-picker/locale/ko_KR';
-import moment from 'moment';
 
 import { WEEK, disabledDate } from './ProductPlanMultiDetail.option';
 import { Flex } from '../../../styles/CommonStyles';
 import { Button, DatePicker, Input, InputNumber, Select, Space, Switch, TimePicker, Typography } from 'antd';
 
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
+import { setMultiPlan } from '@/services/PlaceService';
 
 const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   const dateFormat = 'YYYY-MM-DD';
@@ -85,7 +84,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
       week.push(e);
     }
 
-    setBody((prev) => ({ ...prev, ['days']: week }));
+    setBody((prev) => ({ ...prev, days: week }));
   };
 
   const onClickAddTime = () => {
@@ -107,8 +106,8 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
       const startTime = e.split('T')[0];
       const endTime = e.split('T')[1];
 
-      temp[index]['startTime'] = startTime;
-      temp[index]['endTime'] = endTime;
+      temp[index].startTime = startTime;
+      temp[index].endTime = endTime;
     } else {
       temp[index][type] = e;
     }
@@ -149,9 +148,9 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     }
 
     if (isOption) {
-      param['payOption'] = option;
+      param.payOption = option;
     } else {
-      param['payOption'] = {};
+      param.payOption = {};
     }
 
     if (isOption) {
@@ -177,9 +176,9 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     }
 
     setIsLoading(true);
-    ProductService?.setMultiPlan(param)
+    setMultiPlan(param)
       .then((res) => {
-        setNotiMessage(`등록 되었습니다.`);
+        setNotiMessage('등록 되었습니다.');
       })
       .catch((message) => {
         setNotiMessage(message || '등록에 실패하였습니다.');
@@ -193,7 +192,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   const emptyCheck = (text) => {
     swal({
       title: '',
-      text: text,
+      text,
       icon: 'warning',
     });
   };

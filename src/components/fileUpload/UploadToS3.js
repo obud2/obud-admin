@@ -1,10 +1,10 @@
-import imageCompression from "browser-image-compression";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import imageCompression from 'browser-image-compression';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
-import { BASE_IMG_URL, S3_BUCKET } from "../../constants/config";
+import { S3_BUCKET } from '../../constants/config';
+import awsmobile from '../../../aws-exports';
 
-const REGION = "ap-northeast-2";
-import awsmobile from "../../../aws-exports";
+const REGION = 'ap-northeast-2';
 
 const myBucket = new S3Client({
   region: REGION,
@@ -12,33 +12,27 @@ const myBucket = new S3Client({
     accessKeyId: awsmobile.aws_accessKeyId,
     secretAccessKey: awsmobile.aws_secretAccessKey,
   },
-  signatureVersion: "v4",
+  signatureVersion: 'v4',
 });
 
-export const GetObjectUrl = (key, folder) => {
-  return BASE_IMG_URL + key;
-};
-
 const UploadToS3 = (file, folder, id, callback, keyName) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const orgFileName = file.name;
-    const ext = file?.name?.substr(file.name.lastIndexOf(".") + 1);
-    let _key = keyName
-      ? folder + "/" + id + "_" + keyName + "." + ext
-      : folder + "/" + id + "_" + file.name;
-    let params = {
-      ACL: "public-read",
+    const ext = file?.name?.substr(file.name.lastIndexOf('.') + 1);
+    const key = keyName ? `${folder}/${id}_${keyName}.${ext}` : `${folder}/${id}_${file.name}`;
+    const params = {
+      ACL: 'public-read',
       Body: file,
       Bucket: S3_BUCKET,
-      Key: _key,
+      Key: key,
     };
 
     const fileSize = Math.round(file.size / 1024 / 1024);
 
     if (fileSize > 1000) {
-      uploadToLarge(file, _key, S3_BUCKET, callback).then((large) => {
+      uploadToLarge(file, key, S3_BUCKET, callback).then((large) => {
         resolve({
-          key: _key,
+          key,
           name: orgFileName,
           path: large.Location,
         });
@@ -47,13 +41,13 @@ const UploadToS3 = (file, folder, id, callback, keyName) => {
       const command = new PutObjectCommand(params);
 
       try {
-        await myBucket.send(command);
-
-        resolve({
-          key: _key,
-          name: orgFileName,
-          path: `https://s3.${REGION}.amazonaws.com/${S3_BUCKET}/${_key}`,
-        });
+        myBucket.send(command).then(() =>
+          resolve({
+            key,
+            name: orgFileName,
+            path: `https://s3.${REGION}.amazonaws.com/${S3_BUCKET}/${key}`,
+          }),
+        );
       } catch (error) {
         console.log(error);
         alert(error);
@@ -65,32 +59,29 @@ const UploadToS3 = (file, folder, id, callback, keyName) => {
 
 let succeededParts = [];
 const uploadToLarge = (file, key, bucket, callback) => {
-  return new Promise(async (resolve) => {
+  return new Promise((resolve) => {
     console.info(`file size: ${Math.round(file.size / 1024 / 1024)}MB`);
-    const chunkSize = Math.pow(1024, 2) * 10; // chunk size is set to 10MB
+    const chunkSize = 1024 ** 2 * 10; // chunk size is set to 10MB
     const iterations = Math.ceil(file.size / chunkSize); // number of chunks to be broken
     const arr = Array.from(Array(iterations).keys()); // dummy array to loop through
-    let uploadId = ""; // we will use this later
     succeededParts = [];
     try {
-      await startUpload(key, bucket).then(async (result) => {
+      startUpload(key, bucket).then(async (result) => {
         arr.map(async (item) => {
           const blob = file.slice(item * chunkSize, (item + 1) * chunkSize);
           console.log(blob);
           await uploadPart(key, bucket, blob, result.UploadId, item + 1);
 
-          if (callback)
-            callback(Math.round((succeededParts.length / arr.length) * 100));
+          if (callback) callback(Math.round((succeededParts.length / arr.length) * 100));
 
           if (succeededParts.length === arr.length) {
-            console.log("UploadPart Fisnish", succeededParts.length);
-            const data = await completeUpload(
+            await completeUpload(
               key,
               bucket,
               result.UploadId,
-              succeededParts.sort((a, b) => a.PartNumber - b.PartNumber) // needs sorted array
+              succeededParts.sort((a, b) => a.PartNumber - b.PartNumber), // needs sorted array
             )
-              .catch((completeErr) => {
+              .catch(() => {
                 abortUpload(key, bucket, result.UploadId);
               })
               .then((complete) => {
@@ -160,7 +151,7 @@ const abortUpload = async (key, bucket, uploadId) => {
 };
 
 const completeUpload = async (key, bucket, uploadId, parts) => {
-  console.log("CompleteUpload >>>>>");
+  console.log('CompleteUpload >>>>>');
   const params = {
     Key: key,
     Bucket: bucket,

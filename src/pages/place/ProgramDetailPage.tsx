@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
@@ -5,12 +7,11 @@ import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
 import { useQuery } from 'react-query';
-import ProductService from '../../services/ProductService';
 
 import ProductShellTitle from './ProductStudio';
 import ProductPlanDetail from './detail/ProductPlanDetail';
 
-import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
+import { SDataDetailBody } from '@/components/detailTable/DataDetailBody.styled';
 
 import Calendar from '../../components/caledar/Calendar';
 
@@ -19,12 +20,9 @@ import ProductPlanResevationList from './detail/ProductPlanResevationList';
 import ProductPlanMultiDetail from './detail/ProductPlanMultiDetail';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
+import { getLesson, getMonthPlans, getStudio } from '@/services/PlaceService';
 
-/**
- *
- * @returns 일정(Plan) 페이지
- */
-const ProductLessonPage = () => {
+const ProgramDetailPage = () => {
   const { id, studioId } = useParams();
 
   const dateFormat = 'YYYY-MM';
@@ -43,15 +41,16 @@ const ProductLessonPage = () => {
     if (notiMessage) {
       setTimeout(() => {
         setNotiMessage('');
-      }, [2000]);
+      }, 2000);
     }
   }, [notiMessage]);
 
   const fetchData = async () => {
-    const res = await ProductService?.getMonthPlans(studioId, month);
+    if (!studioId) return;
+    const res = await getMonthPlans(studioId, month);
     const list = res?.value || [];
 
-    list?.map((a) => {
+    list.forEach((a) => {
       const start = moment(a.startDate).format('YYYY-MM-DD');
       const end = moment(a.endDate).format('YYYY-MM-DD');
       const startTime = moment(a.startDate).format('HH:mm');
@@ -60,20 +59,18 @@ const ProductLessonPage = () => {
       const currentMember = a?.currentMember || 0;
       const maxMember = a?.maxMember || 0;
 
-      a['start'] = start;
-      a['end'] = end;
-      a['allDay'] = true;
-      a['title'] = `${startTime}-${endTime} :: ${currentMember} / ${maxMember}`;
-      a['numberOfPeople'] = `${currentMember} / ${maxMember}`;
+      a.start = start;
+      a.end = end;
+      a.allDay = true;
+      a.title = `${startTime}-${endTime} :: ${currentMember} / ${maxMember}`;
+      a.numberOfPeople = `${currentMember} / ${maxMember}`;
     });
 
     return list;
   };
 
-  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', id], () => ProductService?.getStudio(id));
-  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', studioId], () =>
-    ProductService?.getLesson(studioId),
-  );
+  const { data: studio, isLoading: isStudioLoading } = useQuery(['product-studio-detail', id], () => getStudio(id));
+  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', studioId], () => getLesson(studioId));
   const { data: plan, isLoading: isPlanLoading, refetch } = useQuery([`product-paln-list-${studioId}`, month], () => fetchData());
 
   const onChangeDate = async (e) => {
@@ -179,4 +176,4 @@ const ProductLessonPage = () => {
   );
 };
 
-export default ProductLessonPage;
+export default ProgramDetailPage;

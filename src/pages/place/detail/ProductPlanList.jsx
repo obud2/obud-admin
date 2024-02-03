@@ -10,7 +10,7 @@ import moment from 'moment';
 
 import DataDetailBody from '../../../components/detailTable/DataDetailBody';
 import DataListTable from '../../../components/dataTable/DataListTable';
-import ProductService from '../../../services/ProductService';
+import { clonePlan, deletePlan, setPlan } from '@/services/PlaceService';
 
 /**
  *
@@ -40,7 +40,7 @@ const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage,
 
     copy?.map((a) => {
       if (a?.currentMember > 0) {
-        a['isDisabled'] = true;
+        a.isDisabled = true;
       }
     });
 
@@ -51,7 +51,7 @@ const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage,
     const param = {
       id: data?.id,
 
-      lessonId: lessonId,
+      lessonId,
       startDate: data?.startDate,
       endDate: data?.endDate,
       instructor: data?.instructor,
@@ -61,7 +61,7 @@ const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage,
       maxMember: data?.maxMember,
     };
 
-    ProductService?.setPlan('edit', param)
+    setPlan('edit', param)
       .then(() => {
         setNotiMessage('수정 되었습니다.');
       })
@@ -178,7 +178,7 @@ const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage,
       icon: 'info',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await ProductService?.clonePlan(id);
+        await clonePlan(id);
         refetch();
       }
     });
@@ -192,7 +192,7 @@ const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage,
       icon: 'warning',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await ProductService?.deletePlan(id);
+        await deletePlan(id);
         refetch();
       }
     });

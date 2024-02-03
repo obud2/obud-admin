@@ -9,7 +9,9 @@ export const SMain = styled.main`
   margin-left: ${DRAWER_CLOSE_WIDTH};
   padding-right: 0;
 
-  transition: margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms, width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  transition:
+    margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
   padding: 20px;
 

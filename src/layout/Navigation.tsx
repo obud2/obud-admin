@@ -1,19 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from 'react';
 
-import _ from "lodash";
+import _ from 'lodash';
 
-import useMenuByRole from "../hook/useMenuByRole";
-import useDrawer from "../store/useDrawer";
+import useMenuByRole from '../hook/useMenuByRole';
+import useDrawer from '../store/useDrawer';
 
-import { LayoutContext } from "../context/LayoutContext";
+import { LayoutContext } from '../context/LayoutContext';
 
-import AvatarMenu from "./AvatarMenu";
-import NavCollapse from "./NavCollapse";
-import NavGroup from "./NavGroup";
-import NavItem from "./NavItem";
-import NavTitle from "./NavTitle";
+import AvatarMenu from './AvatarMenu';
+import NavCollapse from './NavCollapse';
+import NavGroup from './NavGroup';
+import NavItem from './NavItem';
+import NavTitle from './NavTitle';
 
-import { SNavigation } from "./Navigation.style";
+import { SNavigation } from './Navigation.style';
 
 type Props = {
   open?: boolean;
@@ -56,18 +56,16 @@ const Navigation = ({ open, handleDrawerToggle }: Props) => {
           menu.map((item: any, i) => (
             <React.Fragment key={`menu_${item?.id}_${i}`}>
               {/* 그룹 아이템  : isShow 포함 */}
-              {item.type === "group" && <NavGroup item={item} />}
+              {item.type === 'group' && <NavGroup item={item} />}
 
               {/* 제목 포함 아이템 */}
-              {item.type === "group_title" && <NavTitle item={item} />}
+              {item.type === 'group_title' && <NavTitle item={item} />}
 
               {/* 하위 메뉴 아이템 : isShow 포함 */}
-              {item.type === "collapse" && <NavCollapse item={item} />}
+              {item.type === 'collapse' && <NavCollapse item={item} />}
 
               {/* 메뉴 아이템 : isShow 포함 */}
-              {(item.type === "item" || item.type === "link") && (
-                <NavItem item={item} />
-              )}
+              {(item.type === 'item' || item.type === 'link') && <NavItem item={item} />}
             </React.Fragment>
           ))
         ) : (
@@ -80,10 +78,7 @@ const Navigation = ({ open, handleDrawerToggle }: Props) => {
       </div>
 
       <div className="navigation-footer-container">
-        <div
-          className="navition-drawer-toggle-container"
-          onClick={handleDrawerToggle}
-        >
+        <div className="navition-drawer-toggle-container" onClick={handleDrawerToggle}>
           <button>
             <span className="arrow-icons" />
             <span className="arrow-icons" />

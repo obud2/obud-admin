@@ -1,29 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Button } from "antd";
+import { Button } from 'antd';
 
-import { useInfiniteQuery } from "react-query";
-import { EXEL_HEADER, FILTER, LIST_HEADER } from "./UserListPage.option";
+import { useInfiniteQuery } from 'react-query';
+import { EXEL_HEADER, FILTER, LIST_HEADER } from './UserListPage.option';
 
-import { STUDIO } from "../../constants/config";
-import { UserContext } from "../../context/UserContext";
+import { STUDIO } from '../../constants/config';
+import { UserContext } from '../../context/UserContext';
 
-import UserService from "../../services/UserService";
-import UserDetail from "./UserDetail";
+import UserService from '../../services/UserService';
+import UserDetail from './UserDetail';
 
-import InstructorRegist from "./InstructorRegist";
+import InstructorRegist from './InstructorRegist';
 
-import DataTableHeader from "../../components/dataTable/DataTableHeader";
-import DataListTable from "../../components/dataTable/DataListTable";
+import DataTableHeader from '../../components/dataTable/DataTableHeader';
+import DataListTable from '../../components/dataTable/DataListTable';
 
 const UserListPage = () => {
   const [searchFilter, setSearchFilter] = useState({
-    value: "",
-    filter: "",
-    role: "USR",
+    value: '',
+    filter: '',
+    role: 'USR',
   });
 
-  const [detailId, setDetailId] = useState("");
+  const [detailId, setDetailId] = useState('');
   const [isRegistOpen, setIsRegistOpen] = useState(false);
 
   const [header, setHeader] = useState([]);
@@ -36,26 +36,15 @@ const UserListPage = () => {
     if (isAdmin) {
       // 어드민 전용 API
       if (!searchFilter?.filter) {
-        res = await UserService.getUserAll(
-          cursor?.pageParam,
-          searchFilter?.value
-        );
+        res = await UserService.getUserAll(cursor?.pageParam, searchFilter?.value);
       } else {
-        res = await UserService.getUserList(
-          cursor?.pageParam,
-          searchFilter?.value,
-          searchFilter?.filter,
-          searchFilter?.role
-        );
+        res = await UserService.getUserList(cursor?.pageParam, searchFilter?.value, searchFilter?.filter, searchFilter?.role);
       }
     }
 
     if (user.group === STUDIO) {
       // 스튜디오 관리자 전용 API
-      res = await UserService.getStudioInstructor(
-        cursor?.pageParam,
-        searchFilter?.value
-      );
+      res = await UserService.getStudioInstructor(cursor?.pageParam, searchFilter?.value);
     }
 
     return {
@@ -65,16 +54,9 @@ const UserListPage = () => {
     };
   };
 
-  const {
-    data,
-    isLoading,
-    refetch,
-    isRefetching,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery(
+  const { data, isLoading, refetch, isRefetching, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     [
-      "user-list",
+      'user-list',
       {
         filter: searchFilter?.filter,
         role: searchFilter?.role,
@@ -89,7 +71,7 @@ const UserListPage = () => {
         else result = undefined;
         return result;
       },
-    }
+    },
   );
 
   useEffect(() => {
@@ -98,14 +80,10 @@ const UserListPage = () => {
     //  스튜디오 관리자 강사 해지 버튼 추가
     if (user?.group === STUDIO) {
       temp.push({
-        id: "id",
-        label: "",
+        id: 'id',
+        label: '',
         customBodyRender: (value) => {
-          return (
-            <Button onClick={() => onClickDeleteInstructor(value, user?.id)}>
-              해지
-            </Button>
-          );
+          return <Button onClick={() => onClickDeleteInstructor(value, user?.id)}>해지</Button>;
         },
       });
     }
@@ -115,10 +93,10 @@ const UserListPage = () => {
 
   const onClickDeleteInstructor = (instructorId, studiosAdminId) => {
     swal({
-      title: "",
-      text: "해당 강사 권한을 해지하시겠습니가?",
+      title: '',
+      text: '해당 강사 권한을 해지하시겠습니가?',
       buttons: true,
-      icon: "warning",
+      icon: 'warning',
     }).then(async (willDelete) => {
       if (willDelete) {
         const body = {
@@ -138,7 +116,7 @@ const UserListPage = () => {
   };
 
   const doClear = async () => {
-    await setSearchFilter({ value: "", filter: "", role: "USR" });
+    await setSearchFilter({ value: '', filter: '', role: 'USR' });
     refetch();
   };
 
@@ -153,22 +131,18 @@ const UserListPage = () => {
   const onDetailClose = (refresh) => {
     if (refresh) refetch();
 
-    setDetailId("");
+    setDetailId('');
   };
 
   return (
     <React.Fragment>
       <DataTableHeader
         refresh={refetch}
-        resister={
-          user?.group === STUDIO
-            ? { text: "강사등록", onClick: onClickRegistOpen }
-            : ""
-        } // 스튜디오 관리자 강사 등록 폼 추가
-        doSearch={(e) => doSearch("value", e)}
+        resister={user?.group === STUDIO ? { text: '강사등록', onClick: onClickRegistOpen } : ''} // 스튜디오 관리자 강사 등록 폼 추가
+        doSearch={(e) => doSearch('value', e)}
         doFilter={(headerId) => {
-          doSearch("filter", headerId);
-          doSearch("role", headerId === "GR0100" ? "ADMIN" : "USR");
+          doSearch('filter', headerId);
+          doSearch('role', headerId === 'GR0100' ? 'ADMIN' : 'USR');
         }}
         doClear={doClear}
         filter={isAdmin ? FILTER : []} // 어드민만 필터 노출
@@ -194,20 +168,10 @@ const UserListPage = () => {
       />
 
       {/* 사용자 상세 */}
-      <UserDetail
-        id={detailId?.id || ""}
-        open={detailId}
-        onClose={() => onDetailClose(false)}
-        refresh={() => onDetailClose(true)}
-      />
+      <UserDetail id={detailId?.id || ''} open={detailId} onClose={() => onDetailClose(false)} refresh={() => onDetailClose(true)} />
 
       {/* 강사 등록 폼 */}
-      <InstructorRegist
-        isOpen={isRegistOpen}
-        isClose={() => setIsRegistOpen(false)}
-        studiosId={user?.id || ""}
-        refresh={refetch}
-      />
+      <InstructorRegist isOpen={isRegistOpen} isClose={() => setIsRegistOpen(false)} studiosId={user?.id || ''} refresh={refetch} />
     </React.Fragment>
   );
 };

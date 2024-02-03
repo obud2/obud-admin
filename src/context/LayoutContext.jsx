@@ -6,7 +6,7 @@ export const LayoutContext = React.createContext({
   matchese: '',
 });
 
-const LayoutContextProvider = props => {
+const LayoutContextProvider = (props) => {
   const [matchese, setMatches] = useState(window.matchMedia(`(max-width:${MOBILE_SIZE})`).matches);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const LayoutContextProvider = props => {
     return () => window.addEventListener('resize', resizePage);
   }, []);
 
-  const resizePage = e => {
+  const resizePage = (e) => {
     setMatches(window.matchMedia(`(max-width:${MOBILE_SIZE})`).matches);
   };
 

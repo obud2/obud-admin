@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { notification } from "antd";
+import { notification } from 'antd';
 
-import DataTableTitle from "./DataTableTitle";
-import DataSearchBox from "./DataSearchBox";
-import DataTableFilter from "./DataTableFilter";
+import DataTableTitle from './DataTableTitle';
+import DataSearchBox from './DataSearchBox';
+import DataTableFilter from './DataTableFilter';
 
 /**
  *
@@ -53,15 +53,11 @@ const DataTableHeader = ({
 
   useEffect(() => {
     if (notiMessage || notiDescription) {
-      openNotification(notiMessage, notiDescription, "bottomRight");
+      openNotification(notiMessage, notiDescription, 'bottomRight');
     }
   }, [notiMessage, notiDescription]);
 
-  const openNotification = (
-    notiMessage: any,
-    notiDescription: any,
-    placement: any
-  ) => {
+  const openNotification = (notiMessage: any, notiDescription: any, placement: any) => {
     api.info({
       message: notiMessage,
       description: notiDescription,
@@ -82,12 +78,7 @@ const DataTableHeader = ({
         disabled={disabled}
       />
       {filter && <DataTableFilter filter={filter} onChangeFilter={doFilter} />}
-      <DataSearchBox
-        doSearch={doSearch}
-        placeholder={searchPlaceholder}
-        isLoading={isLoading}
-        disabled={disabled}
-      />
+      <DataSearchBox doSearch={doSearch} placeholder={searchPlaceholder} isLoading={isLoading} disabled={disabled} />
     </React.Fragment>
   );
 };
@@ -100,11 +91,11 @@ const DataTableHeader = ({
  * @returns
  */
 export const dataFilter = async (filter: string, data: any, key: string) => {
-  let dataCopy = [...data];
+  const dataCopy = [...data];
   let rtData = [];
 
   if (filter) {
-    dataCopy?.map((d) => {
+    dataCopy?.forEach((d) => {
       if (d?.[key].includes(filter)) {
         rtData.push(d);
       }
@@ -124,11 +115,11 @@ export const dataFilter = async (filter: string, data: any, key: string) => {
  * @returns
  */
 export const tabFilter = (filter: string, data: any[], key: string) => {
-  let dataCopy = [...data];
+  const dataCopy = [...data];
   let rtData = [];
 
   if (filter) {
-    dataCopy?.map((d) => {
+    dataCopy?.forEach((d) => {
       if (d?.[key] === filter) {
         rtData.push(d);
       }

@@ -8,7 +8,7 @@ import { EXEL_HEADER, FILTER, LIST_HEADER } from './OrderCancelPage.option';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
 import OrderCancelModal from './OrderCancelModal';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 const OrderCancelPage = () => {
   const [detail, setDetail] = useState({});

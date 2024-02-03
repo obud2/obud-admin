@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 const usePage = create(
   devtools((set, get) => ({
@@ -12,7 +12,7 @@ const usePage = create(
     clearPage: () => {
       set({ uPage: 0 });
     },
-  }))
+  })),
 );
 
 export default usePage;

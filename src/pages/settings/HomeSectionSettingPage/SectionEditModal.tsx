@@ -1,12 +1,12 @@
-import { DataDetailItem } from "@/components/detailTable/DataDetailBody";
-import { SectionItem, SectionWithItems } from "@/entities/place";
-import PlaceService from "@/services/PlaceService";
-import { Button, Input, Modal, Tag, message } from "antd";
-import { useState } from "react";
-import { RxDragHandleDots1 } from "react-icons/rx";
-import { ReactSortable } from "react-sortablejs";
-import styled from "styled-components";
-import SectionFindModal from "./SectionFindModal";
+import { DataDetailItem } from '@/components/detailTable/DataDetailBody';
+import { SectionItem, SectionWithItems } from '@/entities/place';
+import { updateSectionItems } from '@/services/PlaceV2Service';
+import { Button, Input, Modal, Tag, message } from 'antd';
+import { useState } from 'react';
+import { RxDragHandleDots1 } from 'react-icons/rx';
+import { ReactSortable } from 'react-sortablejs';
+import styled from 'styled-components';
+import SectionFindModal from './SectionFindModal';
 
 type Props = {
   sectionWithItems: SectionWithItems;
@@ -15,12 +15,7 @@ type Props = {
   refetch: () => void;
 };
 
-const SectionEditModal = ({
-  sectionWithItems,
-  open,
-  onClose,
-  refetch,
-}: Props) => {
+const SectionEditModal = ({ sectionWithItems, open, onClose, refetch }: Props) => {
   const [openFindItemModal, setOpenFindItemModal] = useState(false);
 
   const [label, setLabel] = useState(sectionWithItems.section.name);
@@ -36,9 +31,7 @@ const SectionEditModal = ({
   };
 
   const onAddItems = (items: SectionItem[]) => {
-    const filteredItems = items.filter(
-      (item) => !sectionWithItems.items.find((i) => i.id === item.id)
-    );
+    const filteredItems = items.filter((item) => !sectionWithItems.items.find((i) => i.id === item.id));
     setItems((prev) => [...prev, ...filteredItems]);
   };
 
@@ -50,15 +43,15 @@ const SectionEditModal = ({
     }));
 
     try {
-      await PlaceService.updateSectionItems({
+      await updateSectionItems({
         sectionId: sectionWithItems.section.id,
         items: requestItems,
       });
-      message.success("저장되었습니다.");
+      message.success('저장되었습니다.');
       refetch();
       handleClose();
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
       console.log(err);
     }
   };
@@ -69,33 +62,23 @@ const SectionEditModal = ({
       open={open}
       onCancel={handleClose}
       footer={[
-        <Button key={"save"} onClick={handleSubmit}>
+        <Button key="save" onClick={handleSubmit}>
           저장
         </Button>,
-        <Button key={"cancel"} onClick={handleClose}>
+        <Button key="cancel" onClick={handleClose}>
           취소
         </Button>,
       ]}
     >
       <DataDetailItem label="섹션명">
         {/* 아직 Input Value 수정은 서버에서 지원하지 않는다. */}
-        <Input
-          disabled
-          value={label}
-          onChange={(e) => setLabel(e.target.value)}
-        />
+        <Input disabled value={label} onChange={(e) => setLabel(e.target.value)} />
       </DataDetailItem>
 
       <Wrapper>
         <ButtonWrapper>
-          <Button onClick={() => setOpenFindItemModal(true)}>
-            리스트 검색
-          </Button>
-          <SectionFindModal
-            open={openFindItemModal}
-            onClose={() => setOpenFindItemModal(false)}
-            addSectionItems={onAddItems}
-          />
+          <Button onClick={() => setOpenFindItemModal(true)}>리스트 검색</Button>
+          <SectionFindModal open={openFindItemModal} onClose={() => setOpenFindItemModal(false)} addSectionItems={onAddItems} />
         </ButtonWrapper>
         <ResultWrapper>
           <ReactSortable
@@ -103,7 +86,7 @@ const SectionEditModal = ({
             list={items}
             setList={setItems}
             animation={200}
-            delayOnTouchStart={true}
+            delayOnTouchStart
             delay={1}
             handle=".section-with-items-drag-button"
           >
@@ -114,10 +97,7 @@ const SectionEditModal = ({
                   <div>{item.name}</div>
                   <Tag>{item.type}</Tag>
                 </Item>
-                <Button
-                  style={{ marginLeft: "auto" }}
-                  onClick={() => onDeleteItem(item)}
-                >
+                <Button style={{ marginLeft: 'auto' }} onClick={() => onDeleteItem(item)}>
                   삭제
                 </Button>
               </SSectionItem>

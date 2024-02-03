@@ -1,10 +1,10 @@
-import { API_URL } from "../constants/config";
-import axiosInstance from "../constants/axiosInstance";
+import { API_URL } from '../constants/config';
+import axiosInstance from '../constants/axiosInstance';
 
 const getList = () =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .get(API_URL + "/user/group")
+      .get(`${API_URL}/user/group`)
       .then((response) => {
         resolve(response.data.value.sort((a, b) => a?.id > b?.id));
       })
@@ -14,7 +14,7 @@ const getList = () =>
 const getItem = (id) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .get(API_URL + "/user/group/" + id)
+      .get(`${API_URL}/user/group/${id}`)
       .then((response) => resolve(response.data.value))
       .catch(reject);
   });
@@ -22,7 +22,7 @@ const getItem = (id) =>
 const createItem = (param) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .post(API_URL + "/user/group", param)
+      .post(`${API_URL}/user/group`, param)
       .then((response) => resolve(response.data.value))
       .catch(reject);
   });
@@ -30,17 +30,14 @@ const createItem = (param) =>
 const updateItem = (param) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .put(API_URL + "/user/group/", param)
+      .put(`${API_URL}/user/group/`, param)
       .then((response) => resolve(response.data.value))
       .catch(reject);
   });
 
 const deleteItem = (id) =>
   new Promise((resolve, reject) => {
-    axiosInstance
-      .delete(API_URL + "/user/group/" + id)
-      .then(resolve)
-      .catch(reject);
+    axiosInstance.delete(`${API_URL}/user/group/${id}`).then(resolve).catch(reject);
   });
 
 const GroupService = {

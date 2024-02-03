@@ -1,8 +1,8 @@
-import { StudioCategory } from "@/entities/place";
-import { Button } from "antd";
-import { useState } from "react";
-import styled from "styled-components";
-import CategoryEditModal from "./CategoryEditModal";
+import { StudioCategory } from '@/entities/place';
+import { Button } from 'antd';
+import { useState } from 'react';
+import styled from 'styled-components';
+import CategoryEditModal from './CategoryEditModal';
 
 type Props = {
   categoryId: number;
@@ -18,12 +18,7 @@ const CategoryItem = ({ categoryId, category }: Props) => {
       <div className="action-container">
         <Button onClick={() => setEditModalOpen(true)}>수정</Button>
       </div>
-      <CategoryEditModal
-        categoryId={categoryId}
-        category={category}
-        open={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-      />
+      <CategoryEditModal categoryId={categoryId} category={category} open={editModalOpen} onClose={() => setEditModalOpen(false)} />
     </SCategoryItem>
   );
 };
@@ -40,7 +35,7 @@ const SCategoryItem = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
-  width: ;
+  width:;
 
   .action-container {
     font-size: 1.2rem;

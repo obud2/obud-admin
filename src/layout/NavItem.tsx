@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { NavigationContext } from "../context/NavigationContext";
+import { NavigationContext } from '../context/NavigationContext';
 
-import CustomIcon from "./CustomIcon";
-import { SNavItem } from "./NavItem.styled";
-import useDrawer from "../store/useDrawer";
+import CustomIcon from './CustomIcon';
+import { SNavItem } from './NavItem.styled';
+import useDrawer from '../store/useDrawer';
 
 type Props = {
   item: any; // TODO: type
@@ -25,8 +25,8 @@ const NavItem = ({ item, activeCheck }: Props) => {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    const url = item?.url?.split("/");
-    const path = location?.pathname?.split("/");
+    const url = item?.url?.split('/');
+    const path = location?.pathname?.split('/');
 
     if (url[0] === path[0] && url[1] === path[1] && url[2] === path[2]) {
       setIsActive(true);
@@ -42,7 +42,7 @@ const NavItem = ({ item, activeCheck }: Props) => {
   }, [isActive]);
 
   const onRouter = () => {
-    if (item?.type === "link") {
+    if (item?.type === 'link') {
       window.open(item?.url);
     } else {
       navigator(item?.url);
@@ -51,18 +51,8 @@ const NavItem = ({ item, activeCheck }: Props) => {
 
   return (
     item.isShow && (
-      <SNavItem
-        active={isActive}
-        onClick={onRouter}
-        open={open || isDrawerOpen}
-      >
-        {item.icon && (
-          <CustomIcon
-            type={item.icon}
-            style={{ fontSize: "18px" }}
-            theme="Outlined"
-          />
-        )}
+      <SNavItem active={isActive} onClick={onRouter} open={open || isDrawerOpen}>
+        {item.icon && <CustomIcon type={item.icon} style={{ fontSize: '18px' }} theme="Outlined" />}
         <p className="nav-title">{item.title}</p>
       </SNavItem>
     )

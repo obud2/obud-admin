@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 import UserService from '../../../services/UserService';
-import ProductService from '../../../services/ProductService';
 
 import dayjs from 'dayjs';
 import swal from 'sweetalert';
@@ -13,6 +12,7 @@ import locale from 'antd/es/date-picker/locale/ko_KR';
 import { Button, DatePicker, Input, InputNumber, Select, Switch } from 'antd';
 
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
+import { clonePlan, deletePlan, getPlan, setPlan } from '@/services/PlaceService';
 
 /**
  *
@@ -61,7 +61,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     if (id && id !== 'new') {
       setIsLoading(true);
 
-      ProductService?.getPlan(id).then((res) => {
+      getPlan(id).then((res) => {
         if (res?.currentMember > 0) {
           setIsDisabled(true);
         }
@@ -127,9 +127,9 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     }
 
     if (isOption) {
-      param['payOption'] = option;
+      param.payOption = option;
     } else {
-      param['payOption'] = {};
+      param.payOption = {};
     }
 
     if (isOption) {
@@ -155,7 +155,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     }
 
     setIsLoading(true);
-    ProductService?.setPlan(id, param)
+    setPlan(id, param)
       .then(() => {
         setNotiMessage(`${text} 되었습니다.`);
       })
@@ -176,7 +176,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
       icon: 'info',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await ProductService?.clonePlan(id);
+        await clonePlan(id);
         refetch();
       }
     });
@@ -190,7 +190,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
       icon: 'warning',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await ProductService?.deletePlan(id);
+        await deletePlan(id);
         refetch();
       }
     });
@@ -199,7 +199,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
   const emptyCheck = (text) => {
     swal({
       title: '',
-      text: text,
+      text,
       icon: 'warning',
     });
   };

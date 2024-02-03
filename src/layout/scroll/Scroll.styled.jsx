@@ -26,7 +26,9 @@ export const SScrollTopBtn = styled.button`
 
   opacity: 0;
   visibility: hidden;
-  transition: opacity 500ms, visibility 500ms;
+  transition:
+    opacity 500ms,
+    visibility 500ms;
 
   background-color: #ffffff;
   box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 5px 1px;
@@ -43,6 +45,8 @@ export const SScrollTopBtn = styled.button`
     css`
       opacity: 1;
       visibility: unset;
-      transition: opacity 500ms, visibility 500ms;
+      transition:
+        opacity 500ms,
+        visibility 500ms;
     `};
 `;

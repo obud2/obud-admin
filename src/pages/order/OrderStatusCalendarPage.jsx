@@ -5,9 +5,8 @@ import { useParams } from 'react-router-dom';
 import Calendar from '../../components/caledar/Calendar';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
-import ProductService from '../../services/ProductService';
 import ProductPlanResevationList from '../product/detail/ProductPlanResevationList';
-import OrderStatusCalendarPalnList from './status/OrderStatusCalendarPalnList';
+import { getPlanCaledar, getPlanCaledarDayInfo, getStudio } from '@/services/PlaceService';
 
 /**
  * @brief 일정(Plan) 페이지
@@ -33,11 +32,11 @@ const OrderStatusCalendarPage = () => {
   }, [notiMessage]);
 
   const fetchStudioData = async () => {
-    return await ProductService?.getStudio(id);
+    return await getStudio(id);
   };
 
   const fetchLessonData = async () => {
-    const res = await ProductService?.getPlanCaledar(id, month, searchFilter?.filter);
+    const res = await getPlanCaledar(id, month, searchFilter?.filter);
 
     if (!res) return;
 
@@ -52,7 +51,7 @@ const OrderStatusCalendarPage = () => {
       });
     });
 
-    const dayDetails = await Promise.all(Object.entries(res.sortDate).map((a) => ProductService?.getPlanCaledarDayInfo(id, a?.[0])));
+    const dayDetails = await Promise.all(Object.entries(res.sortDate).map((a) => getPlanCaledarDayInfo(id, a?.[0])));
 
     dayDetails.forEach((details) => {
       details.forEach((detail) => {
@@ -101,11 +100,7 @@ const OrderStatusCalendarPage = () => {
   };
 
   const eventContent = (eventInfo) => {
-    return (
-      <>
-        <div style={{ padding: 3, fontSize: 11, whiteSpace: 'normal' }}>{eventInfo?.event?.title}</div>
-      </>
-    );
+    return <div style={{ padding: 3, fontSize: 11, whiteSpace: 'normal' }}>{eventInfo?.event?.title}</div>;
   };
 
   // const onResevation = (data) => {

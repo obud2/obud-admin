@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import moment from 'moment';
@@ -41,7 +41,6 @@ type Props = {
 
 const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventContent, statusHide }: any) => {
   const dateFormat = 'YYYYMMDDHHmmss';
-  console.log('list', list);
   const [temp, setTemp] = useState<Props[]>([]);
 
   const [selectDate, setSelectDate] = useState('');
@@ -51,18 +50,18 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
     if (list && list?.length > 0) {
       const copy = list || [];
 
-      copy?.map((a: any) => {
+      copy.forEach((a: any) => {
         const now = moment().format(dateFormat).valueOf();
         const start = moment(a.startDate).format(dateFormat).valueOf();
 
         if (Number(now) < Number(start)) {
-          if (!a?.backgroundColor) a['backgroundColor'] = startColor?.backgroundColor;
-          if (!a?.borderColor) a['borderColor'] = startColor?.borderColor;
-          if (!a?.textColor) a['textColor'] = startColor?.textColor;
+          if (!a?.backgroundColor) a.backgroundColor = startColor?.backgroundColor;
+          if (!a?.borderColor) a.borderColor = startColor?.borderColor;
+          if (!a?.textColor) a.textColor = startColor?.textColor;
         } else {
-          if (!a?.backgroundColor) a['backgroundColor'] = endColor?.backgroundColor;
-          if (!a?.borderColor) a['borderColor'] = endColor?.borderColor;
-          if (!a?.textColor) a['textColor'] = endColor?.textColor;
+          if (!a?.backgroundColor) a.backgroundColor = endColor?.backgroundColor;
+          if (!a?.borderColor) a.borderColor = endColor?.borderColor;
+          if (!a?.textColor) a.textColor = endColor?.textColor;
         }
       });
 
@@ -155,7 +154,7 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
         nowIndicator
         datesSet={onChangeDate}
         dateClick={handleDateClick}
-        selectable={true}
+        selectable
         eventDisplay="auto"
         eventClick={(info) => {
           onClick(

@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 
 import { Button, Checkbox, Input, Typography } from 'antd';
 
-import _ from 'lodash';
 import moment from 'moment';
 
 import { useQuery } from 'react-query';
-import ProductService from '../../../services/ProductService';
 
 import { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
 
@@ -15,6 +13,7 @@ import SideBar from '../../../components/sidebar/SideBar';
 import DataListTable from '../../../components/dataTable/DataListTable';
 
 import PlanCommentDetail from './option/PlanCommentDetail';
+import { getPlan, onAttendance } from '@/services/PlaceService.ts';
 
 /**
  *
@@ -29,7 +28,7 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
     isLoading: isPlanLoading,
     isRefetching: isPlanRefetchLoading,
     refetch,
-  } = useQuery(['product-plan-item', id], () => ProductService?.getPlan(id), {
+  } = useQuery(['product-plan-item', id], () => getPlan(id), {
     enabled: !!id,
   });
 
@@ -64,7 +63,7 @@ const ProductPlanResevationList = ({ id, lesson, studio, open, onClose }) => {
             isAttendance: !value,
           };
 
-          ProductService.onAttendance(param).then((res) => {
+          onAttendance(param).then((res) => {
             refetch();
           });
         };

@@ -1,6 +1,6 @@
-import { API_URL, INSTRUCTOR } from "../constants/config";
+import { API_URL, INSTRUCTOR } from '../constants/config';
 
-import axiosInstance from "../constants/axiosInstance";
+import axiosInstance from '../constants/axiosInstance';
 
 const limit = 20;
 
@@ -19,8 +19,8 @@ const getUserExcel = () => {
 
 const getUserAll = (cursor, keyword) => {
   return new Promise((resolve) => {
-    const keywordTemp = keyword ? `&keyword=${keyword}` : "";
-    const cursorTemp = cursor ? `&cursor=${cursor}` : "";
+    const keywordTemp = keyword ? `&keyword=${keyword}` : '';
+    const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
     axiosInstance
       .get(`${API_URL}/user/all?limit=${limit}${cursorTemp}${keywordTemp}`)
@@ -35,8 +35,8 @@ const getUserAll = (cursor, keyword) => {
 
 const getStudioInstructor = (cursor, keyword) => {
   return new Promise((resolve) => {
-    const keywordTemp = keyword ? `&keyword=${keyword}` : "";
-    const cursorTemp = cursor ? `&cursor=${cursor}` : "";
+    const keywordTemp = keyword ? `&keyword=${keyword}` : '';
+    const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
     axiosInstance
       .get(`${API_URL}/user?limit=${limit}${cursorTemp}${keywordTemp}`)
@@ -51,15 +51,13 @@ const getStudioInstructor = (cursor, keyword) => {
 
 const getUserList = (cursor, keyword, group, role) => {
   return new Promise((resolve) => {
-    const keywordTemp = keyword ? `&keyword=${keyword}` : "";
-    const cursorTemp = cursor ? `&cursor=${cursor}` : "";
-    const groupTemp = group ? `&group=${group}` : "";
+    const keywordTemp = keyword ? `&keyword=${keyword}` : '';
+    const cursorTemp = cursor ? `&cursor=${cursor}` : '';
+    const groupTemp = group ? `&group=${group}` : '';
 
-    const path = role.toLowerCase() === "admin" ? "/user/admin" : "/user";
+    const path = role.toLowerCase() === 'admin' ? '/user/admin' : '/user';
     axiosInstance
-      .get(
-        `${API_URL}${path}?limit=${limit}${cursorTemp}${groupTemp}${keywordTemp}`
-      )
+      .get(`${API_URL}${path}?limit=${limit}${cursorTemp}${groupTemp}${keywordTemp}`)
       .then((response) => {
         resolve(response?.data || []);
       })
@@ -113,7 +111,7 @@ const setUser = (method, param) => {
   return new Promise((resolve) => {
     axiosInstance
       .request({
-        method: method === "new" ? "post" : "put",
+        method: method === 'new' ? 'post' : 'put',
         url: `${API_URL}/user/`,
         data: param,
       })
@@ -138,11 +136,9 @@ const checkUser = ({ id }) => {
 const changePassword = (id, password) => {
   return new Promise((resolve) => {
     const param = { id, change: password };
-    axiosInstance
-      .put(`${API_URL}/user/changePassword/`, param)
-      .then((response) => {
-        resolve(response?.data?.Item);
-      });
+    axiosInstance.put(`${API_URL}/user/changePassword/`, param).then((response) => {
+      resolve(response?.data?.Item);
+    });
   });
 };
 
@@ -173,9 +169,7 @@ const setInstructor = (body) => {
 const deleteInstructor = (body) => {
   return new Promise((resolve) => {
     axiosInstance
-      .delete(
-        `${API_URL}/user/instructor?instructorId=${body?.instructorId}&studiosAdminId=${body?.studiosAdminId}`
-      )
+      .delete(`${API_URL}/user/instructor?instructorId=${body?.instructorId}&studiosAdminId=${body?.studiosAdminId}`)
       .then((response) => {
         resolve(response?.data || []);
       })

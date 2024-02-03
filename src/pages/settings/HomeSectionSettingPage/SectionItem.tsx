@@ -1,9 +1,9 @@
-import { SectionWithItems } from "@/entities/place";
-import { Button } from "antd";
-import { useState } from "react";
-import { RxDragHandleDots1 } from "react-icons/rx";
-import styled from "styled-components";
-import SectionEditModal from "./SectionEditModal";
+import { SectionWithItems } from '@/entities/place';
+import { Button } from 'antd';
+import { useState } from 'react';
+import { RxDragHandleDots1 } from 'react-icons/rx';
+import styled from 'styled-components';
+import SectionEditModal from './SectionEditModal';
 
 type Props = {
   sectionWithItems: SectionWithItems;
@@ -43,7 +43,7 @@ const SSectionItem = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
-  width: ;
+  width:;
 
   .action-container {
     font-size: 1.2rem;

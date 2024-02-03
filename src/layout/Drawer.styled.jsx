@@ -22,7 +22,10 @@ export const SDrawer = styled.nav`
   transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
   transform: translateX(0);
-  box-shadow: 2px 0px 4px -1px #f5f7f9, 4px 0px 5px 0px #f5f7f9, 1px 0px 10px 0px #f5f7f9;
+  box-shadow:
+    2px 0px 4px -1px #f5f7f9,
+    4px 0px 5px 0px #f5f7f9,
+    1px 0px 10px 0px #f5f7f9;
 
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 

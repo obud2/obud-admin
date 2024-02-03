@@ -1,9 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useContext, useState } from 'react';
 
 import { UserContext } from '../../context/UserContext';
 
 import { useQuery } from 'react-query';
-import ProductService from '../../services/ProductService';
 
 import { FILTER } from './ProductListPage.option';
 
@@ -11,12 +12,13 @@ import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import ProductStudioList from '../../components/product/ProductStudioList';
 
 import ProductStudioDetail from './detail/ProductStudioDetail';
+import { getStudios, sortStudio } from '@/services/PlaceService';
 
 /**
  *
  * @returns 공간(Studio) 페이지
  */
-const ProductListPage = () => {
+const PlaceListPage = () => {
   const { isAdmin } = useContext(UserContext);
 
   const [detailId, setDetailId] = useState('');
@@ -25,11 +27,11 @@ const ProductListPage = () => {
   const [searchFilter, setSearchFilter] = useState({ value: '', filter: '' });
 
   const fetchList = async () => {
-    let response = await ProductService.getStudios(searchFilter?.value);
+    let response = await getStudios(searchFilter.value);
 
-    if (searchFilter?.filter === 'show') {
+    if (searchFilter.filter === 'show') {
       response = response.filter((a) => a?.isShow);
-    } else if (searchFilter?.filter === 'hide') {
+    } else if (searchFilter.filter === 'hide') {
       response = response.filter((a) => !a?.isShow);
     }
 
@@ -38,26 +40,26 @@ const ProductListPage = () => {
 
   const { data, isLoading, refetch, isRefetching } = useQuery(['product-studio-list'], fetchList);
 
-  const doSearch = async (type, e) => {
-    await setSearchFilter((prev) => ({ ...prev, [type]: e }));
+  const doSearch = async (type: 'value' | 'filter', value: string) => {
+    await setSearchFilter((prev) => ({ ...prev, [type]: value }));
     refetch();
   };
 
-  const onSort = async (id, after, before) => {
+  const onSort = async (id: string, after: number, before: number) => {
     const param = {
-      id: id,
+      id,
       after: after?.sortOrder,
       before: before?.sortOrder,
     };
 
     setIsSortLoading(true);
-    await ProductService.sortStudio(param);
+    await sortStudio(param);
     await setIsSortLoading(false);
     refetch();
   };
 
   const onDetail = (item) => {
-    setDetailId({ id: item?.id || 'new' });
+    setDetailId(item?.id || 'new');
   };
 
   const onDetailClose = (refresh) => {
@@ -72,8 +74,8 @@ const ProductListPage = () => {
     <React.Fragment>
       <DataTableHeader
         refresh={refetch}
-        doSearch={(e) => doSearch('value', e)}
-        doFilter={(e) => doSearch('filter', e)}
+        doSearch={(v) => doSearch('value', v)}
+        doFilter={(v) => doSearch('filter', v)}
         resister={{ text: '장소 신규등록', onClick: () => onDetail() }}
         title="장소별 프로그램/스케줄 관리"
         filter={FILTER}
@@ -91,14 +93,9 @@ const ProductListPage = () => {
         refetch={refetch}
       />
 
-      <ProductStudioDetail
-        id={detailId?.id || ''}
-        open={detailId}
-        onClose={() => onDetailClose(false)}
-        refresh={() => onDetailClose(true)}
-      />
+      <ProductStudioDetail id={detailId} open={!!detailId} onClose={() => onDetailClose(false)} refresh={() => onDetailClose(true)} />
     </React.Fragment>
   );
 };
 
-export default ProductListPage;
+export default PlaceListPage;

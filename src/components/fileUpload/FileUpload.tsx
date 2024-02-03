@@ -1,21 +1,15 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { BASE_IMG_URL } from "../../constants/config";
+import { BASE_IMG_URL } from '../../constants/config';
 
-import UploadToS3, { imageOptimization } from "./UploadToS3";
+import UploadToS3, { imageOptimization } from './UploadToS3';
 
-import { SFileUpload } from "./FileUpload.styled";
-import { UploadingHelpMessage } from "./FileUploading.styled";
+import { SFileUpload } from './FileUpload.styled';
+import { UploadingHelpMessage } from './FileUploading.styled';
 
-import { removeStorageFile } from "./FileUpload.function";
+import { removeStorageFile } from './FileUpload.function';
 
-import FileUploading from "./FileUploading";
+import FileUploading from './FileUploading';
 
 /**
  * TODO: Make Strict Typing
@@ -53,23 +47,22 @@ const FileUpload = forwardRef((props: any, ref) => {
     files,
     onFileHandler,
 
-    limit = 5,
     maxCount,
 
     deleteId,
     deleteKey,
 
-    folder = "temp",
-    accept = "image/*",
-    uploadKey = "images",
+    folder = 'temp',
+    accept = 'image/*',
+    uploadKey = 'images',
   } = props;
 
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [uploadList, setUploadList] = useState([]);
-  const [uploadingItem, setUploadingItem] = useState("");
+  const [uploadingItem, setUploadingItem] = useState('');
 
-  const [errMessage, setErrMessage] = useState("");
+  const [errMessage, setErrMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -81,15 +74,15 @@ const FileUpload = forwardRef((props: any, ref) => {
 
     async cleanUp() {
       setUploadList([]);
-      setUploadingItem("");
-      setErrMessage("");
+      setUploadingItem('');
+      setErrMessage('');
       setIsLoading(false);
     },
 
     async upload(id: any) {
       if (isLoading) return;
 
-      if (!id) return setErrMessage("Missing required key.");
+      if (!id) return setErrMessage('Missing required key.');
       if (!(files?.length > 0)) return [];
 
       const param = { id } as any;
@@ -110,7 +103,7 @@ const FileUpload = forwardRef((props: any, ref) => {
             lastModified: file?.lastModified,
             lastModifiedDate: file?.lastModified,
             size: file?.size,
-            type: "image/jpeg",
+            type: 'image/jpeg',
           } as any);
 
           const compressedFile = await imageOptimization(newFile);
@@ -142,7 +135,7 @@ const FileUpload = forwardRef((props: any, ref) => {
   useEffect(() => {
     if (errMessage) {
       setTimeout(() => {
-        setErrMessage("");
+        setErrMessage('');
       }, 5000);
     }
   }, [errMessage]);
@@ -156,12 +149,12 @@ const FileUpload = forwardRef((props: any, ref) => {
 
     if (maxCount && files.length > maxCount) {
       setErrMessage(`${maxCount}장까지 첨부 가능합니다.`);
-      e.target.value = "";
+      e.target.value = '';
       return;
     }
     if (maxCount && uploadList.length + files.length > maxCount) {
       setErrMessage(`${maxCount}장까지 첨부 가능합니다.`);
-      e.target.value = "";
+      e.target.value = '';
       return;
     }
 
@@ -175,7 +168,7 @@ const FileUpload = forwardRef((props: any, ref) => {
       }
     }
 
-    e.target.value = "";
+    e.target.value = '';
   };
 
   const removeUploadListFile = (idx: number, item: { upload: any }) => {
@@ -189,7 +182,7 @@ const FileUpload = forwardRef((props: any, ref) => {
   };
 
   const onClickCloseOptionBox = () => {
-    setUploadingItem("");
+    setUploadingItem('');
   };
 
   const onOptionSelect = async (item: any) => {
@@ -198,7 +191,7 @@ const FileUpload = forwardRef((props: any, ref) => {
     try {
       await setUploadList(list);
       await onFileHandler(list);
-      await setUploadingItem("");
+      await setUploadingItem('');
     } catch (error) {}
   };
 
@@ -219,11 +212,7 @@ const FileUpload = forwardRef((props: any, ref) => {
       />
 
       {/* <Cropper  /> */}
-      <FileUploading
-        src={uploadingItem}
-        onClose={onClickCloseOptionBox}
-        onClick={onOptionSelect}
-      />
+      <FileUploading src={uploadingItem} onClose={onClickCloseOptionBox} onClick={onOptionSelect} />
 
       <div className="upload-list-view-box">
         {uploadList?.map((item, idx) => (
@@ -250,20 +239,14 @@ const FileUpload = forwardRef((props: any, ref) => {
   );
 });
 
-const UploadedItem = ({
-  item,
-  idx,
-  dataList,
-  setDatas,
-  removeUploadListFile,
-}: any) => {
+const UploadedItem = ({ item, idx, dataList, setDatas, removeUploadListFile }: any) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: any) => {
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    const fromIndex = e.dataTransfer.getData("text/plain") as any;
+    const fromIndex = e.dataTransfer.getData('text/plain') as any;
     const newItems = [...dataList];
     const [removedItem] = newItems.splice(fromIndex, 1);
 
@@ -279,16 +262,13 @@ const UploadedItem = ({
       onDrop={(e) => handleDrop(e, idx)}
       onDragOver={(e) => e.preventDefault()}
     >
-      <button
-        className="upload-delete-btn"
-        onClick={() => removeUploadListFile(idx, item)}
-      />
+      <button className="upload-delete-btn" onClick={() => removeUploadListFile(idx, item)} />
 
       <img
         className="upload-img"
         src={item?.path || item?.url}
         onError={(e: any) => {
-          e.target.src = "https://via.placeholder.com/100.png?text=noimage";
+          e.target.src = 'https://via.placeholder.com/100.png?text=noimage';
         }}
         alt="preview-img"
       />

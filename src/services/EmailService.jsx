@@ -1,6 +1,6 @@
-import { API_URL } from "../constants/config";
+import { API_URL } from '../constants/config';
 
-import axiosInstance from "../constants/axiosInstance";
+import axiosInstance from '../constants/axiosInstance';
 
 /**
  *

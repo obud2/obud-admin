@@ -1,20 +1,18 @@
-import DataTableHeader from "@/components/dataTable/DataTableHeader";
-import { SectionWithItems } from "@/entities/place";
-import PlaceService from "@/services/PlaceService";
-import { message } from "antd";
-import { useEffect, useState } from "react";
-import { ReactSortable } from "react-sortablejs";
-import styled from "styled-components";
-import SectionItem from "./SectionItem";
+import DataTableHeader from '@/components/dataTable/DataTableHeader';
+import { SectionWithItems } from '@/entities/place';
+import { message } from 'antd';
+import { useEffect, useState } from 'react';
+import { ReactSortable } from 'react-sortablejs';
+import styled from 'styled-components';
+import SectionItem from './SectionItem';
+import { listSections, updateSectionOrder } from '@/services/PlaceV2Service';
 
 const HomeSectionSettingPage = () => {
-  const [sectionWithItems, setSectionWithItems] = useState<SectionWithItems[]>(
-    []
-  );
+  const [sectionWithItems, setSectionWithItems] = useState<SectionWithItems[]>([]);
 
   useEffect(() => {
     const fetchSections = async () => {
-      const data = await PlaceService.listSections();
+      const data = await listSections();
       setSectionWithItems(data);
     };
 
@@ -22,7 +20,7 @@ const HomeSectionSettingPage = () => {
   }, []);
 
   const refetch = async () => {
-    const data = await PlaceService.listSections();
+    const data = await listSections();
     setSectionWithItems(data);
   };
 
@@ -33,10 +31,10 @@ const HomeSectionSettingPage = () => {
         order: index + 1,
       }));
 
-      await PlaceService.updateSectionOrder(orderItems);
-      message.success("저장되었습니다.");
+      await updateSectionOrder(orderItems);
+      message.success('저장되었습니다.');
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -45,9 +43,10 @@ const HomeSectionSettingPage = () => {
       <DataTableHeader
         title="홈 화면 섹션 관리"
         resister={{
-          text: "저장",
+          text: '저장',
           onClick: () => onSaveSectionInfo(sectionWithItems),
         }}
+        doSearch={() => {}}
       />
       {sectionWithItems && (
         <ReactSortable
@@ -55,16 +54,12 @@ const HomeSectionSettingPage = () => {
           list={sectionWithItems}
           setList={setSectionWithItems}
           animation={200}
-          delayOnTouchStart={true}
+          delayOnTouchStart
           delay={1}
           handle=".section-list-item-drag-button"
         >
           {sectionWithItems.map((swi) => (
-            <SectionItem
-              key={swi.id}
-              sectionWithItems={swi}
-              refetch={refetch}
-            />
+            <SectionItem key={swi.id} sectionWithItems={swi} refetch={refetch} />
           ))}
         </ReactSortable>
       )}

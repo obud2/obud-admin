@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import { PROJECT_NAME } from "../../../constants/config";
+import { PROJECT_NAME } from '../../../constants/config';
 
-import { Button, Input, Typography } from "antd";
+import { Button, Input, Typography } from 'antd';
 
-import { SForgotPasswordPage } from "./ForgotPasswordPage.style";
+import { SForgotPasswordPage } from './ForgotPasswordPage.style';
 
 const ForgotPasswordPage = (props) => {
   const { history } = props;
@@ -17,20 +17,9 @@ const ForgotPasswordPage = (props) => {
         </Typography>
         <Typography variant="body1">Enter your email</Typography>
 
-        <Input
-          size="small"
-          label="Email"
-          variant="outlined"
-          margin="dense"
-          fullWidth
-        />
+        <Input size="small" label="Email" variant="outlined" margin="dense" fullWidth />
 
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={() => history.push("/")}
-        >
+        <Button variant="contained" color="primary" fullWidth onClick={() => history.push('/')}>
           send
         </Button>
 

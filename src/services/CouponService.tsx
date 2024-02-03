@@ -1,33 +1,28 @@
-import { API_URL } from "../constants/config";
+import { API_URL } from '../constants/config';
 
-import axiosInstance from "../constants/axiosInstance";
-import {
-  Coupon,
-  CouponDiscountType,
-  CouponIssueType,
-  CouponStatus,
-} from "../entities/coupon";
+import axiosInstance from '../constants/axiosInstance';
+import { Coupon, CouponDiscountType, CouponIssueType, CouponStatus } from '../entities/coupon';
 
 export type RegisterCouponRequest = {
-  name: Coupon["name"];
-  code: Coupon["code"];
+  name: Coupon['name'];
+  code: Coupon['code'];
   issueType: CouponIssueType;
   discountType: CouponDiscountType;
-  discountAmount: Coupon["discountAmount"];
-  maxDiscountAmount: Coupon["maxDiscountAmount"];
-  minOrderPriceAmount: Coupon["minOrderPriceAmount"];
+  discountAmount: Coupon['discountAmount'];
+  maxDiscountAmount: Coupon['maxDiscountAmount'];
+  minOrderPriceAmount: Coupon['minOrderPriceAmount'];
   // YYYY-MM-DD (시간 X, 날짜만)
-  startDate: Coupon["startDate"];
+  startDate: Coupon['startDate'];
   // YYYY-MM-DD (시간 X, 날짜만)
-  endDate: Coupon["endDate"];
+  endDate: Coupon['endDate'];
   // 동일 회원의 중복 발급 가능 여부
-  allowDuplicatePerUser: Coupon["allowDuplicatePerUser"];
+  allowDuplicatePerUser: Coupon['allowDuplicatePerUser'];
   // 적용 대상 장소/프로그램
-  placeAllowList: Coupon["placeAllowList"];
-  programAllowList: Coupon["programAllowList"];
+  placeAllowList: Coupon['placeAllowList'];
+  programAllowList: Coupon['programAllowList'];
   // 적용 제외 장소/프로그램
-  placeBlockList: Coupon["placeBlockList"];
-  programBlockList: Coupon["programBlockList"];
+  placeBlockList: Coupon['placeBlockList'];
+  programBlockList: Coupon['programBlockList'];
   // 쿠폰 지급해줄 유저 id 리스트
   userIds: string[];
 };
@@ -62,19 +57,16 @@ const listCoupons = async (req: ListCouponsRequest) => {
     const searchParams = new URLSearchParams();
 
     if (req.page) {
-      searchParams.set("page", req.page.toString());
+      searchParams.set('page', req.page.toString());
     } else {
-      searchParams.set("page", "1");
+      searchParams.set('page', '1');
     }
-    if (req.status) searchParams.set("status", req.status);
-    if (req.name) searchParams.set("name", req.name);
+    if (req.status) searchParams.set('status', req.status);
+    if (req.name) searchParams.set('name', req.name);
 
-    const response = await axiosInstance.get<ListCouponsResponse>(
-      `${API_URL}/coupon`,
-      {
-        params: searchParams,
-      }
-    );
+    const response = await axiosInstance.get<ListCouponsResponse>(`${API_URL}/coupon`, {
+      params: searchParams,
+    });
 
     return response.data.value.data;
   } catch (error) {}
@@ -100,14 +92,11 @@ const searchUser = async (req: SearchUserRequest) => {
   try {
     const searchParams = new URLSearchParams();
 
-    if (req.query) searchParams.set("query", req.query);
+    if (req.query) searchParams.set('query', req.query);
 
-    const response = await axiosInstance.get<SearchUserResponse>(
-      `${API_URL}/coupon/user/search`,
-      {
-        params: searchParams,
-      }
-    );
+    const response = await axiosInstance.get<SearchUserResponse>(`${API_URL}/coupon/user/search`, {
+      params: searchParams,
+    });
 
     return response.data.value;
   } catch (error) {
@@ -136,14 +125,11 @@ const searchPlace = async (req: SearchPlaceRequest) => {
   try {
     const searchParams = new URLSearchParams();
 
-    if (req.query) searchParams.set("query", req.query);
+    if (req.query) searchParams.set('query', req.query);
 
-    const response = await axiosInstance.get<SearchPlaceResponse>(
-      `${API_URL}/coupon/place/search`,
-      {
-        params: searchParams,
-      }
-    );
+    const response = await axiosInstance.get<SearchPlaceResponse>(`${API_URL}/coupon/place/search`, {
+      params: searchParams,
+    });
 
     return response.data.value;
   } catch (error) {
@@ -160,7 +146,7 @@ const disableCoupon = async (req: DisableCouponRequest) => {
   try {
     const searchParams = new URLSearchParams();
 
-    if (req.couponId) searchParams.set("couponId", req.couponId);
+    if (req.couponId) searchParams.set('couponId', req.couponId);
 
     await axiosInstance.delete(`${API_URL}/coupon`, {
       params: searchParams,

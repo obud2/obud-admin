@@ -42,7 +42,10 @@ export const SFileUploading = styled.div`
     border-radius: 12px;
     background-color: rgb(38, 38, 38);
 
-    box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+    box-shadow:
+      rgb(0 0 0 / 20%) 0px 2px 1px -1px,
+      rgb(0 0 0 / 14%) 0px 1px 1px 0px,
+      rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 
     display: flex;
     flex-direction: column;
@@ -259,7 +262,10 @@ export const UploadingHelpMessage = styled.div`
     word-wrap: break-word;
     background: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+    box-shadow:
+      0 6px 16px 0 rgb(0 0 0 / 8%),
+      0 3px 6px -4px rgb(0 0 0 / 12%),
+      0 9px 28px 8px rgb(0 0 0 / 5%);
 
     font-size: 14px;
     color: #555555;

@@ -5,7 +5,7 @@ import SubMain from '../../../../sub-main';
 import { SPlanCommentDetail } from './PlanCommentDetail.styled';
 import { Button, Input } from 'antd';
 
-import ProductService from '../../../../services/ProductService';
+import { onComment } from '@/services/PlaceService.ts';
 
 const PlanCommentDetail = ({ isOpen, onClose, data, refetch }) => {
   const [value, setValue] = useState('');
@@ -20,7 +20,7 @@ const PlanCommentDetail = ({ isOpen, onClose, data, refetch }) => {
       comment: value,
     };
 
-    ProductService.onComment(param).then(() => {
+    onComment(param).then(() => {
       refetch();
       onClose();
     });

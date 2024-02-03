@@ -1,8 +1,8 @@
-import { Banner } from "@/entities/banner";
-import BannerService from "@/services/BannerService";
-import { Button, Popconfirm, Tag, message } from "antd";
-import { RxDragHandleDots1 } from "react-icons/rx";
-import styled from "styled-components";
+import { Banner } from '@/entities/banner';
+import BannerService from '@/services/BannerService';
+import { Button, Popconfirm, Tag, message } from 'antd';
+import { RxDragHandleDots1 } from 'react-icons/rx';
+import styled from 'styled-components';
 
 type Props = {
   banner: Banner;
@@ -14,9 +14,9 @@ const BannerItem = ({ banner, refetch }: Props) => {
     try {
       await BannerService.deleteBanner({ bannerId: banner.id });
       refetch();
-      message.success("삭제되었습니다.");
+      message.success('삭제되었습니다.');
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -27,17 +27,17 @@ const BannerItem = ({ banner, refetch }: Props) => {
         isShow: !banner.isShow,
       });
       refetch();
-      message.success("변경되었습니다.");
+      message.success('변경되었습니다.');
     } catch (err) {
-      message.error("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+      message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
   return (
     <SBannerItem>
       <BannerListItemDragButton />
-      <div style={{ textDecoration: "underline" }}>
-        <a target="_blank" href={banner.linkUrl}>
+      <div style={{ textDecoration: 'underline' }}>
+        <a target="_blank" href={banner.linkUrl} rel="noreferrer">
           {banner.name}
         </a>
       </div>
@@ -50,12 +50,7 @@ const BannerItem = ({ banner, refetch }: Props) => {
       </div>
       <div className="action-container">
         <Button onClick={handleChangeVisibility}>게시 상태 변경</Button>
-        <Popconfirm
-          title="정말 삭제하시겠습니까?"
-          onConfirm={handleDelete}
-          okText="삭제"
-          cancelText="취소"
-        >
+        <Popconfirm title="정말 삭제하시겠습니까?" onConfirm={handleDelete} okText="삭제" cancelText="취소">
           <Button danger>삭제</Button>
         </Popconfirm>
       </div>
@@ -75,7 +70,7 @@ const SBannerItem = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
-  width: ;
+  width:;
 
   .banner-tag-wrapper {
     margin-top: 8px;

@@ -1,17 +1,11 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { BASE_IMG_URL } from "../../constants/config";
+import { BASE_IMG_URL } from '../../constants/config';
 
-import { v4 as uuidv4 } from "uuid";
-import UploadToS3 from "./UploadToS3";
+import { v4 as uuidv4 } from 'uuid';
+import UploadToS3 from './UploadToS3';
 
-import { SVideoUpload } from "./VideoUpload.styled";
+import { SVideoUpload } from './VideoUpload.styled';
 
 const VideoUpload = forwardRef((props, ref) => {
   const {
@@ -21,15 +15,15 @@ const VideoUpload = forwardRef((props, ref) => {
     deleteId,
     deleteKey,
 
-    folder = "temp",
-    uploadKey = "images",
+    folder = 'temp',
+    uploadKey = 'images',
   } = props;
 
   const fileRef = useRef();
 
   const [uploadList, setUploadList] = useState([]);
 
-  const [errMessage, setErrMessage] = useState("");
+  const [errMessage, setErrMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -41,14 +35,14 @@ const VideoUpload = forwardRef((props, ref) => {
 
     async cleanUp() {
       setUploadList([]);
-      setErrMessage("");
+      setErrMessage('');
       setIsLoading(false);
     },
 
     async upload(id) {
       if (isLoading) return;
 
-      if (!id) return setErrMessage("Missing required key.");
+      if (!id) return setErrMessage('Missing required key.');
       if (!(files?.length > 0)) return [];
 
       const param = { id };
@@ -71,7 +65,7 @@ const VideoUpload = forwardRef((props, ref) => {
             lastModified: file?.lastModified,
             lastModifiedDate: file?.lastModified,
             size: file?.size,
-            type: "image/jpeg",
+            type: 'image/jpeg',
           });
 
           const result = await UploadToS3(newFile, folder, id);
@@ -101,7 +95,7 @@ const VideoUpload = forwardRef((props, ref) => {
   useEffect(() => {
     if (errMessage) {
       setTimeout(() => {
-        setErrMessage("");
+        setErrMessage('');
       }, [5000]);
     }
   }, [errMessage]);
@@ -114,12 +108,12 @@ const VideoUpload = forwardRef((props, ref) => {
 
     if (maxCount && files.length > maxCount) {
       setErrMessage(`${maxCount}개까지 업로드 가능합니다.`);
-      e.target.value = "";
+      e.target.value = '';
       return;
     }
     if (maxCount && uploadList.length + files.length > maxCount) {
       setErrMessage(`${maxCount}개까지 업로드 가능합니다.`);
-      e.target.value = "";
+      e.target.value = '';
       return;
     }
 
@@ -135,7 +129,7 @@ const VideoUpload = forwardRef((props, ref) => {
       }
     }
 
-    e.target.value = "";
+    e.target.value = '';
   };
 
   const removeUploadListFile = (idx, item) => {
@@ -161,16 +155,10 @@ const VideoUpload = forwardRef((props, ref) => {
 
       {uploadList?.map((item, idx) => (
         <div className="upload-container" key={`file-video-${idx}`}>
-          <button
-            className="upload-delete-btn"
-            onClick={() => removeUploadListFile(idx, item)}
-          />
+          <button className="upload-delete-btn" onClick={() => removeUploadListFile(idx, item)} />
 
           <p className="video-name">{item?.name}</p>
-          <video
-            className="upload-video"
-            src={item?.upload ? item?.url : URL.createObjectURL(item)}
-          />
+          <video className="upload-video" src={item?.upload ? item?.url : URL.createObjectURL(item)} />
         </div>
       ))}
     </SVideoUpload>

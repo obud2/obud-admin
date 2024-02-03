@@ -3,12 +3,13 @@ import React, { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 
 import { useQuery } from 'react-query';
-import ProductService from '../../services/ProductService';
 
 import { FILTER } from './SpecialListPage.option';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import ProductStudioList from '../../components/product/ProductStudioList';
+import { getSpecialList } from '@/services/PlaceService.ts';
+import { sortSpecial } from '@/services/PlaceService';
 
 /**
  *
@@ -21,7 +22,7 @@ const SpecialListPage = () => {
   const [searchFilter, setSearchFilter] = useState({ value: '', filter: '' });
 
   const fetchList = async () => {
-    let response = await ProductService.getSpecialList(searchFilter?.value);
+    let response = await getSpecialList(searchFilter?.value);
 
     if (searchFilter?.filter === 'show') {
       response = response.filter((a) => a?.isShow);
@@ -41,13 +42,13 @@ const SpecialListPage = () => {
 
   const onSort = async (id, after, before) => {
     const param = {
-      id: id,
+      id,
       before: before?.specialSort,
       after: after?.specialSort,
     };
 
     setIsSortLoading(true);
-    await ProductService.sortSpecial(param);
+    await sortSpecial(param);
     await setIsSortLoading(false);
     refetch();
   };

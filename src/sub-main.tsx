@@ -1,11 +1,11 @@
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 type Props = {
   children: React.ReactNode;
 };
 
 const SubMain = ({ children }: Props) => {
-  const el = document.getElementById("subRoot");
+  const el = document.getElementById('subRoot');
 
   if (!el) return null;
 
