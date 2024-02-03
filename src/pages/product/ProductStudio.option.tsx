@@ -48,7 +48,7 @@ export const LIST_HEADER = [
   },
   {
     id: '',
-    label: '일정등록',
+    label: '스케줄 등록',
     customBodyRender: (value: any, data: any) => (
       <Link to={`/pages/product/studio/${data?.studiosId || ''}/${data?.id || ''}`}>
         <Button type="default">등록</Button>
@@ -57,14 +57,14 @@ export const LIST_HEADER = [
   },
   {
     id: 'createdAt',
-    label: '등록일시',
+    label: '프로그램 등록일시',
     customBodyRender: (value: number) => {
       return setCreatedAt(value, '-');
     },
   },
   {
     id: 'updatedAt',
-    label: '수정일시',
+    label: '프로그램 수정일시',
     customBodyRender: (value: number) => {
       return setCreatedAt(value, '-');
     },

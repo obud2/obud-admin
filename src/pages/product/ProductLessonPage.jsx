@@ -118,7 +118,7 @@ const ProductLessonPage = () => {
     <React.Fragment>
       <DataTableHeader
         addResister={{ text: '반복등록', onClick: () => onClickMultiOpen() }}
-        resister={{ text: '일정등록', onClick: () => onDetail() }}
+        resister={{ text: '스케줄 등록', onClick: () => onDetail() }}
         title={<ProductShellTitle title={studio?.title || ''} subTitle={lesson?.title || ''} />}
         isLoading={isAllLoading}
         notiMessage={notiMessage}

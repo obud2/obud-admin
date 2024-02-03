@@ -132,7 +132,7 @@ const FileDownload = ({ cols, listApi }) => {
     <React.Fragment>
       {contextHolder}
 
-      <Tooltip title="엑셀 다운">
+      <Tooltip title="엑셀로 출력">
         <Button shape="circle" icon={<SaveOutlined />} onClick={handleClick} loading={isLoading} disabled={isLoading} />
       </Tooltip>
     </React.Fragment>

@@ -126,10 +126,10 @@ const ProductStudioPage = () => {
   };
 
   const useOption = [
-    { label: "수정", onClick: (e, data) => onDetail(data) },
-    { label: "복제", onClick: (e) => onClone(e) },
-    { label: "삭제", onClick: (e) => onDelete(e) },
-    { label: "일정목록", onClick: (e, data) => onLessonDetail(data) },
+    { label: "프로그램 수정", onClick: (e, data) => onDetail(data) },
+    { label: "프로그램 복제", onClick: (e) => onClone(e) },
+    { label: "프로그램 삭제", onClick: (e) => onDelete(e) },
+    { label: "스케줄 목록", onClick: (e, data) => onLessonDetail(data) },
   ];
 
   const onDetailClose = (refresh) => {
@@ -146,7 +146,7 @@ const ProductStudioPage = () => {
         refresh={refetch}
         doSearch={(e) => doSearch("value", e)}
         doFilter={(e) => doSearch("filter", e)}
-        resister={{ text: "프로그램등록", onClick: () => onDetail() }}
+        resister={{ text: "프로그램 등록", onClick: () => onDetail() }}
         title={
           <ProductShellTitle
             title={studio?.title || ""}
