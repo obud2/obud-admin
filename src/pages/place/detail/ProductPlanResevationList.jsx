@@ -73,17 +73,7 @@ const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
         return <Checkbox checked={value} onClick={onClickAttendance} disabled={isAllLoading} />;
       },
     },
-    {
-      id: 'comment',
-      label: '메모',
-      customBodyRender: (value, data) => {
-        const onFocusComment = () => {
-          setIsCommentOpen(data);
-        };
-
-        return <Input value={value || ''} readOnly onFocus={onFocusComment} disabled={isAllLoading} />;
-      },
-    },
+   
   ];
 
   const renderButtons = () => {
