@@ -41,7 +41,7 @@ const Template = () => {
   const getList = () => {
     PortalService.getChannelList(ALLTALK_GROUP).then((result) => {
       console.log(result);
-      let ch = [];
+      const ch = [];
       result.value.sort((a, b) => a.id - b.id).map((cate) => ch.push({ value: cate.id, label: cate.id, ft_api: cate.ft_api }));
       console.log(ch);
       setChannels(ch);
@@ -49,8 +49,7 @@ const Template = () => {
   };
   const getCodeList = () => {
     PortalService.getCodeListByGroup('TEMPLATE_CATEGORY').then((result) => {
-      console.log(result);
-      let category = [];
+      const category = [];
       setCode(result);
       result
         .filter((f) => !f.parent)
@@ -63,7 +62,7 @@ const Template = () => {
   };
 
   const changeCategory = (parent) => {
-    let category = [];
+    const category = [];
     code
       .filter((f) => f.parent === parent)
       .map((cate) => {
@@ -197,7 +196,6 @@ const Template = () => {
 
   const handleChangeButtonData = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setButtonData({ ...buttonData, [name]: value });
   };
   const handleCancel = () => {
@@ -243,30 +241,30 @@ const Template = () => {
   return (
     <React.Fragment>
       <DataTableHeader title="알림톡 템플릿 관리" />
-      <Space direction={'vertical'} size={0}>
+      <Space direction="vertical" size={0}>
         <Text>발송할 때마다 달라지는 부분을 가변 값으로 설정할 수 있습니다.</Text>
         <Text>{'가변 항목은 #{이름}, #{VAR1}, #{VAR2}으로 본문에 입력하시면 됩니다.'}</Text>
       </Space>
       <SDataDetailBody padding>
         <Row gutter={100}>
           <Col span={12}>
-            <Title className={'required'}>채널 선택</Title>
+            <Title className="required">채널 선택</Title>
             <Select
               size="large"
-              name={'channelId'}
+              name="channelId"
               placeholder="채널 선택"
               onChange={(val) => handleChange('channelId', val)}
               style={{ width: '100%' }}
               options={channels}
             />
 
-            <Title className={'required'}>템플릿이름</Title>
-            <Input size="large" onChange={onChange} name={'note'} />
+            <Title className="required">템플릿이름</Title>
+            <Input size="large" onChange={onChange} name="note" />
 
-            <Title className={'required'}>카테고리</Title>
+            <Title className="required">카테고리</Title>
             <Select
               size="large"
-              name={'cateParent'}
+              name="cateParent"
               placeholder="카테고리 그룹 선택"
               onChange={(val) => changeCategory(val)}
               options={codeParent}
@@ -274,7 +272,7 @@ const Template = () => {
             />
             <Select
               size="large"
-              name={'templateCategoryCode'}
+              name="templateCategoryCode"
               placeholder="카테고리 선택"
               onChange={(val) => handleChange('templateCategoryCode', val)}
               options={codeChildren}
@@ -286,13 +284,13 @@ const Template = () => {
               </Text>
             </Space>
 
-            <Space size={'large'} align="center">
-              <Title className={'required'}>템플릿 유형</Title>
+            <Space size="large" align="center">
+              <Title className="required">템플릿 유형</Title>
               <Radio.Group onChange={onChange} name="templateType" value={data.templateType || 'basic'}>
-                <Radio value={'basic'}>기본형</Radio>
-                <Radio value={'info'}>부가 정보형</Radio>
-                <Radio value={'channel'}>채널 추가형</Radio>
-                <Radio value={'mix'}>복합형</Radio>
+                <Radio value="basic">기본형</Radio>
+                <Radio value="info">부가 정보형</Radio>
+                <Radio value="channel">채널 추가형</Radio>
+                <Radio value="mix">복합형</Radio>
               </Radio.Group>
             </Space>
             <Space direction="vertical" size={0}>
@@ -300,23 +298,27 @@ const Template = () => {
               <Text>부가정보는 변수 사용이 불가능하며, 부가정보 500자, 광고성 80자로 각각 제한됩니다.</Text>
             </Space>
 
-            {/*<div>*/}
-            {/*  <Space size={'large'} style={{ clear: 'both' }}>*/}
-            {/*    <Title className={'required'}>강조 유형</Title>*/}
-            {/*    <Radio.Group onChange={onChange} name="pointType" value={data.pointType || 'none'}>*/}
-            {/*      <Radio value={'none'}>선택안함</Radio>*/}
-            {/*      /!*<Radio value={'title'}>타이틀형</Radio>*!/*/}
-            {/*      <Radio value={'img'}>이미지형</Radio>*/}
-            {/*    </Radio.Group>*/}
-            {/*  </Space>*/}
-            {/*</div>*/}
+            {/* <div> */}
+            {/*  <Space size={'large'} style={{ clear: 'both' }}> */}
+            {/*    <Title className={'required'}>강조 유형</Title> */}
+            {/*    <Radio.Group onChange={onChange} name="pointType" value={data.pointType || 'none'}> */}
+            {/*      <Radio value={'none'}>선택안함</Radio> */}
+            {/*      /!*<Radio value={'title'}>타이틀형</Radio>*!/ */}
+            {/*      <Radio value={'img'}>이미지형</Radio> */}
+            {/*    </Radio.Group> */}
+            {/*  </Space> */}
+            {/* </div> */}
 
             {data.pointType === 'img' && (
               <div>
                 <Space direction="vertical" block size={0}>
                   <Text>
                     이미지를 직접 제작해 사용하시는 경우{' '}
-                    <a target="_blank" href={'https://kakaobusiness.gitbook.io/main/ad/bizmessage/notice-friend/content-guide/image'}>
+                    <a
+                      target="_blank"
+                      href="https://kakaobusiness.gitbook.io/main/ad/bizmessage/notice-friend/content-guide/image"
+                      rel="noreferrer"
+                    >
                       카카오 공식 제작가이드
                     </a>
                     를 반드시 참고해 주세요.{' '}
@@ -324,7 +326,7 @@ const Template = () => {
                   <Text>지원 규격 : 최대 500kb / jpg, png 파일만 첨부 가능합니다.</Text>
                   <Text>이미지 사이즈는 800px * 400px (가로 500px 이상, 가로:세로 비율이 2:1이상 3:4이하만 가능)</Text>
                   <Upload {...uploadProps}>
-                    <Button size={'large'} block style={{ marginTop: 10 }}>
+                    <Button size="large" block style={{ marginTop: 10 }}>
                       이미지 업로드
                     </Button>
                   </Upload>
@@ -332,20 +334,20 @@ const Template = () => {
               </div>
             )}
 
-            <Title className={'required'}>내용</Title>
+            <Title className="required">내용</Title>
             <TextArea
               showCount
               maxLength={maxCount}
               size="large"
               rows={4}
               onChange={onChange}
-              name={'templateContents'}
+              name="templateContents"
               autoSize={{ minRows: 4, maxRows: 6 }}
             />
 
             {(data.templateType === 'info' || data.templateType === 'mix') && (
               <div>
-                <Title className={'required'}>부가정보</Title>
+                <Title className="required">부가정보</Title>
                 <div>
                   <Space direction="vertical">
                     <Text>템플릿 내용과 부가정보를 함께 작성 시, 최대 1,000자까지 가능합니다.</Text>
@@ -357,7 +359,7 @@ const Template = () => {
                   size="large"
                   rows={4}
                   onChange={onChange}
-                  name={'info'}
+                  name="info"
                   autoSize={{ minRows: 4, maxRows: 6 }}
                 />
               </div>
@@ -369,8 +371,8 @@ const Template = () => {
                 <LeftOutlined />
                 <span className="previewChannel channel-id">{channelId}</span>
               </div>
-              <ScrollDiv className={'scroll-box'}>
-                <div className={'talk-box-content'}>
+              <ScrollDiv className="scroll-box">
+                <div className="talk-box-content">
                   <div className="tit">알림톡 도착</div>
                   <div className="talk-content-warp">
                     {/*  텍스트 강조형 */}
@@ -406,13 +408,7 @@ const Template = () => {
             <Divider dashed />
 
             <div>
-              <Button
-                onClick={addTemplate}
-                type={'primary'}
-                size={'large'}
-                style={{ width: '286px', marginTop: 20 }}
-                icon={<FormOutlined />}
-              >
+              <Button onClick={addTemplate} type="primary" size="large" style={{ width: '286px', marginTop: 20 }} icon={<FormOutlined />}>
                 등록 및 검수요청
               </Button>
             </div>
@@ -435,15 +431,15 @@ const Template = () => {
         ]}
       >
         <Title>버튼명</Title>
-        <Input onChange={handleChangeButtonData} name={'kkoLinkName'} />
+        <Input onChange={handleChangeButtonData} name="kkoLinkName" />
         <Title>PC 링크</Title>
-        <Input onChange={handleChangeButtonData} name={'kkoLinkPc'} />
+        <Input onChange={handleChangeButtonData} name="kkoLinkPc" />
         <Title>모바일 링크</Title>
-        <Input onChange={handleChangeButtonData} name={'kkoLinkMo'} />
+        <Input onChange={handleChangeButtonData} name="kkoLinkMo" />
         <Title>Android 링크</Title>
-        <Input onChange={handleChangeButtonData} name={'kkoLinkAnd'} />
+        <Input onChange={handleChangeButtonData} name="kkoLinkAnd" />
         <Title>iOS 링크</Title>
-        <Input onChange={handleChangeButtonData} name={'kkoLinkIos'} />
+        <Input onChange={handleChangeButtonData} name="kkoLinkIos" />
       </Modal>
     </React.Fragment>
   );

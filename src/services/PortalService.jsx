@@ -104,7 +104,6 @@ const getCategory = (channelId, phoneNumber) => {
 const getChannelList = (groupId) => {
   const param = `?groupId=${groupId}`;
   return new Promise((resolve, reject) => {
-    console.log(axiosInstance.defaults.headers);
     axiosInstance
       .request({
         method: 'get',

@@ -110,7 +110,6 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
   };
 
   const onChangeOptionValue = (type, e) => {
-    console.log(type, e);
     setOption((prev) => ({ ...prev, [type]: e }));
   };
 

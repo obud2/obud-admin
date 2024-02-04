@@ -1,6 +1,8 @@
 import { API_URL, INSTRUCTOR } from '../constants/config';
 
 import axiosInstance from '../constants/axiosInstance';
+import { LegacyCommonResponse } from '@/entities/common';
+import { User } from '@/entities/user';
 
 const limit = 20;
 
@@ -17,7 +19,7 @@ const getUserExcel = () => {
   });
 };
 
-const getUserAll = (cursor, keyword) => {
+const getUserAll = (cursor: string, keyword: string) => {
   return new Promise((resolve) => {
     const keywordTemp = keyword ? `&keyword=${keyword}` : '';
     const cursorTemp = cursor ? `&cursor=${cursor}` : '';
@@ -33,7 +35,7 @@ const getUserAll = (cursor, keyword) => {
   });
 };
 
-const getStudioInstructor = (cursor, keyword) => {
+const getStudioInstructor = (cursor: string, keyword: string) => {
   return new Promise((resolve) => {
     const keywordTemp = keyword ? `&keyword=${keyword}` : '';
     const cursorTemp = cursor ? `&cursor=${cursor}` : '';
@@ -49,7 +51,7 @@ const getStudioInstructor = (cursor, keyword) => {
   });
 };
 
-const getUserList = (cursor, keyword, group, role) => {
+const getUserList = (cursor: string, keyword: string, group: string, role: string) => {
   return new Promise((resolve) => {
     const keywordTemp = keyword ? `&keyword=${keyword}` : '';
     const cursorTemp = cursor ? `&cursor=${cursor}` : '';
@@ -80,7 +82,7 @@ const getInstructor = () => {
   });
 };
 
-const getAdminStudiosInstructor = (studiosAdminId) => {
+const getAdminStudiosInstructor = (studiosAdminId: string) => {
   return new Promise((resolve) => {
     axiosInstance
       .get(`${API_URL}/user/instructor?studiosAdminId=${studiosAdminId}`)
@@ -93,21 +95,13 @@ const getAdminStudiosInstructor = (studiosAdminId) => {
   });
 };
 
-const getUser = (id) => {
-  return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/user/${id}`).then((response) => {
-      const res = response?.data?.value;
-
-      if (res) {
-        resolve(res);
-      } else {
-        resolve({});
-      }
-    });
+const getUser = (id: string) => {
+  return axiosInstance.get<LegacyCommonResponse<User>>(`${API_URL}/user/${id}`).then((response): User => {
+    return response.data.value;
   });
 };
 
-const setUser = (method, param) => {
+const setUser = (method: string, param: string) => {
   return new Promise((resolve) => {
     axiosInstance
       .request({
@@ -125,7 +119,7 @@ const setUser = (method, param) => {
   });
 };
 
-const checkUser = ({ id }) => {
+const checkUser = ({ id }: { id: string }) => {
   return new Promise((resolve) => {
     axiosInstance.get(`${API_URL}/user/check/${id}`).then((response) => {
       resolve(response?.data?.Item);
@@ -133,7 +127,7 @@ const checkUser = ({ id }) => {
   });
 };
 
-const changePassword = (id, password) => {
+const changePassword = (id: string, password: string) => {
   return new Promise((resolve) => {
     const param = { id, change: password };
     axiosInstance.put(`${API_URL}/user/changePassword/`, param).then((response) => {
@@ -142,7 +136,7 @@ const changePassword = (id, password) => {
   });
 };
 
-const setInstructor = (body) => {
+const setInstructor = (body: any) => {
   return new Promise((resolve) => {
     axiosInstance
       .put(`${API_URL}/user/instructor`, body)
@@ -166,7 +160,7 @@ const setInstructor = (body) => {
  *                    }
  * @returns
  */
-const deleteInstructor = (body) => {
+const deleteInstructor = (body: any) => {
   return new Promise((resolve) => {
     axiosInstance
       .delete(`${API_URL}/user/instructor?instructorId=${body?.instructorId}&studiosAdminId=${body?.studiosAdminId}`)

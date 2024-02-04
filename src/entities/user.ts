@@ -1,0 +1,32 @@
+import { LegacyFullTimestamp } from '@/entities/common';
+
+export type User = LegacyFullTimestamp & {
+  id: string;
+  email: string;
+  name: string;
+  hp: string;
+  birthdate: string;
+  role: string;
+  group: string;
+  adr: string;
+  adrDetail: string;
+  viewCnt: number;
+  sortOrder: number;
+  apple: string;
+  google: string;
+  kakao: string;
+  naver: string;
+  phone: string;
+  birthDate: string;
+  userGroup: string;
+  gender: string;
+  status: string;
+  address: string;
+  addressDetail: string;
+  viewCount: number;
+  visitCount: number;
+  isDeleted: 'N' | 'Y';
+  isShow: 'N' | 'Y';
+  uploadKey: string;
+  studiosAdminList: string;
+};

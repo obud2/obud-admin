@@ -48,7 +48,9 @@ export const LIST_HEADER = [
               fontWeight: 400,
               color: '#757575',
             }}
-          >{`${date} :: ${`${startTime}~${endTime}`}`}</p>
+          >
+            {`${date} :: ${`${startTime}~${endTime}`}`}
+          </p>
         </div>
       );
     },
@@ -184,7 +186,4 @@ export const EXEL_HEADER = [
   },
 ];
 
-export const FILTER = [
-  { id: 'basic', label: '취소현황' },
-  { id: 'canceling', label: '취소완료' },
-];
+export const FILTER = [{ id: 'canceling', label: '취소완료' }];

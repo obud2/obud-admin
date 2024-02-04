@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useContext, useState } from 'react';
 
 import { UserContext } from '../../context/UserContext';

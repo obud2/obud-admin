@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { User } from '@/entities/user';
 
 /**
  * 프로젝트 이름
@@ -32,6 +33,9 @@ export const ADMIN = 'GR0100';
 export const STUDIO = 'GR0110';
 export const INSTRUCTOR = 'GR0120';
 export const USR = 'GR0200';
+
+export const isAdminUser = (user: User): boolean => user.group === ADMIN;
+export const isPlaceManager = (user: User): boolean => user.group === STUDIO;
 
 export const USER_ROLE = [
   { value: INSTRUCTOR, label: '강사' },

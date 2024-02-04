@@ -21,7 +21,6 @@ const getItem = (id) => {
 };
 
 const getListByGroup = (group) => {
-  //console.log("getListByGroup:", group);
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/code/group/${group}`)

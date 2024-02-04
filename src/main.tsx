@@ -8,10 +8,10 @@ import App from './App';
 
 import ThemeProvider from './context/ThemeProvider';
 import LayoutContextProvider from './context/LayoutContext';
-import UserContextPrivider from './context/UserContext';
+import UserContextProvider from './context/UserContext';
 import GlobalContextProvider from './context/GlobalContext';
 import NavigationContextProvider from './context/NavigationContext';
-import MenuContextPrivider from './context/MenuContext';
+import MenuContextProvider from './context/MenuContext';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -36,13 +36,13 @@ ReactDOM.createRoot(container!).render(
     <ThemeProvider>
       <LayoutContextProvider>
         <NavigationContextProvider>
-          <UserContextPrivider>
-            <MenuContextPrivider>
+          <UserContextProvider>
+            <MenuContextProvider>
               <QueryClientProvider client={queryClient}>
                 <App />
               </QueryClientProvider>
-            </MenuContextPrivider>
-          </UserContextPrivider>
+            </MenuContextProvider>
+          </UserContextProvider>
         </NavigationContextProvider>
       </LayoutContextProvider>
     </ThemeProvider>

@@ -59,7 +59,7 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
     if (id && id !== 'new') {
       setIsLoading(true);
 
-      UserService?.getUser(id).then((res) => {
+      UserService.getUser(id).then((res) => {
         let sns = '';
 
         if (res?.kakao) sns = '카카오 소셜로그인';

@@ -34,7 +34,6 @@ const CouponListPage = () => {
   };
 
   const onDisableCoupon = async (couponId: string) => {
-    console.log(couponId);
     try {
       await CouponService.disableCoupon({ couponId });
       refetch();

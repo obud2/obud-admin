@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { useContext, useEffect, useState } from 'react';
 
 import Amplify, { Auth } from 'aws-amplify';
@@ -45,12 +47,12 @@ const useMenuByRole = () => {
           }
 
           menu?.forEach((a) => {
-            if (select.includes(a?.key)) a['isShow'] = true;
-            else a['isShow'] = false;
+            if (select.includes(a?.key)) a.isShow = true;
+            else a.isShow = false;
 
             a?.children?.forEach((b) => {
               // TODO: Why this code is needed. we have to fix
-              b['isShow'] = true;
+              b.isShow = true;
             });
           });
 
@@ -77,7 +79,6 @@ const useMenuByRole = () => {
         a?.children?.forEach((b) => {
           if (b?.url === pathname) {
             nowPage = b;
-            return;
           }
         });
       });
@@ -95,7 +96,7 @@ const useMenuByRole = () => {
 
   return {
     menu: navigation,
-    isAccess: isAccess,
+    isAccess,
   };
 };
 

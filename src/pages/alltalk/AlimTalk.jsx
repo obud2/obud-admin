@@ -30,7 +30,7 @@ const AlimTalk = () => {
 
   const getList = () => {
     PortalService.getChannelList(ALLTALK_GROUP).then((result) => {
-      let ch = [];
+      const ch = [];
       result.value
         .sort((a, b) => a.id - b.id)
         .map((cate) =>
@@ -47,7 +47,7 @@ const AlimTalk = () => {
 
   const getTemplateList = (_channel) => {
     PortalService.getTemplateList(_channel).then((result) => {
-      let ch = [];
+      const ch = [];
       result
         .filter((f) => f.approval === 'A')
         .map((temp) =>
@@ -83,7 +83,6 @@ const AlimTalk = () => {
   };
 
   const handleChangePhone = (val) => {
-    console.log(val);
     setNumbers([...val]);
   };
 
@@ -108,7 +107,7 @@ const AlimTalk = () => {
     const param = {
       service: ch.at_api,
       message: txt.replace(/<br>/gi, '\r\n'),
-      numbers: numbers,
+      numbers,
       template: templateId,
       groupId: ALLTALK_GROUP,
       // wide: data.isWide === true ? 'Y' : 'N',
@@ -121,27 +120,27 @@ const AlimTalk = () => {
   return (
     <React.Fragment>
       <DataTableHeader title="알림톡 전송" />
-      <Space direction={'vertical'} size={0}>
+      <Space direction="vertical" size={0}>
         <Text>발송할 때마다 달라지는 부분을 가변 값으로 설정할 수 있습니다.</Text>
         <Text>{'가변 항목은 #{항목} 형태로 본문에 입력하시면 됩니다.'}</Text>
       </Space>
       <SDataDetailBody padding>
         <Row gutter={100}>
           <Col span={12}>
-            {/*<Title className={'required'}>채널 선택</Title>*/}
-            {/*<Select*/}
-            {/*  size="large"*/}
-            {/*  name={'channelId'}*/}
-            {/*  placeholder="채널 선택"*/}
-            {/*  onChange={(val) => handleChange('channelId', val)}*/}
-            {/*  style={{ width: '100%' }}*/}
-            {/*  options={channels}*/}
-            {/*/>*/}
+            {/* <Title className={'required'}>채널 선택</Title> */}
+            {/* <Select */}
+            {/*  size="large" */}
+            {/*  name={'channelId'} */}
+            {/*  placeholder="채널 선택" */}
+            {/*  onChange={(val) => handleChange('channelId', val)} */}
+            {/*  style={{ width: '100%' }} */}
+            {/*  options={channels} */}
+            {/* /> */}
 
-            <Title className={'required'}>템플릿이름 - {templateId}</Title>
+            <Title className="required">템플릿이름 - {templateId}</Title>
             <Select
               size="large"
-              name={'template'}
+              name="template"
               placeholder="템플릿 선택"
               value={templateId}
               onChange={(val) => handleChange('template', val)}
@@ -149,8 +148,8 @@ const AlimTalk = () => {
               options={template}
             />
 
-            <Title className={'required'}>수신번호</Title>
-            <PhoneDataEditTable data={numbers} handleData={handleChangePhone} showAddrBtn={true} />
+            <Title className="required">수신번호</Title>
+            <PhoneDataEditTable data={numbers} handleData={handleChangePhone} showAddrBtn />
           </Col>
           <Col span={12}>
             <PhoneBox>
@@ -158,7 +157,7 @@ const AlimTalk = () => {
                 <LeftOutlined />
                 <span className="previewChannel channel-id">{channelId}</span>
               </div>
-              <ScrollDiv className={'scroll-box'}>
+              <ScrollDiv className="scroll-box">
                 <div className={isWide ? 'phone-box-content wide' : 'phone-box-content'}>
                   {isAd && (
                     <div className="ad-info">
@@ -171,7 +170,7 @@ const AlimTalk = () => {
                         <img src="https://www.wingo.co.kr/resources/images/content/talk_friend_img.jpg" alt="이미지" />
                       </div>
                     )}
-                    <div className={'preview-content-wrap'}>
+                    <div className="preview-content-wrap">
                       <span className="preview-content" dangerouslySetInnerHTML={{ __html: txt }}></span>
                     </div>
                   </div>
@@ -182,7 +181,7 @@ const AlimTalk = () => {
             <Divider dashed />
 
             <div>
-              <Button onClick={send} type={'primary'} size={'large'} style={{ width: '286px', marginTop: 20 }} icon={<SendOutlined />}>
+              <Button onClick={send} type="primary" size="large" style={{ width: '286px', marginTop: 20 }} icon={<SendOutlined />}>
                 전송하기
               </Button>
             </div>
