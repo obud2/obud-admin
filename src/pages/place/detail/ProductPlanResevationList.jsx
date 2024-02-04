@@ -35,17 +35,19 @@ const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
   const isAllLoading = isPlanLoading || isPlanRefetchLoading;
 
   const LIST_HEADER = [
-    // {
-    //   id: 'orderId',
-    //   label: '주문번호',
-    //   customBodyRender: (value) => {
-    //     return value;
-    //   },
-    // },
     {
       id: 'reservationer',
-      label: '예약자명',
+      label: '예약자명/번호',
+      customBodyRender: (value, data) => {
+        return (
+          <div>
+            <p style={{ fontSize: '13px', fontWeight: 500, color: '#232323' }}>{data?.reservationer || ''}</p>
+            <p style={{ fontSize: '13px', fontWeight: 400, color: '#757575' }}>{data?.reservationerHp || ''}</p>
+          </div>
+        );
+      },
     },
+
     {
       id: 'reservationCount',
       label: '인원',
@@ -71,17 +73,7 @@ const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
         return <Checkbox checked={value} onClick={onClickAttendance} disabled={isAllLoading} />;
       },
     },
-    {
-      id: 'comment',
-      label: '메모',
-      customBodyRender: (value, data) => {
-        const onFocusComment = () => {
-          setIsCommentOpen(data);
-        };
-
-        return <Input value={value || ''} readOnly onFocus={onFocusComment} disabled={isAllLoading} />;
-      },
-    },
+   
   ];
 
   const renderButtons = () => {
@@ -115,7 +107,7 @@ const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
       </DataDetailItem>
       <DataDetailItem span={2} />
 
-      <DataListTable data={plan?.reservationList || []} header={LIST_HEADER} useDetail={false} />
+      <DataListTable data={plan?.reservationList || []} header={LIST_HEADER} sorted={true} sortId="reservationer" useDetail={false} />
 
       <PlanCommentDetail isOpen={isCommentOpen} onClose={() => setIsCommentOpen('')} data={isCommentOpen} refetch={refetch} />
     </SideBar>
