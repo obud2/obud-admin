@@ -4,7 +4,7 @@ import { Tree, Select, Typography } from 'antd';
 import { MenuContext } from '../../context/MenuContext';
 
 import { Flex } from '../../styles/CommonStyles';
-import { USER_ROLE } from '../../constants/config';
+import { ADMIN, USER_ROLE } from '../../constants/config';
 
 import { SDataDetailBody } from '../../components/detailTable/DataDetailBody.styled.tsx';
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
@@ -83,14 +83,15 @@ const SettingAuthorityPage = () => {
           <Select
             style={{ width: 210 }}
             // options={USER_ROLE?.slice(0, 2)}
+            value={ADMIN}
             options={USER_ROLE}
             placeholder="권한을 선택해주세요."
             onChange={handleChange}
             disabled={isLoading}
             loading={isLoading}
           />
-          <Typography.Text type="warning">* 해당 권한에게 노출하고 싶은 메뉴를 지정할 수 있습니다.</Typography.Text>
-          <Typography.Text type="danger">* 해당 권한을 부여하면 해당 페이지에 읽기/ 쓰기/ 수정/ 삭제가 가능해집니다.</Typography.Text>
+          <Typography.Text type="warning">* 각 유저 권한별로 표시할 메뉴를 NavigationConfig.tsx에서 코드로 관리합니다.</Typography.Text>
+          <Typography.Text type="danger">* 아래는 관리 가능한 전체 메뉴의 리스트입니다.</Typography.Text>
         </Flex>
 
         {menu && menu?.length > 0 && (

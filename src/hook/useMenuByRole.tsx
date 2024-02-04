@@ -46,15 +46,17 @@ const useMenuByRole = () => {
             return;
           }
 
-          menu?.forEach((a) => {
-            if (select.includes(a?.key)) a.isShow = true;
-            else a.isShow = false;
+          // 권한을 index 기반의 불안정한 DB관리가 아닌, MenuContext에서 코드로 관리한다.
 
-            a?.children?.forEach((b) => {
-              // TODO: Why this code is needed. we have to fix
-              b.isShow = true;
-            });
-          });
+          // menu?.forEach((a) => {
+          //   if (select.includes(a?.key)) a.isShow = true;
+          //   else a.isShow = false;
+          //
+          //   a?.children?.forEach((b) => {
+          //     // TODO: Why this code is needed. we have to fix
+          //     b.isShow = true;
+          //   });
+          // });
 
           setNavation(menu);
         });

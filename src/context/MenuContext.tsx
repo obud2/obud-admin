@@ -2,13 +2,13 @@
 // @ts-nocheck
 import React, { useState, useEffect, useContext } from 'react';
 
-import { navigationConfig, getNavigationMenu } from '../config/NavigationConfig';
+import { getNavigationConfig, getNavigationMenu } from '../config/NavigationConfig';
 import { UserContext } from '@/context/UserContext.tsx';
 
 export const MenuContext = React.createContext();
 
 function updateMenu(isAdmin: boolean, setMenu: (value: ((prevState: any[]) => any[]) | any[]) => void) {
-  const concat = navigationConfig.concat(getNavigationMenu(isAdmin));
+  const concat = getNavigationConfig(isAdmin).concat(getNavigationMenu(isAdmin));
   const temp = { ...concat };
 
   Object.values(temp).forEach((value, i) => {
