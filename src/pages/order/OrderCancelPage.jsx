@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 const OrderCancelPage = () => {
   const [detail, setDetail] = useState({});
-  const [searchFilter, setSearchFilter] = useState({ value: '', filter: 'basic' });
+  const [searchFilter, setSearchFilter] = useState({ value: '', filter: 'canceled' });
 
   const fetchList = async (cursor) => {
     let res = {};
@@ -28,7 +28,7 @@ const OrderCancelPage = () => {
     return {
       result: list || [],
       nextPage: res?.cursor,
-      isLast: res?.cursor ? false : true,
+      isLast: !res?.cursor,
     };
   };
 
@@ -105,12 +105,12 @@ const OrderCancelPage = () => {
       <DataListTable
         data={data || []}
         header={LIST_HEADER}
-        isFilterData={searchFilter?.length > 0 ? true : false}
+        isFilterData={searchFilter?.length > 0}
         isLoading={isLoading || isRefetching}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}
         sorted={false}
-        excel={true}
+        excel
         excelCols={EXEL_HEADER}
         useDetail={false}
         useOption={useOption}

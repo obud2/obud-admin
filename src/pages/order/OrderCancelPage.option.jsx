@@ -186,4 +186,7 @@ export const EXEL_HEADER = [
   },
 ];
 
-export const FILTER = [{ id: 'canceling', label: '취소완료' }];
+export const FILTER = [
+  // { id: 'basic', label: '취소현황' },
+  { id: 'canceled', label: '취소완료' },
+];
