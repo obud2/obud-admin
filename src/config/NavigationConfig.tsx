@@ -215,17 +215,17 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     });
   }
 
+  menu.push({
+    id: 'users',
+    key: 'users',
+    iconType: 'ant',
+    title: '회원관리',
+    type: 'item',
+    url: '/pages/user/list',
+    icon: 'Team',
+    isShow: true,
+  });
   if (isAdmin) {
-    menu.push({
-      id: 'users',
-      key: 'users',
-      iconType: 'ant',
-      title: '회원관리',
-      type: 'item',
-      url: '/pages/user/list',
-      icon: 'Team',
-      isShow: true,
-    });
     menu.push({
       id: 'setting',
       key: 'setting',
