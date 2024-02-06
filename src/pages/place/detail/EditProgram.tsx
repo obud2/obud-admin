@@ -120,6 +120,7 @@ const EditProgram = ({ programId, placeId }: { programId: string; placeId: strin
       })
       .finally(() => {
         queryClient.invalidateQueries('/studios/lesson');
+        setIsLoading(false);
       });
   };
 
