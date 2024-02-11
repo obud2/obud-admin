@@ -82,9 +82,8 @@ const SettingAuthorityPage = () => {
         <Flex flexDirection="column" style={{ marginBottom: 20 }}>
           <Select
             style={{ width: 210 }}
-            // options={USER_ROLE?.slice(0, 2)}
             value={ADMIN}
-            options={USER_ROLE}
+            options={USER_ROLE.filter((it) => it.value === ADMIN)}
             placeholder="권한을 선택해주세요."
             onChange={handleChange}
             disabled={isLoading}

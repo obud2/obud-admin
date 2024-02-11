@@ -38,9 +38,9 @@ export const isAdminUser = (user: User): boolean => user.group === ADMIN;
 export const isPlaceManager = (user: User): boolean => user.group === STUDIO;
 
 export const USER_ROLE = [
-  // { value: INSTRUCTOR, label: '강사' },
-  // { value: STUDIO, label: '스튜디오 관리자' },
-  // { value: USR, label: '기본회원' },
+  { value: INSTRUCTOR, label: '강사' },
+  { value: STUDIO, label: '스튜디오 관리자' },
+  { value: USR, label: '기본회원' },
   { value: ADMIN, label: '오붓 어드민' },
 ];
 
