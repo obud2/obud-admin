@@ -67,9 +67,9 @@ const PlaceDetailPage = () => {
 
   const onClone = (id: string) => {
     swal({
-      title: '상품을 복제하시겠습니까?',
+      title: '프로그램을 복제하시겠습니까?',
       text: '',
-      buttons: [true],
+      buttons: [true, true],
       icon: 'info',
     }).then(async (willDelete) => {
       if (willDelete) {
@@ -81,9 +81,9 @@ const PlaceDetailPage = () => {
 
   const onDelete = async (id: string) => {
     swal({
-      title: '상품을 삭제하시겠습니까?',
+      title: '프로그램을 삭제하시겠습니까?',
       text: '',
-      buttons: [true],
+      buttons: [true, true],
       icon: 'warning',
     }).then(async (willDelete) => {
       if (willDelete) {

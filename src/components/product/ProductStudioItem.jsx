@@ -20,7 +20,7 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
 
     if (id === 'copy') {
       swal({
-        title: '상품을 복제하시겠습니까?',
+        title: '장소를 복제하시겠습니까?',
         text: '',
         buttons: true,
         icon: 'info',
@@ -35,7 +35,7 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
 
     if (id === 'delete') {
       swal({
-        title: '상품을 삭제하시겠습니까?',
+        title: '장소을 삭제하시겠습니까?',
         text: '',
         buttons: true,
         icon: 'warning',
