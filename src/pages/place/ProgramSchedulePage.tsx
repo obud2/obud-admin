@@ -39,6 +39,11 @@ function RegisterSchedulePresetModal({ programId, open, close }: { programId: st
   const [description, setDescription] = useState('');
   const queryClient = useQueryClient();
 
+  const reset = () => {
+    setTitle('');
+    setDescription('');
+  };
+
   const register = async () => {
     if (!title) {
       return toast.error('회차명을 입력해주세요.');
@@ -48,6 +53,7 @@ function RegisterSchedulePresetModal({ programId, open, close }: { programId: st
       .then(() => {
         toast.success('회차 프리셋을 추가했습니다.');
         queryClient.invalidateQueries('/program/preset');
+        reset();
         close();
       })
       .catch((e) => {
