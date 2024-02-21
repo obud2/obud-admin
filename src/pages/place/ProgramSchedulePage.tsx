@@ -199,7 +199,7 @@ const ProgramSchedulePage = () => {
         start,
         end,
         allDay: true,
-        title: `${startTime}-${endTime} :: ${currentMember} / ${maxMember}`,
+        title: `${startTime}-${endTime} :: ${a.title} :: ${currentMember} / ${maxMember}`,
         numberOfPeople: `${currentMember} / ${maxMember}`,
       };
     });
