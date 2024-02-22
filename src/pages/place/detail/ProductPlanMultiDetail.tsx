@@ -58,20 +58,19 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
 
   const [isOption, setIsOption] = useState(false);
 
-  /** 기본정보 호출 */
-  useEffect(() => {
+  function reset() {
     setIsOption(false);
 
     setBody(defaultBody);
     setTimeList([{}]);
     setOption({});
+  }
 
-    return () => {
-      setIsOption(false);
-      setBody(defaultBody);
-      setTimeList([{}]);
-      setOption({});
-    };
+  /** 기본정보 호출 */
+  useEffect(() => {
+    reset();
+
+    return () => reset();
   }, [open]);
 
   const onChangeInputValue = (type, e) => {
@@ -186,6 +185,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     setMultiPlan(param)
       .then(() => {
         setNotiMessage('등록 되었습니다.');
+        reset();
       })
       .catch((message) => {
         setNotiMessage(message || '등록에 실패하였습니다.');
@@ -310,6 +310,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
             placeholder="(선택) 회차명을 선택해주세요."
             style={{ width: '100%' }}
             disabled={isAllLoading}
+            value={body.scheduleTitlePresetId}
             onChange={(id) => {
               setBody((prev) => ({ ...prev, scheduleTitlePresetId: id }));
             }}
