@@ -199,6 +199,7 @@ const ProgramSchedulePage = () => {
         start,
         end,
         allDay: true,
+        scheduleTitle: a.title,
         title: `${startTime}-${endTime} :: ${a.title} :: ${currentMember} / ${maxMember}`,
         numberOfPeople: `${currentMember} / ${maxMember}`,
       };
