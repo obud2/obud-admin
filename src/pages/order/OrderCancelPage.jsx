@@ -55,40 +55,6 @@ const OrderCancelPage = () => {
     refetch();
   };
 
-  const onCancel = (item) => {
-    if (searchFilter?.filter === 'basic') {
-      setDetail(item);
-    } else {
-      swal({
-        text: '이미 취소처리가 완료된 상태입니다.',
-        icon: 'info',
-      });
-    }
-  };
-
-  const onRefusal = (item) => {
-    const param = {
-      id: item?.id,
-    };
-
-    swal({
-      title: '',
-      text: '예약요청을 거절하시겠습니까?',
-      buttons: true,
-      icon: 'warning',
-    }).then(async (willDelete) => {
-      if (willDelete) {
-        await ReservationService?.orderRefusal(param);
-        refetch();
-      }
-    });
-  };
-
-  const useOption = [
-    { label: '취소처리', onClick: (_, data) => onCancel(data) },
-    { label: '거절처리', onClick: (_, data) => onRefusal(data) },
-  ];
-
   return (
     <React.Fragment>
       <DataTableHeader
@@ -113,7 +79,6 @@ const OrderCancelPage = () => {
         excel
         excelCols={EXEL_HEADER}
         useDetail={false}
-        useOption={useOption}
         onExcelListApi={() => ReservationService.getCancelReservationAll(searchFilter?.filter)}
       />
 

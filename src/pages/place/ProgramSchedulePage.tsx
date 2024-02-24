@@ -199,6 +199,7 @@ const ProgramSchedulePage = () => {
         start,
         end,
         allDay: true,
+        scheduleTitle: a.title,
         title: `${startTime}-${endTime} :: ${a.title} :: ${currentMember} / ${maxMember}`,
         numberOfPeople: `${currentMember} / ${maxMember}`,
       };
@@ -299,28 +300,20 @@ const ProgramSchedulePage = () => {
             title: '회차명',
             dataIndex: 'title',
             key: 'title',
+            width: '15%',
           },
           {
             title: '상세정보',
             dataIndex: 'description',
             key: 'description',
+            width: '70%',
           },
-          {
-            title: '등록일',
-            dataIndex: 'createdAt',
-            key: 'createdAt',
-            render: (createdAt: string) => moment(createdAt).format('YYYY-MM-DD HH:mm'),
-          },
-          {
-            title: '수정일',
-            dataIndex: 'updatedAt',
-            key: 'updatedAt',
-            render: (updatedAt: string) => moment(updatedAt).format('YYYY-MM-DD HH:mm'),
-          },
+
           {
             title: '수정',
             dataIndex: 'id',
             key: 'id',
+            width: 30,
             render: (_: number, record: ScheduleTitlePreset) => (
               <Button
                 onClick={() => {
@@ -336,6 +329,7 @@ const ProgramSchedulePage = () => {
             title: '삭제',
             dataIndex: 'id',
             key: 'id',
+            width: 30,
             render: (id: number) => (
               <Popconfirm
                 title="회차 정보를 삭제하시겠습니까?"

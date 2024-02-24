@@ -44,7 +44,7 @@ export const LIST_HEADER = [
         });
       }
 
-      return <Switch style={{ width: '50px', margin: '0 4px' }} checked={value} onChange={(e) => updateShow(e)} />;
+      return <Switch style={{ width: '30px' }} checked={value} onChange={(e) => updateShow(e)} />;
     },
   },
   {

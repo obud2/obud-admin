@@ -110,6 +110,15 @@ const ProductPlanList = ({ data, open, onDetail, onClose, month, setNotiMessage,
         return `${startTime || ''} ~ ${endTime || ''}`;
       },
     },
+
+    {
+      id: 'scheduleTitle',
+      label: '회차명',
+      customBodyRender: (value) => {
+        return <p>{value}</p>;
+      },
+    },
+
     {
       id: 'currentMember',
       label: '예약 인원',
