@@ -47,7 +47,7 @@ export const LIST_HEADER = [
   {
     id: 'price',
     label: '상품/옵션금액',
-    flex: 0.7,
+    flex: 1.5,
     customBodyRender: (_, data) => {
       const price = data?.price || 0;
       const optionPrice = data?.payOption?.price || 0;
@@ -73,14 +73,6 @@ export const LIST_HEADER = [
     flex: 0.5,
     customBodyRender: (value) => {
       return <p style={{ color: '#009ef7' }}>{`${addComma(value)}명`}</p>;
-    },
-  },
-  {
-    id: 'payOptionCount',
-    label: '옵션',
-    flex: 0.5,
-    customBodyRender: (value) => {
-      return <p style={{ color: '#4d7561' }}>{`${addComma(value)}개`}</p>;
     },
   },
   {
