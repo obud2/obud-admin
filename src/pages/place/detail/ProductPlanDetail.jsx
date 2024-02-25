@@ -318,7 +318,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
         />
       </DataDetailItem>
 
-      <DataDetailItem label="가격(정가)" span={2}>
+      {/* <DataDetailItem label="가격(정가)" span={2}>
         <InputNumber
           addonAfter="원"
           placeholder="숫자만 입력하세요."
@@ -329,7 +329,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
           onChange={(e) => onChangeInputValue('fakePrice', e)}
           disabled={isAllLoading || isDisabled}
         />
-      </DataDetailItem>
+      </DataDetailItem> */}
 
       {body?.id && (
         <DataDetailItem label="품절처리" span={2}>
