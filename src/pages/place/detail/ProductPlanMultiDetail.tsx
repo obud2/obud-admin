@@ -62,7 +62,12 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     setIsOption(false);
 
     setBody(defaultBody);
-    setTimeList([{}]);
+    setTimeList([
+      {
+        startTime: dayjs('14:00', 'HH:mm').format('HH:mm'),
+        endTime: dayjs('15:00', 'HH:mm').format('HH:mm'),
+      },
+    ]);
     setOption({});
   }
 
@@ -91,7 +96,13 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   };
 
   const onClickAddTime = () => {
-    setTimeList((prev) => [...prev, {}]);
+    setTimeList((prev) => [
+      ...prev,
+      {
+        startTime: dayjs('14:00', 'HH:mm').format('HH:mm'),
+        endTime: dayjs('15:00', 'HH:mm').format('HH:mm'),
+      },
+    ]);
   };
 
   const onClickDeleteTime = (index) => {
@@ -126,7 +137,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     setIsOption(e);
   };
 
-  const { data: presets } = useQuery(['/program/preset', { programId: lessonId }], () => getProgramTitlePresets(lessonId!), {
+  const { data: scheduleTitlePresets } = useQuery(['/program/preset', { programId: lessonId }], () => getProgramTitlePresets(lessonId!), {
     enabled: !!lessonId,
   });
   const onSubmit = async () => {
@@ -291,6 +302,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
                 key={index}
                 value={item}
                 instructor={instructor}
+                scheduleTitlePresets={scheduleTitlePresets}
                 isDelete={index > 0}
                 onChange={(type, e) => onChangeTimeItem(index, type, e)}
                 onDelete={() => onClickDeleteTime(index)}
@@ -301,26 +313,6 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
           <Button style={{ width: '90px' }} type="primary" size="small" disabled={isAllLoading} onClick={onClickAddTime}>
             시간대 추가
           </Button>
-        </Flex>
-      </DataDetailItem>
-
-      <DataDetailItem label="(선택) 회차명" span={2}>
-        <Flex flexDirection="column" gap="5px">
-          <Select
-            placeholder="(선택) 회차명을 선택해주세요."
-            style={{ width: '100%' }}
-            disabled={isAllLoading}
-            value={body.scheduleTitlePresetId}
-            onChange={(id) => {
-              setBody((prev) => ({ ...prev, scheduleTitlePresetId: id }));
-            }}
-          >
-            {(presets ?? []).map((it) => (
-              <Select.Option key={it.id} value={it.id}>
-                {it.title}
-              </Select.Option>
-            ))}
-          </Select>
         </Flex>
       </DataDetailItem>
 
@@ -412,7 +404,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   );
 };
 
-const TimeCheck = ({ value, instructor, isDelete, onChange, onDelete, disabled }) => {
+const TimeCheck = ({ value, instructor, scheduleTitlePresets, isDelete, onChange, onDelete, disabled }) => {
   const timeFormat = 'HH:mm';
 
   return (
@@ -423,13 +415,27 @@ const TimeCheck = ({ value, instructor, isDelete, onChange, onDelete, disabled }
         secondStep={10}
         format={timeFormat}
         disabled={disabled}
-        value={[value?.startTime ? dayjs(value?.startTime, timeFormat) : '', value?.endTime ? dayjs(value?.endTime, timeFormat) : '']}
+        value={[
+          value?.startTime ? dayjs(value?.startTime, timeFormat) : dayjs('14:00', timeFormat),
+          value?.endTime ? dayjs(value?.endTime, timeFormat) : dayjs('15:00', timeFormat),
+        ]}
         onChange={(e, dateString) => {
           const startTime = dateString?.[0];
           const endTime = dateString?.[1];
 
           onChange('time', `${startTime}T${endTime}`);
         }}
+      />
+
+      <Select
+        showSearch
+        placeholder="회차명을 선택해주세요."
+        optionFilterProp="children"
+        value={value?.scheduleTitlePresetId}
+        onChange={(scheduleTitlePresetId) => onChange('scheduleTitlePresetId', scheduleTitlePresetId)}
+        filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+        disabled={disabled}
+        options={(scheduleTitlePresets ?? []).map((it) => ({ label: it.title, value: it.id }))}
       />
 
       <Select
