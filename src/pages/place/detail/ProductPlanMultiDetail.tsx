@@ -11,6 +11,7 @@ import swal from 'sweetalert';
 
 import 'dayjs/locale/ko';
 import locale from 'antd/es/date-picker/locale/ko_KR';
+import './ProductPlanMultiDetail.css';
 
 import { WEEK, disabledDate } from './ProductPlanMultiDetail.option';
 import { Flex } from '../../../styles/CommonStyles';
@@ -64,8 +65,8 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     setBody(defaultBody);
     setTimeList([
       {
-        startTime: dayjs('14:00', 'HH:mm').format('HH:mm'),
-        endTime: dayjs('15:00', 'HH:mm').format('HH:mm'),
+        startTime: dayjs('07:00', 'HH:mm').format('HH:mm'),
+        endTime: dayjs('08:00', 'HH:mm').format('HH:mm'),
       },
     ]);
     setOption({});
@@ -99,8 +100,8 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
     setTimeList((prev) => [
       ...prev,
       {
-        startTime: dayjs('14:00', 'HH:mm').format('HH:mm'),
-        endTime: dayjs('15:00', 'HH:mm').format('HH:mm'),
+        startTime: dayjs('07:00', 'HH:mm').format('HH:mm'),
+        endTime: dayjs('08:00', 'HH:mm').format('HH:mm'),
       },
     ]);
   };
@@ -116,11 +117,11 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
   const onChangeTimeItem = async (index, type, e) => {
     const temp = _.cloneDeep(timeList);
 
-    if (type === 'time') {
-      const startTime = e.split('T')[0];
-      const endTime = e.split('T')[1];
-
+    if (type === 'startTime') {
+      const startTime = e;
       temp[index].startTime = startTime;
+    } else if (type === 'endTime') {
+      const endTime = e;
       temp[index].endTime = endTime;
     } else {
       temp[index][type] = e;
@@ -155,6 +156,21 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
       emptyCheck('기간을 입력해주세요.');
       return;
     }
+    for (const c of param.timeRanges as [{ startTime: string; endTime: string }]) {
+      if (!c.startTime) {
+        emptyCheck('시작 시간을 입력해주세요.');
+        return;
+      }
+      if (!c.endTime) {
+        emptyCheck('종료 시간을 입력해주세요.');
+        return;
+      }
+      if (c.startTime.localeCompare(c.endTime) >= 0) {
+        emptyCheck('시작 시간이 종료 시간보다 이른 시간이어야 합니다.');
+        return;
+      }
+    }
+
     if (param?.price < 0) {
       emptyCheck('가격을 입력해주세요.');
       return;
@@ -409,21 +425,28 @@ const TimeCheck = ({ value, instructor, scheduleTitlePresets, isDelete, onChange
 
   return (
     <Flex gap="10px">
-      <TimePicker.RangePicker
+      <TimePicker
         hourStep={1}
         minuteStep={5}
-        secondStep={10}
+        showNow={false}
         format={timeFormat}
         disabled={disabled}
-        value={[
-          value?.startTime ? dayjs(value?.startTime, timeFormat) : dayjs('14:00', timeFormat),
-          value?.endTime ? dayjs(value?.endTime, timeFormat) : dayjs('15:00', timeFormat),
-        ]}
-        onChange={(e, dateString) => {
-          const startTime = dateString?.[0];
-          const endTime = dateString?.[1];
-
-          onChange('time', `${startTime}T${endTime}`);
+        popupClassName="noFooterTimePick"
+        value={value?.startTime ? dayjs(value?.startTime, timeFormat) : dayjs('07:00', timeFormat)}
+        onSelect={(startTime) => {
+          onChange('startTime', startTime.format(timeFormat));
+        }}
+      />
+      <TimePicker
+        hourStep={1}
+        minuteStep={5}
+        showNow={false}
+        format={timeFormat}
+        disabled={disabled}
+        popupClassName="noFooterTimePick"
+        value={value?.endTime ? dayjs(value?.endTime, timeFormat) : dayjs('08:00', timeFormat)}
+        onSelect={(endTime) => {
+          onChange('endTime', `${endTime}`);
         }}
       />
 
