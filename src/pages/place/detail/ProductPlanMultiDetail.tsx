@@ -446,7 +446,7 @@ const TimeCheck = ({ value, instructor, scheduleTitlePresets, isDelete, onChange
         popupClassName="noFooterTimePick"
         value={value?.endTime ? dayjs(value?.endTime, timeFormat) : dayjs('08:00', timeFormat)}
         onSelect={(endTime) => {
-          onChange('endTime', `${endTime}`);
+          onChange('endTime', endTime.format(timeFormat));
         }}
       />
 
