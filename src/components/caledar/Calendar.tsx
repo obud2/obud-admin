@@ -165,6 +165,7 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
         }}
         events={temp || []}
         eventContent={eventContent}
+        firstDay={1}
       />
 
       <section className="mobile-schedule-list">
