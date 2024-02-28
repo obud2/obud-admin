@@ -3,8 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Radio, Input, Switch, Checkbox } from 'antd';
 import { Flex, Spacing } from '../../../styles/CommonStyles';
 
-import Editor from '../../../components/smartEditor/Editor';
-
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
 
 import { useQuery } from 'react-query';
@@ -17,6 +15,7 @@ import FileUpload from '../../../components/fileUpload/FileUpload.tsx';
 import DaumPost from '../../../components/daumPost/DaumPost';
 import StudioRefundSettingList from './option/StudioRefundSettingList';
 import { getStudio, setStudio } from '@/services/PlaceService';
+import TextArea from 'antd/es/input/TextArea';
 
 /**
  *
@@ -25,7 +24,6 @@ import { getStudio, setStudio } from '@/services/PlaceService';
  */
 const ProductShellDetail = ({ id, open, onClose, refresh }) => {
   const fileRef = useRef();
-  const contentsRef = useRef('');
 
   const fetchData = async () => {
     const res = await Promise.all([CodeService.getItem('product-shell-setting'), CodeService.getItem('product-class-setting')]);
@@ -174,7 +172,6 @@ const ProductShellDetail = ({ id, open, onClose, refresh }) => {
     const text = id === 'new' ? '등록' : '수정';
     const param = {
       ...body,
-      contents: contentsRef.current.getValue(),
     };
 
     if (!(param?.category?.length > 0)) {
@@ -268,7 +265,12 @@ const ProductShellDetail = ({ id, open, onClose, refresh }) => {
       </DataDetailItem>
 
       <DataDetailItem label="상세정보" span={2}>
-        <Editor ref={contentsRef} value={body?.contents || ''} disabled={isAllLoading} />
+        <TextArea
+          value={body?.contents || ''}
+          onChange={(e) => onChangeInputValue('contents', e.target.value)}
+          rows={15}
+          disabled={isAllLoading}
+        />
       </DataDetailItem>
 
       <DataDetailItem label="상세주소" span={2}>
