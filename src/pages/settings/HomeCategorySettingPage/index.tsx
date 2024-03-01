@@ -10,11 +10,11 @@ const CategoryItems = [
   },
   {
     id: 2,
-    name: StudioCategory.TEA,
+    name: StudioCategory.MEDITATION,
   },
   {
     id: 3,
-    name: StudioCategory.MEDITATION,
+    name: StudioCategory.TEA,
   },
   {
     id: 4,
