@@ -22,8 +22,8 @@ export const LIST_HEADER = [
     label: '장소/프로그램/시간',
     customBodyRender: (value, data) => {
       const date = moment(data?.startDate)?.format('YYYY.MM.DD');
-      const startTime = moment(data?.startDate)?.format('HH:ss');
-      const endTime = moment(data?.endDate)?.format('HH:ss');
+      const startTime = moment(data?.startDate)?.format('HH:mm');
+      const endTime = moment(data?.endDate)?.format('HH:mm');
 
       return (
         <div>
