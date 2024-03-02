@@ -9,12 +9,12 @@ const CategoryItems = [
     name: StudioCategory.YOGA,
   },
   {
-    id: 2,
-    name: StudioCategory.MEDITATION,
-  },
-  {
     id: 3,
     name: StudioCategory.TEA,
+  },
+  {
+    id: 2,
+    name: StudioCategory.MEDITATION,
   },
   {
     id: 4,
