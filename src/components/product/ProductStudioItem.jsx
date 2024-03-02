@@ -93,14 +93,6 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
         <p className="product-shell-item-title" onClick={onClickGoDetail}>
           {data?.title || ''}
         </p>
-        <button
-          className="product-shell-item-edit"
-          onClick={() => {
-            onClickOption('edit');
-          }}
-        >
-          수정
-        </button>
         <div className={`product-shell-item-isShow ${data?.isShow ? 'point-text' : 'disabled-text'}`}>
           {data?.isShow ? '게시중' : '숨김'}
         </div>
