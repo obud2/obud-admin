@@ -1,4 +1,4 @@
-import { Button, Switch } from 'antd';
+import { Switch } from 'antd';
 import { GoLinkExternal } from 'react-icons/go';
 import { useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -9,28 +9,10 @@ import { getProgram, setProgram } from '@/services/ProgramService';
 // TODO: Strict Typing
 export const LIST_HEADER = [
   {
-    id: 'title',
-    label: '프로그램명',
-    flex: 'none',
-    width: '40%',
-    customBodyRender: (value: any, data: any, onClick: any) => {
-      return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => onClick(data)}>
-            <img src={data?.images[0]?.url || ''} style={{ width: 49, height: 49, marginRight: '10px' }} />
-            <span>{value}</span>
-          </div>
-
-          <Link target="_blank" to={`${APP_URL}/lesson/${data.id}`}>
-            <GoLinkExternal />
-          </Link>
-        </div>
-      );
-    },
-  },
-  {
     id: 'isShow',
     label: '게시여부',
+    flex: 'none',
+    width: '10%',
     customBodyRender: (value: boolean, data: { id: any }) => {
       const queryClient = useQueryClient();
 
@@ -48,26 +30,22 @@ export const LIST_HEADER = [
     },
   },
   {
-    id: '',
-    label: '스케줄 등록',
-    customBodyRender: (value: any, data: any) => (
-      <Link to={`/pages/places/${data?.studiosId || ''}/programs/${data?.id || ''}`}>
-        <Button type="default">등록</Button>
-      </Link>
-    ),
-  },
-  {
-    id: 'createdAt',
-    label: '프로그램 등록일시',
-    customBodyRender: (value: number) => {
-      return setCreatedAt(value, '-');
-    },
-  },
-  {
-    id: 'updatedAt',
-    label: '프로그램 수정일시',
-    customBodyRender: (value: number) => {
-      return setCreatedAt(value, '-');
+    id: 'title',
+    label: '프로그램명',
+    flex: 1,
+    customBodyRender: (value: any, data: any, onClick: any) => {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => onClick(data)}>
+            <img src={data?.images[0]?.url || ''} style={{ width: 49, height: 49, marginRight: '10px' }} />
+            <span>{value}</span>
+          </div>
+
+          <Link target="_blank" to={`${APP_URL}/lesson/${data.id}`}>
+            <GoLinkExternal />
+          </Link>
+        </div>
+      );
     },
   },
 ];

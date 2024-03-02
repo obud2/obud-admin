@@ -143,7 +143,7 @@ export const SProductStudioItem = styled.div`
 
   .product-shell-item-contents-container {
     width: 100%;
-    height: 90px;
+    height: 130px;
 
     display: flex;
     flex-direction: column;
@@ -179,6 +179,16 @@ export const SProductStudioItem = styled.div`
       ${smLayout} {
         font-size: 1.3rem;
       }
+    }
+
+    .product-shell-item-edit {
+      border: 1px solid #999;
+
+      width: 50px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      margin-top: 15px;
     }
 
     .product-shell-item-isShow {
