@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { Table, Input, Button, Popconfirm, Form, Typography, Select, Radio, Modal } from 'antd';
 import { Title } from '../pages/alltalk/Kakao.styles';
 
-const { Option } = Select;
 const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
@@ -111,14 +110,14 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
             rules={[
               {
                 required: true,
-                message: title + ' 를 입력해주세요',
+                message: `${title} 를 입력해주세요`,
               },
             ]}
           >
             <Radio.Group ref={inputRef} initialValues={1} onChange={save}>
-              <Radio value={'기본옵션'}>기본옵션</Radio>
+              <Radio value="기본옵션">기본옵션</Radio>
               {/* <Radio value={'날짜'}>날짜</Radio> */}
-              <Radio value={'수량(인원수)'}>수량(인원수)</Radio>
+              <Radio value="수량(인원수)">수량(인원수)</Radio>
             </Radio.Group>
           </Form.Item>
         );
@@ -130,7 +129,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
             rules={[
               {
                 required: true,
-                message: title + ' 를 입력해주세요',
+                message: `${title} 를 입력해주세요`,
               },
             ]}
           >
@@ -160,9 +159,9 @@ const PhoneDataEditTable = (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [count, setCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [positions, setPositions] = useState({});
+  const [positions] = useState({});
   const [addr, setAddr] = useState([]);
-  const [arrPos, setPos] = useState([]);
+  const [arrPos] = useState([]);
 
   useEffect(() => {
     setDataSource(props.data);
@@ -205,7 +204,7 @@ const PhoneDataEditTable = (props) => {
       VAR4: addr.VAR4 ? addr.VAR4 : '',
     };
 
-    if (addr.id) insertParam['id'] = addr.id;
+    if (addr.id) insertParam.id = addr.id;
 
     console.log(insertParam);
     // AddressService.saveItem(addr.key ? 'new' : 'edit', insertParam).then(result => {
@@ -259,9 +258,9 @@ const PhoneDataEditTable = (props) => {
       render: (_, record) =>
         props.data.length >= 1 ? (
           <div>
-            {/*<Popconfirm title='해당 번호를 저장하시겠습니까 ? ' onConfirm={() => doSave(record)}>*/}
-            {/*  <Typography.Link style={{ marginRight: 10 }}>저장</Typography.Link>*/}
-            {/*</Popconfirm>*/}
+            {/* <Popconfirm title='해당 번호를 저장하시겠습니까 ? ' onConfirm={() => doSave(record)}> */}
+            {/*  <Typography.Link style={{ marginRight: 10 }}>저장</Typography.Link> */}
+            {/* </Popconfirm> */}
             <Popconfirm title="해당 번호를 지우시겠습니까 ? " onConfirm={() => handleDelete(record.key)}>
               <Typography.Link>삭제</Typography.Link>
             </Popconfirm>
@@ -301,14 +300,6 @@ const PhoneDataEditTable = (props) => {
     setDataSource(newData);
     props.handleData(newData, 'phoneNumber');
   };
-
-  const showModalOpen = () => {
-    setShowModal(true);
-  };
-
-  useEffect(() => {
-    console.log(dataSource);
-  }, [dataSource]);
 
   const handleOk = () => {
     const addData = addr.map((f) => {
@@ -355,7 +346,7 @@ const PhoneDataEditTable = (props) => {
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
-                handleSave: handleSave,
+                handleSave,
               }),
             };
           })}
@@ -363,10 +354,10 @@ const PhoneDataEditTable = (props) => {
       </div>
       <div>총 {dataSource.length}건</div>
       <Modal title="주소록 불러오기" open={showModal} onOk={handleOk} onCancel={handleCancel}>
-        <Title className={'required'}>주소록 그룹</Title>
+        <Title className="required">주소록 그룹</Title>
         <Select
           size="large"
-          name={'channelId'}
+          name="channelId"
           placeholder="그룹 선택"
           onChange={(val) => onChange(val)}
           style={{ width: '100%' }}

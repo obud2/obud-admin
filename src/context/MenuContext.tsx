@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 
 import { getNavigationConfig, getNavigationMenu } from '../config/NavigationConfig';
 import { UserContext } from '@/context/UserContext.tsx';
@@ -33,7 +33,9 @@ const MenuContextProvider = ({ children }: { children: React.ReactNode }) => {
     updateMenu(isAdmin, setMenu);
   }, [isAdmin]);
 
-  return <MenuContext.Provider value={{ menu: menu || [] }}>{children}</MenuContext.Provider>;
+  const value = useMemo(() => ({ menu }), [menu]);
+
+  return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 };
 
 export default MenuContextProvider;

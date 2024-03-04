@@ -1,6 +1,4 @@
 import './index.css';
-// import 'antd/dist/reset.css';
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -29,9 +27,10 @@ const queryClient = new QueryClient({
   },
 });
 
-const container = document.getElementById('root');
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const container = document.getElementById('root')!;
 
-ReactDOM.createRoot(container!).render(
+ReactDOM.createRoot(container).render(
   <GlobalContextProvider>
     <ThemeProvider>
       <LayoutContextProvider>

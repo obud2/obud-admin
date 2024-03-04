@@ -38,25 +38,13 @@ const useMenuByRole = () => {
             }).then(() => {
               userLogout();
 
-              Auth.signOut().then((r) => {
+              Auth.signOut().then(() => {
                 navigate('/pages/auth/login');
               });
             });
 
             return;
           }
-
-          // 권한을 index 기반의 불안정한 DB관리가 아닌, MenuContext에서 코드로 관리한다.
-
-          // menu?.forEach((a) => {
-          //   if (select.includes(a?.key)) a.isShow = true;
-          //   else a.isShow = false;
-          //
-          //   a?.children?.forEach((b) => {
-          //     // TODO: Why this code is needed. we have to fix
-          //     b.isShow = true;
-          //   });
-          // });
 
           setNavation(menu);
         });
@@ -72,7 +60,7 @@ const useMenuByRole = () => {
       const pathname = location.pathname;
       let nowPage = '';
 
-      navigation?.map((a) => {
+      navigation?.forEach((a) => {
         if (a?.url === pathname) {
           nowPage = a;
           return;
