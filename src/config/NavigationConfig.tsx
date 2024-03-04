@@ -185,6 +185,35 @@ export const getNavigationMenu = (isAdmin: boolean) => {
       isShow: true,
     });
     menu.push({
+      id: 'pass',
+      key: 'pass',
+      iconType: 'ant',
+      title: '패스관리',
+      type: 'collapse',
+      icon: 'Idcard',
+      isShow: true,
+      children: [
+        {
+          id: 'list',
+          key: 'list',
+          title: '패스 목록',
+          type: 'item',
+          url: '/pages/pass/list',
+          exact: true,
+          isShow: true,
+        },
+        {
+          id: 'member',
+          key: 'member',
+          title: '패스 관리',
+          type: 'item',
+          url: '/pages/pass/member',
+          exact: true,
+          isShow: true,
+        },
+      ],
+    });
+    menu.push({
       id: 'about',
       key: 'about',
       title: '문의관리',

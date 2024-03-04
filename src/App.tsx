@@ -58,6 +58,10 @@ const ProgramSchedulePage = lazy(() => import('./pages/place/ProgramSchedulePage
 /* Coupon */
 const CouponListPage = lazy(() => import('./pages/coupon/CouponListPage'));
 
+/* Pass */
+const PassListPage = lazy(() => import('./pages/pass/PassListPage'));
+const PassManagePage = lazy(() => import('./pages/pass/PassManagePage'));
+
 /* Specail */
 const SpecialListPage = lazy(() => import('./pages/special/SpecialListPage'));
 
@@ -125,6 +129,10 @@ const App = () => {
 
             {/* Coupon */}
             <Route path="/pages/coupon/list" element={<CouponListPage />} />
+
+            {/* Pass */}
+            <Route path="/pages/pass/list" element={<PassListPage />} />
+            <Route path="/pages/pass/member" element={<PassManagePage />} />
 
             {/* Special */}
             <Route path="/pages/special" element={<SpecialListPage />} />
