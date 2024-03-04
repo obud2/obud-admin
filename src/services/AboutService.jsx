@@ -4,7 +4,7 @@ import axiosInstance from '../constants/axiosInstance';
 import swal from '@sweetalert/with-react';
 
 const getListByType = (type) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     axiosInstance.get(`${API_URL}/bbs/contact/`).then((response) => {
       if (response.data && response.data.value) {
         resolve(response.data.value.filter((d) => d?.type === type));
@@ -14,7 +14,7 @@ const getListByType = (type) => {
 };
 
 const info = (id) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     axiosInstance.get(`${API_URL}/bbs/contact/${id}`).then((response) => {
       if (response.data && response.data.value) {
         resolve(response.data.value);
@@ -42,7 +42,7 @@ const saveItem = (type, param) => {
 };
 
 const deleteItem = (id) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     axiosInstance
       .delete(`${API_URL}/bbs/contact/${id}`, {
         headers: { Pragma: 'no-cache' },
