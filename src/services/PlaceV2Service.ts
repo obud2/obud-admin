@@ -73,3 +73,13 @@ export const updateCategoryItems = async (req: UpdateCategoryItemsRequest) => {
     placeIds: req.placeIds,
   });
 };
+
+type ListManagedByMePlacesResponse = {
+  value: Place[];
+};
+
+export const listManagedByMePlaces = async () => {
+  const result = await axiosInstance.get<ListManagedByMePlacesResponse>(`${API_URL}/v2/places/managed-by-me`);
+
+  return result.data;
+};
