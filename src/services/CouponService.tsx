@@ -28,11 +28,7 @@ export type RegisterCouponRequest = {
 };
 
 const registerCoupon = async (params: RegisterCouponRequest) => {
-  try {
-    await axiosInstance.post(`${API_URL}/coupon`, params);
-  } catch (error) {
-    throw error;
-  }
+  await axiosInstance.post(`${API_URL}/coupon`, params);
 };
 
 type ListCouponsRequest = {
@@ -141,17 +137,13 @@ type DisableCouponRequest = {
 };
 
 const disableCoupon = async (req: DisableCouponRequest) => {
-  try {
-    const searchParams = new URLSearchParams();
+  const searchParams = new URLSearchParams();
 
-    if (req.couponId) searchParams.set('couponId', req.couponId);
+  if (req.couponId) searchParams.set('couponId', req.couponId);
 
-    await axiosInstance.delete(`${API_URL}/coupon`, {
-      params: searchParams,
-    });
-  } catch (error) {
-    throw error;
-  }
+  await axiosInstance.delete(`${API_URL}/coupon`, {
+    params: searchParams,
+  });
 };
 
 const CouponService = {
