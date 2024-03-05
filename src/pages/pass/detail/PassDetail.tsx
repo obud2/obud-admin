@@ -6,10 +6,10 @@ import { useState } from 'react';
 import { BsTrash } from 'react-icons/bs';
 import styled from 'styled-components';
 import swal from 'sweetalert';
-import DataDetailBody, { DataDetailItem, DataDetailTitle } from '../../../components/detailTable/DataDetailBody';
-import { Coupon, CouponApplyType, CouponDiscountType, CouponIssueType } from '../../../entities/coupon';
-import CouponPlaceSearchModal from './CouponPlaceSearchModal';
-import CouponUserSearchModal from './CouponUserSearchModal';
+import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
+import { Coupon, CouponDiscountType, CouponIssueType } from '../../../entities/coupon';
+import { Pass } from '@/entities/pass';
+import { useQueryClient } from 'react-query';
 
 /**
  * @param {*} id : Coupon Id
@@ -37,26 +37,24 @@ const initialBody: RegisterCouponRequest = {
 };
 
 type Props = {
-  coupon: Coupon | null;
+  pass: Pass | null;
   open: boolean;
   onClose: () => void;
-  refresh: () => void;
 };
 
-const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
+const PassDetail = ({ pass, open, onClose }: Props) => {
+  const queryClient = useQueryClient();
+
   const [isLoading, setIsLoading] = useState(false);
   const [notiMessage, setNotiMessage] = useState('');
   const [body, setBody] = useState<RegisterCouponRequest>(initialBody);
-  const [applyType, setApplyType] = useState<CouponApplyType>(CouponApplyType.ALL);
-  const [placeAllowModalOpen, setPlaceAllowModalOpen] = useState(false);
+
   const [placeAllowList, setPlaceAllowList] = useState<PlaceResult[]>([]);
   const [programAllowList, setProgramAllowList] = useState<PlaceResult['programs'][number][]>([]);
 
-  const [placeBlockModalOpen, setPlaceBlockModalOpen] = useState(false);
   const [placeBlockList, setPlaceBlockList] = useState<PlaceResult[]>([]);
   const [programBlockList, setProgramBlockList] = useState<PlaceResult['programs'][number][]>([]);
 
-  const [issueUserModalOpen, setIssueUserModalOpen] = useState(false);
   const [issueUserList, setIssueUserList] = useState<UserResult[]>([]);
 
   const isActive = body.name && body.discountAmount > 0;
@@ -78,7 +76,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
   };
 
   const onSubmit = () => {
-    const text = coupon ? '조회' : '등록';
+    const text = pass ? '조회' : '등록';
     const param = body;
 
     if (!param?.name) {
@@ -99,7 +97,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
       .then(() => {
         setNotiMessage(`쿠폰 ${text} 되었습니다.`);
         setIsLoading(false);
-        refresh();
+        queryClient.invalidateQueries();
         handleClose();
       })
       .catch(() => {
@@ -125,7 +123,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
         취소
       </Button>,
       <Button key="add-btn" type="primary" style={{ width: '70px' }} disabled={!isActive} onClick={onSubmit}>
-        {coupon ? '조회' : '등록'}
+        {pass ? '조회' : '등록'}
       </Button>,
     ];
   };
@@ -134,12 +132,11 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
     <DataDetailBody
       open={open}
       onClose={onClose}
-      title={`쿠폰 ${coupon ? '조회' : '등록'}`}
+      title={`패스 ${pass ? '수정' : '등록'}`}
       extra={renderButtons()}
       isLoading={isLoading}
       notiMessage={notiMessage}
     >
-      <DataDetailTitle title="쿠폰 정보" />
       <DataDetailItem label="쿠폰명" span={2} point>
         <Input
           placeholder="쿠폰명을 입력하세요."
@@ -160,50 +157,6 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
           style={{ width: '100%' }}
         />
       </DataDetailItem>
-      {/* 코드 생성 */}
-      {body.issueType === CouponIssueType.BY_CODE && (
-        <DataDetailItem label="쿠폰코드" span={2} point>
-          <Input
-            placeholder="영어 대문자 + 숫자 조합으로 최대 5자리. 미입력시 자동 생성"
-            onChange={(e) => {
-              const code = e.target.value.trim().slice(0, 5).toUpperCase();
-              onChangeInputValue('code', code);
-            }}
-          />
-        </DataDetailItem>
-      )}
-      {/* 특정 유저 */}
-      {body.issueType === CouponIssueType.TO_USER && (
-        <DataDetailItem label="회원 선택" span={2}>
-          <Button type="primary" onClick={() => setIssueUserModalOpen(true)} disabled={isLoading}>
-            회원 선택
-          </Button>
-          <CouponUserSearchModal
-            open={issueUserModalOpen}
-            onClose={() => setIssueUserModalOpen(false)}
-            userList={issueUserList}
-            setUserList={setIssueUserList}
-          />
-          {issueUserList.length > 0 && (
-            <UserWrapper>
-              <UserListWrapper>
-                {issueUserList.map((user) => (
-                  <UserItem key={user.id}>
-                    {user.name} / {user.email} / {user.phone}
-                    <BsTrash
-                      style={{ marginLeft: '4px', cursor: 'pointer' }}
-                      onClick={() => setIssueUserList(issueUserList.filter((item) => item.id !== user.id))}
-                    />
-                  </UserItem>
-                ))}
-              </UserListWrapper>
-            </UserWrapper>
-          )}
-        </DataDetailItem>
-      )}
-
-      {/* 쿠폰 사용 정보 */}
-      <DataDetailTitle title="사용 정보" />
       <DataDetailItem label="사용 혜택" span={2} point>
         <div style={{ display: 'flex' }}>
           <Select
@@ -246,79 +199,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
           disabled={isLoading}
         />
       </DataDetailItem>
-      <DataDetailItem label="쿠폰 적용 범위" span={2}>
-        <Select
-          value={applyType}
-          onChange={(e) => setApplyType(e)}
-          options={[
-            { label: '모든 장소', value: CouponApplyType.ALL },
-            { label: '선택', value: CouponApplyType.PARTIAL },
-          ]}
-          style={{ width: '100%' }}
-        />
-        {applyType === CouponApplyType.PARTIAL && (
-          <ApplyOptionWrapper>
-            <Button type="primary" onClick={() => setPlaceAllowModalOpen(true)}>
-              쿠폰 적용 상품 선택
-            </Button>
-            <CouponPlaceSearchModal
-              open={placeAllowModalOpen}
-              onClose={() => setPlaceAllowModalOpen(false)}
-              placeList={placeAllowList}
-              setPlaceList={setPlaceAllowList}
-              programList={programAllowList}
-              setProgramList={setProgramAllowList}
-            />
-          </ApplyOptionWrapper>
-        )}
-        {placeAllowList.length > 0 && (
-          <PlaceWrapper>
-            <PlaceTitleWrapper>장소</PlaceTitleWrapper>
-            <PlaceListWrapper>
-              {placeAllowList.map((place) => (
-                <PlaceItem key={place.id}>
-                  {place.name}
-                  <BsTrash
-                    style={{ marginLeft: '4px', cursor: 'pointer' }}
-                    onClick={() => setPlaceAllowList(placeAllowList.filter((item) => item.id !== place.id))}
-                  />
-                </PlaceItem>
-              ))}
-            </PlaceListWrapper>
-          </PlaceWrapper>
-        )}
-        {programAllowList.length > 0 && (
-          <PlaceWrapper>
-            <PlaceTitleWrapper>프로그램</PlaceTitleWrapper>
-            <PlaceListWrapper>
-              {programAllowList.map((program) => (
-                <PlaceItem key={program.id}>
-                  {program.name}
-                  <BsTrash
-                    style={{ marginLeft: '4px', cursor: 'pointer' }}
-                    onClick={() => setProgramAllowList(programAllowList.filter((item) => item.id !== program.id))}
-                  />
-                </PlaceItem>
-              ))}
-            </PlaceListWrapper>
-          </PlaceWrapper>
-        )}
-      </DataDetailItem>
       <DataDetailItem label="사용 제외 상품" span={2}>
-        <ApplyOptionWrapper>
-          <Button type="primary" onClick={() => setPlaceBlockModalOpen(true)}>
-            쿠폰 적용 제외 상품 선택
-          </Button>
-          <CouponPlaceSearchModal
-            open={placeBlockModalOpen}
-            onClose={() => setPlaceBlockModalOpen(false)}
-            placeList={placeBlockList}
-            setPlaceList={setPlaceBlockList}
-            programList={programBlockList}
-            setProgramList={setProgramBlockList}
-          />
-        </ApplyOptionWrapper>
-
         {placeBlockList.length > 0 && (
           <PlaceWrapper>
             <PlaceTitleWrapper>장소</PlaceTitleWrapper>
@@ -379,11 +260,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
   );
 };
 
-export default CouponDetail;
-
-const ApplyOptionWrapper = styled.div`
-  margin-top: 12px;
-`;
+export default PassDetail;
 
 const PlaceWrapper = styled.div`
   margin-top: 20px;
@@ -402,24 +279,6 @@ const PlaceTitleWrapper = styled.div`
 const PlaceListWrapper = styled.div``;
 
 const PlaceItem = styled.div`
-  padding: 4px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-`;
-
-const UserWrapper = styled.div`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  max-height: 300px;
-`;
-
-const UserListWrapper = styled.div``;
-
-const UserItem = styled.div`
   padding: 4px;
   font-size: 13px;
   display: flex;

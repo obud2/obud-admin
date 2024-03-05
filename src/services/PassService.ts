@@ -7,7 +7,7 @@ import { Program } from '@/entities/program';
 type ListPassesRequest = {
   placeId: Place['id'];
   // cf. status=ACTIVE인 경우 is_show=true인 pass만 조회
-  status?: 'ACTIVE';
+  status?: 'ACTIVE' | 'INACTIVE' | 'ALL';
 };
 
 type ListPassesResponse = {
@@ -18,7 +18,8 @@ const listPasses = async (req: ListPassesRequest) => {
   const searchParams = new URLSearchParams();
 
   if (req.placeId) searchParams.set('placeId', req.placeId);
-  if (req.status) searchParams.set('status', req.status);
+  // TODO: Fix
+  if (req.status === 'ACTIVE') searchParams.set('status', req.status);
 
   const response = await axiosInstance.get<ListPassesResponse>(`${API_URL}/pass`, {
     params: searchParams,

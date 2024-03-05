@@ -175,16 +175,6 @@ export const getNavigationMenu = (isAdmin: boolean) => {
 
   if (isAdmin) {
     menu.push({
-      id: 'coupon',
-      key: 'coupon',
-      iconType: 'ant',
-      title: '쿠폰관리',
-      type: 'item',
-      url: '/pages/coupon/list',
-      icon: 'CreditCard',
-      isShow: true,
-    });
-    menu.push({
       id: 'pass',
       key: 'pass',
       iconType: 'ant',
@@ -198,20 +188,33 @@ export const getNavigationMenu = (isAdmin: boolean) => {
           key: 'list',
           title: '패스 목록',
           type: 'item',
-          url: '/pages/pass/list',
+          url: '/pages/pass-list',
           exact: true,
           isShow: true,
         },
         {
           id: 'member',
           key: 'member',
-          title: '패스 관리',
+          title: '패스 회원 관리',
           type: 'item',
-          url: '/pages/pass/member',
+          url: '/pages/pass-member',
           exact: true,
           isShow: true,
         },
       ],
+    });
+  }
+
+  if (isAdmin) {
+    menu.push({
+      id: 'coupon',
+      key: 'coupon',
+      iconType: 'ant',
+      title: '쿠폰관리',
+      type: 'item',
+      url: '/pages/coupon/list',
+      icon: 'CreditCard',
+      isShow: true,
     });
     menu.push({
       id: 'about',
@@ -254,6 +257,7 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     icon: 'Team',
     isShow: true,
   });
+
   if (isAdmin) {
     menu.push({
       id: 'setting',

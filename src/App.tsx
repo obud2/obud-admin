@@ -131,8 +131,8 @@ const App = () => {
             <Route path="/pages/coupon/list" element={<CouponListPage />} />
 
             {/* Pass */}
-            <Route path="/pages/pass/list" element={<PassListPage />} />
-            <Route path="/pages/pass/member" element={<PassManagePage />} />
+            <Route path="/pages/pass-list" element={<PassListPage />} />
+            <Route path="/pages/pass-member" element={<PassManagePage />} />
 
             {/* Special */}
             <Route path="/pages/special" element={<SpecialListPage />} />

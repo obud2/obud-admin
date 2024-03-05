@@ -40,7 +40,6 @@ const CouponListPage = () => {
       message.success('쿠폰이 비활성화 되었습니다.');
     } catch (err) {
       message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
-      console.error(err);
     }
   };
 
