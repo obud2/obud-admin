@@ -88,7 +88,7 @@ const updatePass = async (req: UpdatePassRequest) => {
   await axiosInstance.put(`${API_URL}/pass/${req.id}`, req);
 };
 
-type CreateUserPassRequest = {
+export type CreateUserPassRequest = {
   passId: Pass['id'];
   userId: string;
   startDate: string;

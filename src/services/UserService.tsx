@@ -19,7 +19,7 @@ const getUserExcel = () => {
   });
 };
 
-const getUserAll = (cursor: string, keyword: string) => {
+const getUserAll = (cursor: string, keyword: string): Promise<{ value: User[] }> => {
   return new Promise((resolve) => {
     const keywordTemp = keyword ? `&keyword=${keyword}` : '';
     const cursorTemp = cursor ? `&cursor=${cursor}` : '';
@@ -27,10 +27,10 @@ const getUserAll = (cursor: string, keyword: string) => {
     axiosInstance
       .get(`${API_URL}/user/all?limit=${limit}${cursorTemp}${keywordTemp}`)
       .then((response) => {
-        resolve(response?.data || []);
+        resolve(response?.data || { value: [] });
       })
       .catch(() => {
-        resolve([]);
+        resolve({ value: [] });
       });
   });
 };

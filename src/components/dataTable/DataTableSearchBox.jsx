@@ -30,7 +30,7 @@ const DataTableSearchBox = ({ doSearch, doClear, isLoading }) => {
 
   const rtData = (data) => {
     const filterCopy = [...filterArr];
-    const dataCopy = { ...data, ['id']: `${data?.filter}-${data?.value}-${filterArr.length}` };
+    const dataCopy = { ...data, id: `${data?.filter}-${data?.value}-${filterArr.length}` };
 
     filterCopy.push(dataCopy);
 
@@ -97,7 +97,7 @@ const RenderText = ({ filterData, filterArr, rtData, isLoading }) => {
 
   useEffect(() => {
     if (filterData?.length > 0) {
-      filterData?.map((a) => {
+      filterData?.forEach((a) => {
         if (a?.value === value?.filter) {
           setSelectFilter(a);
         }
@@ -111,7 +111,7 @@ const RenderText = ({ filterData, filterArr, rtData, isLoading }) => {
 
   const handleChange = (type, e) => {
     if (type === 'filter') {
-      setValue({ ...value, ['filter']: e, ['value']: '' });
+      setValue({ ...value, filter: e, value: '' });
     } else {
       setValue({ ...value, [type]: e });
     }
@@ -119,16 +119,16 @@ const RenderText = ({ filterData, filterArr, rtData, isLoading }) => {
 
   const addItem = () => {
     if (value?.value && value?.filter) {
-      let valueCopy = { ...value, filterLabel: selectFilter?.label };
+      const valueCopy = { ...value, filterLabel: selectFilter?.label };
 
       if (valueCopy?.filter === 'isShow') {
-        if (valueCopy?.value === '공개') valueCopy['value'] = 'true';
-        if (valueCopy?.value === '비공개') valueCopy['value'] = 'false';
+        if (valueCopy?.value === '공개') valueCopy.value = 'true';
+        if (valueCopy?.value === '비공개') valueCopy.value = 'false';
       }
 
       if (valueCopy?.filter === 'createdAt') {
-        valueCopy['value'] = moment(valueCopy['value']).format('YYYY-MM-DD');
-        valueCopy['date'] = moment(valueCopy['value']).valueOf();
+        valueCopy.value = moment(valueCopy.value).format('YYYY-MM-DD');
+        valueCopy.date = moment(valueCopy.value).valueOf();
       }
 
       setValue({});
