@@ -1,39 +1,23 @@
-import CouponService, { PlaceResult, RegisterCouponRequest, UserResult } from '@/services/CouponService';
-import { Button, DatePicker, Input, InputNumber, Radio, Select } from 'antd';
-import locale from 'antd/es/date-picker/locale/ko_KR';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-import { BsTrash } from 'react-icons/bs';
-import styled from 'styled-components';
-import swal from 'sweetalert';
-import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
-import { Coupon, CouponDiscountType, CouponIssueType } from '../../../entities/coupon';
+import DataDetailBody, { DataDetailItem } from '@/components/detailTable/DataDetailBody';
 import { Pass } from '@/entities/pass';
+import { CreatePassRequest, PassService } from '@/services/PassService';
+import { Button, Input, InputNumber, Radio, Switch } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import { useState } from 'react';
 import { useQueryClient } from 'react-query';
+import swal from 'sweetalert';
 
-/**
- * @param {*} id : Coupon Id
- * @returns
- */
-
-const dateFormat = 'YYYY-MM-DD';
-
-const initialBody: RegisterCouponRequest = {
-  name: '',
-  code: null,
-  issueType: CouponIssueType.BY_CODE,
-  discountType: CouponDiscountType.AMOUNT,
-  discountAmount: 0,
-  startDate: dayjs().format(dateFormat),
-  endDate: dayjs().format(dateFormat),
-  minOrderPriceAmount: 0,
-  maxDiscountAmount: 0,
-  allowDuplicatePerUser: false,
-  placeAllowList: [],
-  programAllowList: [],
-  placeBlockList: [],
-  programBlockList: [],
-  userIds: [],
+const initialBody: CreatePassRequest = {
+  title: '',
+  isShow: true,
+  durationInDays: 30,
+  price: 0,
+  maxReservations: null,
+  maxCancels: null,
+  minCancelWindowHour: 0,
+  minCancelWindowMinute: 0,
+  notice: '',
+  refundPolicy: '',
 };
 
 type Props = {
@@ -47,31 +31,19 @@ const PassDetail = ({ pass, open, onClose }: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [notiMessage, setNotiMessage] = useState('');
-  const [body, setBody] = useState<RegisterCouponRequest>(initialBody);
+  const [body, setBody] = useState<CreatePassRequest>(initialBody);
+  const [maxDays, setMaxDays] = useState<number>(0);
 
-  const [placeAllowList, setPlaceAllowList] = useState<PlaceResult[]>([]);
-  const [programAllowList, setProgramAllowList] = useState<PlaceResult['programs'][number][]>([]);
+  const isActive = body.title && body.durationInDays && body.price && body.maxReservations && body.maxCancels;
 
-  const [placeBlockList, setPlaceBlockList] = useState<PlaceResult[]>([]);
-  const [programBlockList, setProgramBlockList] = useState<PlaceResult['programs'][number][]>([]);
-
-  const [issueUserList, setIssueUserList] = useState<UserResult[]>([]);
-
-  const isActive = body.name && body.discountAmount > 0;
-
-  // TODO: 쿠폰 정보 수정
-
-  const onChangeInputValue = (key: keyof Coupon, value: Coupon[keyof Coupon]) => {
+  const onChangeInputValue = (key: keyof Pass, value: Pass[keyof Pass]) => {
     setBody((prev) => ({ ...prev, [key]: value }));
+    setMaxDays(0);
   };
 
   const handleClose = () => {
     setBody(initialBody);
-    setPlaceAllowList([]);
-    setProgramAllowList([]);
-    setPlaceBlockList([]);
-    setProgramBlockList([]);
-    setIssueUserList([]);
+
     onClose();
   };
 
@@ -79,23 +51,17 @@ const PassDetail = ({ pass, open, onClose }: Props) => {
     const text = pass ? '조회' : '등록';
     const param = body;
 
-    if (!param?.name) {
-      emptyCheck('이름을 입력해주세요.');
+    if (!param?.title) {
+      emptyCheck('패스 이름을 입력해주세요.');
       return;
     }
 
     setIsLoading(true);
-    CouponService.registerCoupon({
+    PassService.createPass({
       ...param,
-      code: param.code?.trim()?.toLocaleUpperCase() || null,
-      userIds: issueUserList.map((user) => user.id),
-      placeAllowList: placeAllowList.map((place) => place.id),
-      programAllowList: programAllowList.map((program) => program.id),
-      placeBlockList: placeBlockList.map((place) => place.id),
-      programBlockList: programBlockList.map((program) => program.id),
     })
       .then(() => {
-        setNotiMessage(`쿠폰 ${text} 되었습니다.`);
+        setNotiMessage(`패스 ${text} 되었습니다.`);
         setIsLoading(false);
         queryClient.invalidateQueries();
         handleClose();
@@ -109,13 +75,7 @@ const PassDetail = ({ pass, open, onClose }: Props) => {
       });
   };
 
-  const emptyCheck = (text: string) => {
-    swal({
-      title: '',
-      text,
-      icon: 'warning',
-    });
-  };
+  const emptyCheck = (text: string) => swal({ title: '', text, icon: 'warning' });
 
   const renderButtons = () => {
     return [
@@ -137,150 +97,102 @@ const PassDetail = ({ pass, open, onClose }: Props) => {
       isLoading={isLoading}
       notiMessage={notiMessage}
     >
-      <DataDetailItem label="쿠폰명" span={2} point>
+      <DataDetailItem label="게시여부" span={2} point>
+        <Switch style={{ width: '50px' }} checked={body?.isShow || false} onChange={(e) => onChangeInputValue('isShow', e)} />
+      </DataDetailItem>
+      <DataDetailItem label="패스 이름" span={2} point>
         <Input
-          placeholder="쿠폰명을 입력하세요."
-          value={body.name || ''}
-          onChange={(e) => onChangeInputValue('name', e.target.value)}
+          placeholder="요가 클래스 1달권(8회)"
+          value={body.title}
+          onChange={(e) => onChangeInputValue('title', e.target.value)}
           disabled={isLoading}
         />
       </DataDetailItem>
-      <DataDetailItem label="쿠폰 형식" span={2}>
-        <Select
-          value={body.issueType}
-          onChange={(e) => onChangeInputValue('issueType', e)}
-          options={[
-            { label: '코드 입력', value: CouponIssueType.BY_CODE },
-            { label: '전체 회원', value: CouponIssueType.TO_ALL_USERS },
-            { label: '특정 회원', value: CouponIssueType.TO_USER },
-          ]}
-          style={{ width: '100%' }}
+      <DataDetailItem label="기간" span={2} point>
+        <Radio.Group value={body.durationInDays} onChange={(e) => onChangeInputValue('durationInDays', e.target.value)}>
+          <Radio value={30}>1개월 (30일)</Radio>
+          <Radio value={60}>2개월 (60일)</Radio>
+          <Radio value={90}>3개월 (90일)</Radio>
+          <Radio value={maxDays}>
+            직접 입력
+            <InputNumber
+              size="small"
+              style={{ width: '100px', height: '20px', marginLeft: '4px' }}
+              value={maxDays}
+              onChange={(e) => e && setMaxDays(e)}
+              addonAfter="일"
+              max={180}
+              disabled={isLoading}
+            />
+          </Radio>
+        </Radio.Group>
+      </DataDetailItem>
+      <DataDetailItem label="판매가" span={2} point>
+        <InputNumber
+          style={{ width: '100%', marginLeft: '4px' }}
+          value={body.price}
+          onChange={(e) => e && onChangeInputValue('price', e)}
+          placeholder="판매 금액을 입력하세요."
+          addonAfter="원"
+          disabled={isLoading}
         />
       </DataDetailItem>
-      <DataDetailItem label="사용 혜택" span={2} point>
-        <div style={{ display: 'flex' }}>
-          <Select
-            value={body.discountType}
-            onChange={(e) => onChangeInputValue('discountType', e)}
-            options={[
-              { label: '금액 할인', value: CouponDiscountType.AMOUNT },
-              { label: '비율 할인', value: CouponDiscountType.PERCENTAGE },
-            ]}
-            style={{ width: '200px' }}
-            disabled={isLoading}
-          />
+      <DataDetailItem label="총 예약 횟수" span={2} point>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <InputNumber
-            style={{ width: '100%', marginLeft: '4px' }}
-            value={body.discountAmount}
-            onChange={(e) => e && onChangeInputValue('discountAmount', e)}
-            placeholder={body.discountType === CouponDiscountType.AMOUNT ? '할인 금액을 입력하세요.' : '할인 비율을 입력하세요.'}
-            addonAfter={body.discountType === CouponDiscountType.AMOUNT ? '원' : '%'}
+            style={{ width: '100px', marginLeft: '4px' }}
+            value={body.maxReservations}
+            onChange={(e) => e && onChangeInputValue('maxReservations', e)}
+            addonAfter="회"
             disabled={isLoading}
           />
         </div>
       </DataDetailItem>
-      <DataDetailItem label="최대 할인 금액" span={2} point>
-        <InputNumber
-          placeholder="최대 할인 금액을 입력하세요."
-          addonAfter="원"
-          style={{ width: '100%' }}
-          value={body.maxDiscountAmount}
-          onChange={(e) => e && onChangeInputValue('maxDiscountAmount', e)}
-          disabled={isLoading}
-        />
+      <DataDetailItem label="총 취소가능 횟수" span={2} point>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <InputNumber
+            style={{ width: '100px', marginLeft: '4px' }}
+            value={body.maxCancels}
+            onChange={(e) => e && onChangeInputValue('maxCancels', e)}
+            addonAfter="회"
+            disabled={isLoading}
+          />
+        </div>
       </DataDetailItem>
-      <DataDetailItem label="최소 주문 금액" span={2} point>
-        <InputNumber
-          placeholder="최소 주문 금액을 입력하세요."
-          addonAfter="원"
-          style={{ width: '100%' }}
-          value={body.minOrderPriceAmount}
-          onChange={(e) => e && onChangeInputValue('minOrderPriceAmount', e)}
-          disabled={isLoading}
-        />
+      <DataDetailItem label="유의 사항" span={2}>
+        <TextArea value={body.notice} onChange={(e) => e && onChangeInputValue('notice', e.target.value)} rows={10} showCount />
       </DataDetailItem>
-      <DataDetailItem label="사용 제외 상품" span={2}>
-        {placeBlockList.length > 0 && (
-          <PlaceWrapper>
-            <PlaceTitleWrapper>장소</PlaceTitleWrapper>
-            <PlaceListWrapper>
-              {placeBlockList.map((place) => (
-                <PlaceItem key={place.id}>
-                  {place.name}
-                  <BsTrash
-                    style={{ marginLeft: '4px', cursor: 'pointer' }}
-                    onClick={() => setPlaceBlockList(placeBlockList.filter((item) => item.id !== place.id))}
-                  />
-                </PlaceItem>
-              ))}
-            </PlaceListWrapper>
-          </PlaceWrapper>
-        )}
-        {programBlockList.length > 0 && (
-          <PlaceWrapper>
-            <PlaceTitleWrapper>프로그램</PlaceTitleWrapper>
-            <PlaceListWrapper>
-              {programBlockList.map((program) => (
-                <PlaceItem key={program.id}>
-                  {program.name}
-                  <BsTrash
-                    style={{ marginLeft: '4px', cursor: 'pointer' }}
-                    onClick={() => setProgramBlockList(programBlockList.filter((item) => item.id !== program.id))}
-                  />
-                </PlaceItem>
-              ))}
-            </PlaceListWrapper>
-          </PlaceWrapper>
-        )}
+      <DataDetailItem label="에약 취소 기간 설정" span={2}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span style={{ fontSize: '14px' }}>수업 시간 </span>
+          <InputNumber
+            size="small"
+            min={0}
+            style={{ width: '120px', marginLeft: '4px' }}
+            value={body.minCancelWindowHour}
+            onChange={(e) => onChangeInputValue('minCancelWindowHour', e)}
+            addonAfter="시간"
+            disabled={isLoading}
+          />
+          <InputNumber
+            size="small"
+            min={0}
+            style={{ width: '120px', marginLeft: '4px' }}
+            value={body.minCancelWindowMinute}
+            onChange={(e) => onChangeInputValue('minCancelWindowMinute', e)}
+            addonAfter="분"
+            disabled={isLoading}
+          />
+          <span style={{ fontSize: '14px', marginLeft: '4px' }}>
+            전 까지 가능 (해당 기간 동안 취소 시 예약 횟수 차감이 되지 않습니다.){' '}
+          </span>
+        </div>
       </DataDetailItem>
-      <DataDetailItem label="사용 기간" span={2}>
-        <DatePicker.RangePicker
-          showTime
-          hourStep={1 as const}
-          minuteStep={5 as const}
-          secondStep={10 as const}
-          disabled={isLoading}
-          locale={locale}
-          style={{ width: '100%' }}
-          format={dateFormat}
-          value={[dayjs(body.startDate ?? '', dateFormat), dayjs(body.endDate ?? '', dateFormat)]}
-          onChange={(_, dateString) => {
-            onChangeInputValue('startDate', dayjs(dateString[0] ?? '').format(dateFormat));
-            onChangeInputValue('endDate', dayjs(dateString[1] ?? '').format(dateFormat));
-          }}
-        />
-      </DataDetailItem>
-      <DataDetailItem label="중복 발급 가능 여부" span={2}>
-        <Radio.Group value={body.allowDuplicatePerUser} onChange={(e) => onChangeInputValue('allowDuplicatePerUser', e.target.value)}>
-          <Radio value>가능</Radio>
-          <Radio value={false}>불가능</Radio>
-        </Radio.Group>
+      <DataDetailItem label="환불 규정" span={2}>
+        <TextArea value={body.refundPolicy} onChange={(e) => e && onChangeInputValue('refundPolicy', e.target.value)} rows={10} showCount />
       </DataDetailItem>
     </DataDetailBody>
   );
 };
 
 export default PassDetail;
-
-const PlaceWrapper = styled.div`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  max-height: 300px;
-`;
-
-const PlaceTitleWrapper = styled.div`
-  font-size: 14px;
-  font-weight: bold;
-`;
-
-const PlaceListWrapper = styled.div``;
-
-const PlaceItem = styled.div`
-  padding: 4px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-`;

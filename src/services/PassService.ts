@@ -27,7 +27,7 @@ const listPasses = async (req: ListPassesRequest) => {
   return response.data;
 };
 
-type CreatePassRequest = {
+export type CreatePassRequest = {
   isShow: boolean;
   title: string;
   durationInDays: number;
