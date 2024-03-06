@@ -27,7 +27,7 @@ type Props = {
   addResister?: { text: string; onClick: () => void };
   filter?: any;
   doFilter?: (value: string) => void;
-  doSearch: (value: string) => void;
+  doSearch?: (value: string) => void;
   searchPlaceholder?: string;
   isLoading?: boolean;
   disabled?: boolean;
@@ -80,7 +80,9 @@ const DataTableHeader = ({
         disabled={disabled}
       />
       {filter && <DataTableFilter filter={filter} onChangeFilter={doFilter} />}
-      {!searchDisabled && <DataSearchBox doSearch={doSearch} placeholder={searchPlaceholder} isLoading={isLoading} disabled={disabled} />}
+      {!searchDisabled && doSearch && (
+        <DataSearchBox doSearch={doSearch} placeholder={searchPlaceholder} isLoading={isLoading} disabled={disabled} />
+      )}
     </React.Fragment>
   );
 };

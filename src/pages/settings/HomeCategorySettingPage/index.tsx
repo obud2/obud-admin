@@ -25,7 +25,7 @@ const CategoryItems = [
 const HomeCategorySettingPage = () => {
   return (
     <div>
-      <DataTableHeader title="홈 화면 카테고리 관리" doSearch={() => {}} />
+      <DataTableHeader title="홈 화면 카테고리 관리" />
       <ItemWrapper>
         {CategoryItems.map((item) => (
           <CategoryItem key={item.id} categoryId={item.id} category={item.name} />

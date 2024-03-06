@@ -46,7 +46,6 @@ const HomeSectionSettingPage = () => {
           text: '저장',
           onClick: () => onSaveSectionInfo(sectionWithItems),
         }}
-        doSearch={() => {}}
       />
       {sectionWithItems && (
         <ReactSortable

@@ -62,12 +62,7 @@ const PassListPage = () => {
 
   return (
     <div>
-      <DataTableHeader
-        title="패스 목록"
-        searchDisabled
-        doSearch={() => null}
-        register={{ text: '패스 등록', onClick: () => onDetail(null) }}
-      />
+      <DataTableHeader title="패스 목록" searchDisabled register={{ text: '패스 등록', onClick: () => onDetail(null) }} />
       <Wrapper>
         <FilterWrapper>
           <Select

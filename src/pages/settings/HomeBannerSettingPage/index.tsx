@@ -44,7 +44,7 @@ const HomeBannerSettingPage = () => {
 
   return (
     <Wrapper>
-      <DataTableHeader title="홈 배너 관리" register={{ text: '저장', onClick: handleChangeOrder }} doSearch={() => {}} />
+      <DataTableHeader title="홈 배너 관리" register={{ text: '저장', onClick: handleChangeOrder }} />
 
       <div className="button-wrapper">
         <Button type="primary" onClick={() => setAddModalOpen(true)}>

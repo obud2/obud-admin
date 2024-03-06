@@ -289,7 +289,6 @@ const ProgramSchedulePage = () => {
         title="회차별 상세 정보 등록"
         subTitle="각 회차별 상세 정보를 입력할 때 사용합니다. 상세정보가 없으면 입력하지 않아도 됩니다."
         register={{ text: '회차 정보 추가', onClick: () => setRegisterPresetOpen(true) }}
-        doSearch={() => {}}
         searchDisabled
       />
 
@@ -369,7 +368,6 @@ const ProgramSchedulePage = () => {
         title={<ProductShellTitle title={studio?.title || ''} subTitle={lesson?.title || ''} link={undefined} />}
         isLoading={isAllLoading}
         notiMessage={notiMessage}
-        doSearch={() => {}}
         searchDisabled
       />
 
