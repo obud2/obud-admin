@@ -84,24 +84,24 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
 
     setIsLoading(true);
     if (pass) {
-      // 쿠폰수정
-      // PassService.createPass({
-      //   ...param,
-      //   placeId: currentPlace?.id || '',
-      // })
-      //   .then(() => {
-      //     setNotiMessage(`패스 ${text} 되었습니다.`);
-      //     setIsLoading(false);
-      //     queryClient.invalidateQueries();
-      //     handleClose();
-      //   })
-      //   .catch(() => {
-      //     setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
-      //     setIsLoading(false);
-      //   })
-      //   .finally(() => {
-      //     setIsLoading(false);
-      //   });
+      PassService.updatePass({
+        ...param,
+        id: pass.id,
+        placeId: currentPlace?.id || '',
+      })
+        .then(() => {
+          setNotiMessage(`패스 ${text} 되었습니다.`);
+          setIsLoading(false);
+          queryClient.invalidateQueries();
+          handleClose();
+        })
+        .catch(() => {
+          setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
+          setIsLoading(false);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     } else {
       PassService.createPass({
         ...param,

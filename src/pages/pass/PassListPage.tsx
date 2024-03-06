@@ -3,15 +3,17 @@ import { Pass } from '@/entities/pass';
 import { Place } from '@/entities/place';
 import { PassService } from '@/services/PassService';
 import { listManagedByMePlaces } from '@/services/PlaceV2Service';
-import { Select } from 'antd';
+import { Button, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import styled from 'styled-components';
 import PassItem from './PassItem';
 import PassDetail from './detail/PassDetail';
+import swal from 'sweetalert';
 
 const PassListPage = () => {
+  const queryClient = useQueryClient();
   const [selectedPlace, setSelectedPlace] = useState<Place>();
   const [selectedFilter, setSelectedFilter] = useState<'ALL' | 'ACTIVE' | 'INACTIVE'>('ALL');
 
@@ -37,6 +39,20 @@ const PassListPage = () => {
 
   const setList = (e: Pass[]) => {
     setSortedPasses(e);
+  };
+
+  const updatePassOrder = () => {
+    PassService.updatePassOrder({
+      placeId: selectedPlace?.id || '',
+      passOrders: sortedPasses.map((pass, index) => ({ id: pass.id, order: index + 1 })),
+    })
+      .then(() => {
+        swal('패스 순서가 변경되었습니다.');
+        queryClient.invalidateQueries(['passesByPlace', selectedPlace?.id]);
+      })
+      .catch(() => {
+        swal('패스 순서 변경에 실패하였습니다.');
+      });
   };
 
   const onDetail = (item: Pass | null) => {
@@ -71,6 +87,7 @@ const PassListPage = () => {
             ]}
             style={{ width: '100px' }}
           />
+          <Button onClick={updatePassOrder}>순서 저장</Button>
         </FilterWrapper>
         <PassListWrapper>
           <ReactSortable

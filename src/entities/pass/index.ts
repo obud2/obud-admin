@@ -3,6 +3,7 @@ import { Place } from '../place';
 export type Pass = {
   id: number;
   placeId: Place['id'];
+  sortOrder: number;
   isShow: boolean;
   title: string;
   durationInDays: number;

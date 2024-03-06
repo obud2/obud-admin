@@ -69,6 +69,25 @@ const listUserPasses = async (req: ListUserPassesRequest) => {
   return response.data;
 };
 
+type UpdatePassRequest = {
+  id: Pass['id'];
+  placeId: string;
+  isShow: boolean;
+  title: string;
+  durationInDays: number;
+  price: number;
+  maxReservations: number | null;
+  maxCancels: number | null;
+  minCancelWindowHour: number;
+  minCancelWindowMinute: number;
+  notice: string;
+  refundPolicy: string;
+};
+
+const updatePass = async (req: UpdatePassRequest) => {
+  await axiosInstance.put(`${API_URL}/pass/${req.id}`, req);
+};
+
 type CreateUserPassRequest = {
   passId: Pass['id'];
   userId: string;
@@ -106,12 +125,26 @@ const createPassForProgram = async (req: CreatePassForProgramRequest) => {
   await axiosInstance.post(`${API_URL}/pass/programs/${req.programId}`, req);
 };
 
+type UpdatePassOrderRequest = {
+  placeId: Place['id'];
+  passOrders: {
+    id: Pass['id'];
+    order: number;
+  }[];
+};
+
+const updatePassOrder = async (req: UpdatePassOrderRequest) => {
+  await axiosInstance.post(`${API_URL}/pass/places/${req.placeId}/order`, req);
+};
+
 export const PassService = {
   listPasses,
   createPass,
+  updatePass,
   listUserPasses,
   createUserPass,
   updateUserPass,
   cancelUserPass,
   createPassForProgram,
+  updatePassOrder,
 };
