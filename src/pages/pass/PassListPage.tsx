@@ -30,8 +30,10 @@ const PassListPage = () => {
   }, [places]);
 
   useEffect(() => {
-    setSortedPasses(passes || []);
-  }, passes);
+    if (passes) {
+      setSortedPasses(passes);
+    }
+  }, [passes]);
 
   const setList = (e: Pass[]) => {
     setSortedPasses(e);
@@ -50,7 +52,6 @@ const PassListPage = () => {
         doSearch={() => null}
         register={{ text: '패스 등록', onClick: () => onDetail(null) }}
       />
-
       <Wrapper>
         <FilterWrapper>
           <Select
@@ -73,16 +74,16 @@ const PassListPage = () => {
         </FilterWrapper>
         <PassListWrapper>
           <ReactSortable
-            className="product-shell-list-container"
+            className="list-container"
             list={sortedPasses}
             setList={setList}
             animation={200}
             delayOnTouchStart
             delay={1}
-            handle=".product-shell-item-drag-button"
+            handle=".item-drag-button"
           >
             {sortedPasses.length > 0 ? (
-              sortedPasses.map((pass) => <PassItem key={pass.id} pass={pass} />)
+              sortedPasses.map((pass) => <PassItem key={pass.id} pass={pass} onDetail={onDetail} />)
             ) : (
               <div className="empty-list">등록된 패스가 존재하지 않습니다.</div>
             )}
@@ -120,8 +121,49 @@ const FilterWrapper = styled.div`
 `;
 
 const PassListWrapper = styled.div`
-  padding: 25px;
+  padding: 16px;
+  min-height: 80vh;
   background: white;
   margin-top: 20px;
   border-radius: 10px;
+
+  .empty-list {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #555555;
+  }
+
+  .list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: rgba(0, 0, 0, 0.87);
+
+    background-color: #ffffff;
+
+    .empty-list-item {
+      text-align: center;
+      font-size: 1.3rem;
+
+      color: #555555;
+      padding: 30px 0;
+    }
+  }
+
+  .item-drag-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    transform: translateY(-50%);
+    right: 5px;
+    top: 20px;
+    transition: opacity 0.3s;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;

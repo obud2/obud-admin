@@ -4,7 +4,7 @@ import { Place } from '@/entities/place';
 import { CreatePassRequest, PassService } from '@/services/PassService';
 import { Button, Input, InputNumber, Radio, Switch } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import swal from 'sweetalert';
 
@@ -37,6 +37,24 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
   const [body, setBody] = useState<CreatePassRequest>(initialBody);
   const [maxDays, setMaxDays] = useState<number>(0);
 
+  useEffect(() => {
+    if (pass) {
+      setBody({
+        title: pass.title,
+        placeId: pass.placeId,
+        isShow: pass.isShow,
+        durationInDays: pass.durationInDays,
+        price: pass.price,
+        maxReservations: pass.maxReservations,
+        maxCancels: pass.maxCancels,
+        minCancelWindowHour: pass.minCancelWindowHour,
+        minCancelWindowMinute: pass.minCancelWindowMinute,
+        notice: pass.notice,
+        refundPolicy: pass.refundPolicy,
+      });
+    }
+  }, [pass]);
+
   const isActive = body.title && body.durationInDays && body.price && body.maxReservations && body.maxCancels;
 
   const onChangeInputValue = (key: keyof Pass, value: Pass[keyof Pass]) => {
@@ -51,7 +69,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
   };
 
   const onSubmit = () => {
-    const text = pass ? '조회' : '등록';
+    const text = pass ? '수정' : '등록';
     const param = body;
 
     if (!param?.title) {
@@ -65,23 +83,44 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
     }
 
     setIsLoading(true);
-    PassService.createPass({
-      ...param,
-      placeId: currentPlace?.id || '',
-    })
-      .then(() => {
-        setNotiMessage(`패스 ${text} 되었습니다.`);
-        setIsLoading(false);
-        queryClient.invalidateQueries();
-        handleClose();
+    if (pass) {
+      // 쿠폰수정
+      // PassService.createPass({
+      //   ...param,
+      //   placeId: currentPlace?.id || '',
+      // })
+      //   .then(() => {
+      //     setNotiMessage(`패스 ${text} 되었습니다.`);
+      //     setIsLoading(false);
+      //     queryClient.invalidateQueries();
+      //     handleClose();
+      //   })
+      //   .catch(() => {
+      //     setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
+      //     setIsLoading(false);
+      //   })
+      //   .finally(() => {
+      //     setIsLoading(false);
+      //   });
+    } else {
+      PassService.createPass({
+        ...param,
+        placeId: currentPlace?.id || '',
       })
-      .catch(() => {
-        setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        .then(() => {
+          setNotiMessage(`패스 ${text} 되었습니다.`);
+          setIsLoading(false);
+          queryClient.invalidateQueries();
+          handleClose();
+        })
+        .catch(() => {
+          setNotiMessage('에러가 발생하였습니다. 잠시 후 다시시도해주세요.');
+          setIsLoading(false);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   const emptyCheck = (text: string) => swal({ title: '', text, icon: 'warning' });
@@ -92,7 +131,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
         취소
       </Button>,
       <Button key="add-btn" type="primary" style={{ width: '70px' }} disabled={!isActive} onClick={onSubmit}>
-        {pass ? '조회' : '등록'}
+        {pass ? '수정' : '등록'}
       </Button>,
     ];
   };
