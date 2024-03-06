@@ -11,10 +11,8 @@ import styled from 'styled-components';
 import PassItem from './PassItem';
 import PassDetail from './detail/PassDetail';
 
-const TEST_PLACE_ID = '5e6edad8-079e-4fd4-b5b1-3cff7018b599';
-
 const PassListPage = () => {
-  const [selectedPlaceId, setSelectedPlaceId] = useState<Place['id'] | null>(TEST_PLACE_ID);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<Place['id']>();
   const [selectedFilter, setSelectedFilter] = useState<'ALL' | 'ACTIVE' | 'INACTIVE'>('ALL');
 
   const { data: places } = usePlacesManagedByMe();
@@ -24,6 +22,12 @@ const PassListPage = () => {
 
   const [open, setOpen] = useState(false);
   const [pass, setPass] = useState<Pass | null>(null);
+
+  useEffect(() => {
+    if (places?.[0]) {
+      setSelectedPlaceId(places[0].id);
+    }
+  }, [places]);
 
   useEffect(() => {
     setSortedPasses(passes || []);
@@ -50,18 +54,19 @@ const PassListPage = () => {
       <Wrapper>
         <FilterWrapper>
           <Select
+            value={selectedPlaceId}
             placeholder="장소 선택"
             onChange={(e) => setSelectedPlaceId(e)}
             options={places?.map((place) => ({ label: place.title, value: place.id }))}
             style={{ width: '200px' }}
           />
           <Select
+            value={selectedFilter}
             placeholder="타입 선택"
             onChange={(e) => setSelectedFilter(e)}
             options={[
-              { label: '전체', value: 'ALL' },
+              { label: '전체', value: '' },
               { label: '사용중', value: 'ACTIVE' },
-              { label: '종료', value: 'INACTIVE' },
             ]}
             style={{ width: '100px' }}
           />
@@ -97,7 +102,7 @@ const usePlacesManagedByMe = () => {
   });
 };
 
-const usePassesByPlace = (placeId: Place['id'], filter: 'ALL' | 'ACTIVE' | 'INACTIVE' = 'ALL') => {
+const usePassesByPlace = (placeId: Place['id'], filter: string) => {
   return useQuery(['passesByPlace', placeId], () => PassService.listPasses({ placeId, status: filter }), {
     enabled: !!placeId,
     select: (data) => data?.value,

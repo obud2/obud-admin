@@ -79,7 +79,7 @@ type ListManagedByMePlacesResponse = {
 };
 
 export const listManagedByMePlaces = async () => {
-  const result = await axiosInstance.get<ListManagedByMePlacesResponse>(`${API_URL}/v2/places/managed-by-me`);
+  const result = await axiosInstance.get<ListManagedByMePlacesResponse>(`${API_URL}/v2/place/managed-by-me`);
 
   return result.data;
 };
