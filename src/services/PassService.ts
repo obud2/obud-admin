@@ -29,6 +29,7 @@ const listPasses = async (req: ListPassesRequest) => {
 
 export type CreatePassRequest = {
   isShow: boolean;
+  placeId: Place['id'];
   title: string;
   durationInDays: number;
   price: number;
@@ -61,7 +62,7 @@ const listUserPasses = async (req: ListUserPassesRequest) => {
   if (req.query) searchParams.set('query', req.query);
   if (req.status) searchParams.set('status', req.status);
 
-  const response = await axiosInstance.get<ListUserPassesResponse>(`${API_URL}/pass/user`, {
+  const response = await axiosInstance.get<ListUserPassesResponse>(`${API_URL}/pass/users`, {
     params: searchParams,
   });
 

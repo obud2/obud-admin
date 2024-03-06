@@ -1,5 +1,8 @@
+import { Place } from '../place';
+
 export type Pass = {
   id: number;
+  placeId: Place['id'];
   isShow: boolean;
   title: string;
   durationInDays: number;

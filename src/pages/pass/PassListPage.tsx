@@ -12,11 +12,11 @@ import PassItem from './PassItem';
 import PassDetail from './detail/PassDetail';
 
 const PassListPage = () => {
-  const [selectedPlaceId, setSelectedPlaceId] = useState<Place['id']>();
+  const [selectedPlace, setSelectedPlace] = useState<Place>();
   const [selectedFilter, setSelectedFilter] = useState<'ALL' | 'ACTIVE' | 'INACTIVE'>('ALL');
 
   const { data: places } = usePlacesManagedByMe();
-  const { data: passes } = usePassesByPlace(selectedPlaceId || '', selectedFilter);
+  const { data: passes } = usePassesByPlace(selectedPlace?.id || '', selectedFilter);
 
   const [sortedPasses, setSortedPasses] = useState<Pass[]>([]);
 
@@ -25,7 +25,7 @@ const PassListPage = () => {
 
   useEffect(() => {
     if (places?.[0]) {
-      setSelectedPlaceId(places[0].id);
+      setSelectedPlace(places[0]);
     }
   }, [places]);
 
@@ -54,9 +54,9 @@ const PassListPage = () => {
       <Wrapper>
         <FilterWrapper>
           <Select
-            value={selectedPlaceId}
+            value={selectedPlace?.id}
             placeholder="장소 선택"
-            onChange={(e) => setSelectedPlaceId(e)}
+            onChange={(e) => setSelectedPlace(places?.find((place) => place.id === e))}
             options={places?.map((place) => ({ label: place.title, value: place.id }))}
             style={{ width: '200px' }}
           />
@@ -88,7 +88,7 @@ const PassListPage = () => {
             )}
           </ReactSortable>
         </PassListWrapper>
-        <PassDetail open={open} pass={pass} onClose={() => setOpen(false)} />
+        <PassDetail currentPlace={selectedPlace} open={open} pass={pass} onClose={() => setOpen(false)} />
       </Wrapper>
     </div>
   );

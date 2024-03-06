@@ -1,5 +1,6 @@
 import DataDetailBody, { DataDetailItem } from '@/components/detailTable/DataDetailBody';
 import { Pass } from '@/entities/pass';
+import { Place } from '@/entities/place';
 import { CreatePassRequest, PassService } from '@/services/PassService';
 import { Button, Input, InputNumber, Radio, Switch } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
@@ -9,6 +10,7 @@ import swal from 'sweetalert';
 
 const initialBody: CreatePassRequest = {
   title: '',
+  placeId: '',
   isShow: true,
   durationInDays: 30,
   price: 0,
@@ -21,12 +23,13 @@ const initialBody: CreatePassRequest = {
 };
 
 type Props = {
+  currentPlace?: Place;
   pass: Pass | null;
   open: boolean;
   onClose: () => void;
 };
 
-const PassDetail = ({ pass, open, onClose }: Props) => {
+const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
   const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -56,9 +59,15 @@ const PassDetail = ({ pass, open, onClose }: Props) => {
       return;
     }
 
+    if (!currentPlace?.id) {
+      emptyCheck('장소를 선택해주세요.');
+      return;
+    }
+
     setIsLoading(true);
     PassService.createPass({
       ...param,
+      placeId: currentPlace?.id || '',
     })
       .then(() => {
         setNotiMessage(`패스 ${text} 되었습니다.`);
