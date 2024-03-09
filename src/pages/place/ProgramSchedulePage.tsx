@@ -277,10 +277,13 @@ const ProgramSchedulePage = () => {
         items={[
           { label: '프로그램 정보', key: 'program' },
           { label: '스케줄 관리', key: 'schedule' },
+          { label: '패스 설정', key: 'pass' },
         ]}
         onChange={(key: string) => {
           if (key === 'program') {
             return navigator(`/pages/places/${placeId}/programs/${programId}`);
+          } else if (key === 'pass') {
+            return navigator(`/pages/places/${placeId}/programs/${programId}/passes`);
           }
         }}
       />
