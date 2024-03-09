@@ -93,9 +93,7 @@ const PassRegister = ({ currentPlace, open, onClose }: Props) => {
   };
 
   const handleSearch = (keyword: string) => {
-    UserService.getUserAll('', keyword).then((res) => {
-      setUsers(res.value || []);
-    });
+    UserService.getUserAll('', keyword).then((res) => setUsers(res.value || []));
   };
 
   return (

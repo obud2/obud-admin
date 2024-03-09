@@ -20,26 +20,24 @@
     "sourceType": "module" // import, export를 사용할 수 있습니다.
   },
   "plugins": [
-    "react", "@typescript-eslint", "unused-imports", "functional"
+    "react",
+    "@typescript-eslint",
+    "unused-imports",
+    "functional"
   ],
-
   "rules": {
     "linebreak-style": 0, // window / mac 라인 스타일 제어
-
     "jsx-a11y/anchor-is-valid": "off",
     "jsx-a11y/alt-text": "off",
     "jsx-a11y/mouse-events-have-key-events": "off",
     "react-hooks/exhaustive-deps": "off",
-
     "no-unexpected-multiline": "error",
     "jsx-a11y/media-has-caption": "off",
-
     "@typescript-eslint/no-explicit-any": "off",
     "typescript-eslint/no-empty-function": "off",
     "react/no-children-prop": "off",
     "prefer-template": "warn",
     "react/jsx-wrap-multilines": "off",
-
     // General
     "no-var": "error", // var 금지
     "no-multiple-empty-lines": "error", // 여러 줄 공백 금지
@@ -47,18 +45,27 @@
     "dot-notation": "error", // 가능하다면 dot notation 사용
     "no-confusing-arrow": "off",
     "function-paren-newline": "off",
-
     "no-unused-vars": "off", // 사용하지 않는 변수 금지
-    "@typescript-eslint/no-unused-vars": ["error"], // 사용하지 않는 변수 금지
-
+    "@typescript-eslint/no-unused-vars": [
+      "error"
+    ], // 사용하지 않는 변수 금지
     "unused-imports/no-unused-imports": "error", // 사용안하는 imports 체크
     "operator-linebreak": "off", // "a" + "b" 사용 금지
     "import/extensions": "off", // 확장자 붙이기
     "implicit-arrow-linebreak": "off", // arrow function 라인 브레이크
     "import/prefer-default-export": "off", // export 단일 인 경우 export default 사용 권장
     "no-shadow": "off", // 외부에서 변수 선언 시 내부에서 변수 선언 금지
-
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", "tsx"] }],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          "tsx"
+        ]
+      }
+    ],
     "react/self-closing-comp": "off", // 빈요소  /> 으로 닫기
     "max-len": "off", // 줄 체크
     "no-use-before-define": "off",
@@ -81,11 +88,10 @@
     "consistent-return": "off", // 항상 return이 있는 function 인지 체크
     "prefer-destructuring": "off",
     "react/no-danger": "off",
-
+    "react/jsx-indent": "off",
     "react/jsx-props-no-spreading": "off", // JSX 속성에 대한 확산이 없도록 강제
     "react/jsx-one-expression-per-line": "off",
     "react/require-default-props": "off",
-
     "no-useless-catch": "warn",
     "no-empty": "warn",
     "@typescript-eslint/no-empty-function": "warn",
@@ -97,25 +103,19 @@
     "no-nested-ternary": "off",
     "no-spaced-func": "warn",
     "func-call-spacing": "warn",
-
     "import/no-extraous-dependencies": "off",
     "import/no-extraneous-dependencies": "off",
-
     "prefer-promise-reject-errors": "off",
-
     "import/no-unresolved": "off",
     "import/no-relative-packages": "off",
     "import/no-self-import": "off",
     "import/no-duplicates": "off",
-
     "import/order": "off",
-
     "react/display-name": "off",
     "no-return-await": "off",
     "no-await-in-loop": "off",
     "no-restricted-syntax": "off",
     "react/no-array-index-key": "off",
-
     // React
     "react/jsx-boolean-value": "error",
     "react/jsx-curly-brace-presence": "error",

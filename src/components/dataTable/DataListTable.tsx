@@ -56,13 +56,13 @@ const DataListTable = ({
   useDetail?: boolean;
   useOption?: any;
   isLoading: boolean;
-  fetchNextPage: any;
-  isFetchingNextPage: boolean;
+  fetchNextPage?: any;
+  isFetchingNextPage?: boolean;
   excel?: boolean;
   excelCols?: any;
-  onExcelListApi: any;
-  sorted: boolean;
-  sortApi: any;
+  onExcelListApi?: any;
+  sorted?: boolean;
+  sortApi?: any;
   sortId?: string;
 }) => {
   const [select, setSelect] = useState('');

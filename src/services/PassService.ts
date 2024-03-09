@@ -98,7 +98,7 @@ const createUserPass = async (req: CreateUserPassRequest) => {
   await axiosInstance.post(`${API_URL}/pass/users`, req);
 };
 
-type UpdateUserPassRequest = {
+export type UpdateUserPassRequest = {
   userPassId: UserPass['id'];
   startDate: string;
   endDate: string;
@@ -108,7 +108,7 @@ const updateUserPass = async (req: UpdateUserPassRequest) => {
   await axiosInstance.put(`${API_URL}/pass/users/${req.userPassId}`, req);
 };
 
-type CancelUserPassRequest = {
+export type CancelUserPassRequest = {
   userPassId: UserPass['id'];
 };
 
@@ -137,6 +137,23 @@ const updatePassOrder = async (req: UpdatePassOrderRequest) => {
   await axiosInstance.post(`${API_URL}/pass/places/${req.placeId}/order`, req);
 };
 
+const listUserPassesExcelList = async (req: ListUserPassesRequest) => {
+  const response = await listUserPasses(req);
+
+  return response.value.map((userPass) => {
+    return {
+      createdAt: userPass.createdAt,
+      userName: userPass.user.name,
+      userPhone: userPass.user.phone,
+      placeTitle: userPass.place.title,
+      pass: `${userPass.pass.title}(${userPass.pass.durationInDays}일)`,
+      startDate: userPass.startDate,
+      endDate: userPass.endDate,
+      status: userPass.status,
+    };
+  });
+};
+
 export const PassService = {
   listPasses,
   createPass,
@@ -147,4 +164,5 @@ export const PassService = {
   cancelUserPass,
   createPassForProgram,
   updatePassOrder,
+  listUserPassesExcelList,
 };
