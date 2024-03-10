@@ -166,7 +166,7 @@ const UserPassDetail = ({ currentPlace, userPass, open, onClose }: Props) => {
         />
       </DataDetailItem>
       <PassDetail>
-        에약횟수 / 예약가능횟수: {userPass?.totalReservations} / {userPass?.pass.maxReservations}
+        예약횟수 / 예약가능횟수: {userPass?.totalReservations} / {userPass?.pass.maxReservations}
       </PassDetail>
       <PassDetail>
         취소횟수 / 취소가능횟수: {userPass?.totalCancels} / {userPass?.pass.maxCancels}
