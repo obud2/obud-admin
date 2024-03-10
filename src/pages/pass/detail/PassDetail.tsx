@@ -38,7 +38,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
   const [maxDays, setMaxDays] = useState<number>(0);
 
   useEffect(() => {
-    if (pass) {
+    if (pass && open) {
       setBody({
         title: pass.title,
         placeId: pass.placeId,
@@ -53,7 +53,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
         refundPolicy: pass.refundPolicy,
       });
     }
-  }, [pass]);
+  }, [pass, open]);
 
   const isActive = body.title && body.durationInDays && body.price && body.maxReservations && body.maxCancels;
 
@@ -225,6 +225,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
           <InputNumber
             size="small"
             min={0}
+            max={59}
             style={{ width: '120px', marginLeft: '4px' }}
             value={body.minCancelWindowMinute}
             onChange={(e) => onChangeInputValue('minCancelWindowMinute', e)}
