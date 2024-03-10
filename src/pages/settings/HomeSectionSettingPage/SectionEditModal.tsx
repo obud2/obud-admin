@@ -2,7 +2,7 @@ import { DataDetailItem } from '@/components/detailTable/DataDetailBody';
 import { SectionItem, SectionWithItems } from '@/entities/place';
 import { updateSectionItems } from '@/services/PlaceV2Service';
 import { Button, Input, Modal, Tag, message } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RxDragHandleDots1 } from 'react-icons/rx';
 import { ReactSortable } from 'react-sortablejs';
 import styled from 'styled-components';
@@ -20,6 +20,10 @@ const SectionEditModal = ({ sectionWithItems, open, onClose, refetch }: Props) =
 
   const [label, setLabel] = useState(sectionWithItems.section.name);
   const [items, setItems] = useState(sectionWithItems.items);
+
+  useEffect(() => {
+    setItems(sectionWithItems.items);
+  }, [sectionWithItems]);
 
   const handleClose = () => {
     setItems([]);
@@ -52,7 +56,6 @@ const SectionEditModal = ({ sectionWithItems, open, onClose, refetch }: Props) =
       handleClose();
     } catch (err) {
       message.error('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.');
-      console.log(err);
     }
   };
 
