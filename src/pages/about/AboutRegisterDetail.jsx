@@ -107,8 +107,8 @@ const AboutRegisterDetail = ({ open, onClose, id, refresh }) => {
         <Input value={body?.sns || '-'} onChange={(e) => onChangeBody('sns', e.target.value)} readOnly />
       </DataDetailItem>
 
-      <DataDetailItem label="프로그램" span={2}>
-        <Input value={body?.program || '-'} onChange={(e) => onChangeBody('program', e.target.value)} readOnly />
+      <DataDetailItem label="이메일" span={2}>
+        <Input value={body?.email || '-'} onChange={(e) => onChangeBody('email', e.target.value)} readOnly />
       </DataDetailItem>
 
       <DataDetailItem label="담당자 성명 / 직함" span={2}>

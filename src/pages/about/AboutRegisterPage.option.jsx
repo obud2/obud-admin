@@ -3,7 +3,7 @@ import { setCreatedAt } from '../../constants/config';
 export const LIST_HEADER = [
   { id: 'placeTitle', label: '장소 이름' },
   { id: 'sns', label: '인스타그램 아이디' },
-  { id: 'program', label: '프로그램' },
+  { id: 'email', label: '이메일' },
   { id: 'representative', label: '담당자 이름 / 직함' },
   { id: 'phone', label: '연락처' },
   {
@@ -27,7 +27,7 @@ export const LIST_HEADER = [
 export const EXEL_HEADER = [
   { id: 'placeTitle', label: '장소 이름' },
   { id: 'sns', label: '인스타그램 아이디' },
-  { id: 'program', label: '프로그램' },
+  { id: 'email', label: '이메일' },
   { id: 'representative', label: '담당자 이름 / 직함' },
   { id: 'phone', label: '연락처' },
   {
