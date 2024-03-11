@@ -121,9 +121,7 @@ export const setCreatedAt = (createdAt: number | string, format: number | string
   if (!createdAt) return '-';
   if (!isNaN(Number(createdAt)) && !(Number(createdAt) > 0)) return '-';
 
-  const dt = dayjs(new Date(!isNaN(Number(createdAt)) ? Number(createdAt) : createdAt))
-    .add(9, 'hour')
-    .toDate();
+  const dt = dayjs(new Date(!isNaN(Number(createdAt)) ? Number(createdAt) : createdAt)).toDate();
   const addDt = `${
     dt.getFullYear() +
     format.toString() +
