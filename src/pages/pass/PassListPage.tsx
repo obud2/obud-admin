@@ -116,7 +116,7 @@ const usePlacesManagedByMe = () => {
 };
 
 const usePassesByPlace = (placeId: Place['id'], filter: string) => {
-  return useQuery(['passesByPlace', placeId], () => PassService.listPasses({ placeId, status: filter }), {
+  return useQuery(['passesByPlace', { placeId, filter }], () => PassService.listPasses({ placeId, status: filter }), {
     enabled: !!placeId,
     select: (data) => data?.value,
   });
