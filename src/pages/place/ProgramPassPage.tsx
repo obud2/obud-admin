@@ -87,7 +87,10 @@ const ProgramPassPage = () => {
 export default ProgramPassPage;
 
 const usePasses = (placeId: Place['id']) => {
-  return useQuery(['passes', placeId], () => PassService.listPasses({ placeId }), { select: (data) => data?.value });
+  return useQuery(['passes', placeId], () => PassService.listPasses({ placeId }), {
+    enabled: !!placeId,
+    select: (data) => data?.value,
+  });
 };
 
 const Wrapper = styled.div`
