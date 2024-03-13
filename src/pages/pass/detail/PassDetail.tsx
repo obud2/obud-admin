@@ -191,6 +191,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             style={{ width: '100px', marginLeft: '4px' }}
             value={body.maxReservations}
             onChange={(e) => e && onChangeInputValue('maxReservations', e)}
+            min={1}
             addonAfter="회"
             disabled={isLoading}
           />
@@ -202,6 +203,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             style={{ width: '100px', marginLeft: '4px' }}
             value={body.maxCancels}
             onChange={(e) => e && onChangeInputValue('maxCancels', e)}
+            min={0}
             addonAfter="회"
             disabled={isLoading}
           />
