@@ -58,9 +58,23 @@ const ProgramPassPage = () => {
         )}
         {passes.length > 0 && (
           <div>
+            <Checkbox
+              style={{ marginBottom: 4, fontWeight: 'bold' }}
+              checked={selectedPasses.length === passes.length}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setSelectedPasses(passes.map((pass) => pass.id));
+                } else {
+                  setSelectedPasses([]);
+                }
+              }}
+            >
+              전체선택
+            </Checkbox>
             {passes.map((pass) => (
               <div key={pass.id}>
                 <Checkbox
+                  checked={selectedPasses.includes(pass.id)}
                   value={pass.id}
                   onChange={(e) => {
                     if (e.target.checked) {
