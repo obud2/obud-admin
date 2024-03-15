@@ -36,8 +36,32 @@ const listPayments = async (req: ListPaymentsRequest): Promise<ListPaymentsRespo
   return response.data.value;
 };
 
+type ListPaymentsExcelListRequest = ListPaymentsRequest;
+
+const listPaymentsExcelListRequest = async (req: ListPaymentsExcelListRequest) => {
+  const response = await listPayments(req);
+
+  return response.map((payments) => {
+    return {
+      status: payments.status,
+      key: payments.key,
+      payAt: payments.payAt,
+      userName: payments.user.name,
+      userPhone: payments.user.phone,
+      merchandiseType: payments.merchandiseType,
+      passTitle: payments.pass?.title,
+      placeProgram: `${payments.place?.title ?? ''} ${payments.program?.title ?? ''}`,
+      totalAmount: payments.totalAmount,
+      discountAmount: payments.discountAmount,
+      payAmount: payments.payAmount,
+      cancelAmount: payments.cancelAmount,
+    };
+  });
+};
+
 const PaymentService = {
   listPayments,
+  listPaymentsExcelListRequest,
 };
 
 export default PaymentService;

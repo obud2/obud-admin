@@ -47,6 +47,18 @@ const PaymentListPage = () => {
     setSearchKeyword(keyword);
   };
 
+  const handleExcelListApi = () => {
+    return PaymentService.listPaymentsExcelListRequest({
+      startDate,
+      endDate,
+      query: searchKeyword,
+      placeId: selectedPlace?.id,
+      programId: selectedProgram?.id,
+      merchandiseType: selectedMerchandiseType,
+      status: selectedStatus,
+    });
+  };
+
   return (
     <div>
       <DataTableHeader title="결제 관리" />
@@ -112,8 +124,8 @@ const PaymentListPage = () => {
             sorted={false}
             useDetail={isAdmin}
             excel
-            excelCols={[]}
-            onExcelListApi={() => null}
+            excelCols={EXCEL_HEADER}
+            onExcelListApi={handleExcelListApi}
           />
         </PassListWrapper>
       </Wrapper>
@@ -138,6 +150,21 @@ const usePrograms = (placeId?: Place['id']) => {
     enabled: !!placeId,
   });
 };
+
+const EXCEL_HEADER = [
+  { id: 'status', label: '상태' },
+  { id: 'key', label: '결제번호' },
+  { id: 'payAt', label: '결제일' },
+  { id: 'userName', label: '이름' },
+  { id: 'userPhone', label: '연락처' },
+  { id: 'merchandiseType', label: '이용권 타입' },
+  { id: 'passTitle', label: '패스 이름' },
+  { id: 'placeProgram', label: '장소/프로그램' },
+  { id: 'totalAmount', label: '판매금액' },
+  { id: 'discountAmount', label: '할인금액' },
+  { id: 'payAmount', label: '결제금액' },
+  { id: 'cancelAmount', label: '환불금액' },
+];
 
 const HEADER = [
   {
