@@ -1,10 +1,13 @@
 import { API_URL } from '../constants/config';
 
 import axiosInstance from '../constants/axiosInstance';
+import { Reservation, ReservationStatus } from '@/entities/reservation';
+import { Place } from '@/entities/place';
+import { Program } from '@/entities/program';
 
 const limit = 20;
 
-const getReservationAll = (type) => {
+const getReservationAll = (type: string) => {
   return new Promise((resolve) => {
     const typeTemp = type === 'pass' ? '/old' : '';
 
@@ -14,7 +17,7 @@ const getReservationAll = (type) => {
   });
 };
 
-const getReservation = (cursor, keyword) => {
+const getReservation = (cursor: any, keyword: any) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
@@ -25,7 +28,7 @@ const getReservation = (cursor, keyword) => {
   });
 };
 
-const getOldReservation = (cursor, keyword) => {
+const getOldReservation = (cursor: any, keyword: any) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
@@ -36,7 +39,7 @@ const getOldReservation = (cursor, keyword) => {
   });
 };
 
-const getCancelReservationAll = (type) => {
+const getCancelReservationAll = (type: string) => {
   const typeTemp = type === 'canceling' ? 'canceling' : 'cancel';
 
   return new Promise((resolve) => {
@@ -46,7 +49,7 @@ const getCancelReservationAll = (type) => {
   });
 };
 
-const getCancelReservation = (cursor, keyword) => {
+const getCancelReservation = (cursor: any, keyword: any) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
@@ -57,7 +60,7 @@ const getCancelReservation = (cursor, keyword) => {
   });
 };
 
-const getCancelingReservation = (cursor, keyword) => {
+const getCancelingReservation = (cursor: any, keyword: any) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
@@ -68,7 +71,7 @@ const getCancelingReservation = (cursor, keyword) => {
   });
 };
 
-const getRefusalReservation = (cursor, keyword) => {
+const getRefusalReservation = (cursor: any, keyword: any) => {
   const keywordTemp = keyword ? `&keyword=${keyword}` : '';
   const cursorTemp = cursor ? `&cursor=${cursor}` : '';
 
@@ -88,14 +91,14 @@ const getRefusalReservationAll = () => {
 };
 
 /**
- * 
+ *
  * @param {*} param  {
                         "orderItemId": "ODI202306230021",
                         "cancelAmount": 0
                       }
- * @returns 
+ * @returns
  */
-const orderCancelCheck = (param) => {
+const orderCancelCheck = (param: any) => {
   return new Promise((resolve) => {
     axiosInstance
       .put(`${API_URL}/order/cancel`, param)
@@ -109,13 +112,13 @@ const orderCancelCheck = (param) => {
 };
 
 /**
- * 
+ *
  * @param {*} param  {
                         "orderItemId": "ODI202306230021",
                       }
- * @returns 
+ * @returns
  */
-const orderRefusal = (param) => {
+const orderRefusal = (param: any) => {
   return new Promise((resolve) => {
     axiosInstance
       .put(`${API_URL}/order/refusal`, param)
@@ -129,18 +132,50 @@ const orderRefusal = (param) => {
 };
 
 /**
- * 
+ *
  * @param {*} param  {
                         "orderItemId": "ODI202306230021",
                       }
- * @returns 
+ * @returns
  */
-const orderCanceling = (param) => {
+const orderCanceling = (param: any) => {
   return new Promise((resolve) => {
     axiosInstance.put(`${API_URL}/order/canceling`, param).then((response) => {
       resolve(response?.data || {});
     });
   });
+};
+
+type ListReservationsRequest = {
+  startDate: string; // format: 2024-03-10
+  endDate: string; // format: 2024-03-10
+  sort?: 'USER_NAME' | 'PROGRAM_TITLE' | 'DATE'; // default: DATE
+  sortType?: 'ASC' | 'DESC'; // default: DESC
+  query?: string; // 검색어(이름 / 전화번호)
+  status?: ReservationStatus;
+  placeId?: Place['id'];
+  programId?: Program['id'];
+};
+
+type ListReservationsResponse = {
+  value: Reservation[];
+};
+
+const listReservations = async (req: ListReservationsRequest): Promise<ListReservationsResponse['value']> => {
+  const searchParams = new URLSearchParams();
+  searchParams.set('startDate', req.startDate);
+  searchParams.set('endDate', req.endDate);
+
+  if (req.sort) searchParams.set('sort', req.sort);
+  if (req.sortType) searchParams.set('sortType', req.sortType);
+  if (req.query) searchParams.set('query', req.query);
+  if (req.status) searchParams.set('status', req.status);
+  if (req.placeId) searchParams.set('placeId', req.placeId);
+  if (req.programId) searchParams.set('programId', req.programId);
+
+  const response = await axiosInstance.get<ListReservationsResponse>(`${API_URL}/reservation?${searchParams.toString()}`);
+
+  return response.data.value;
 };
 
 const ReservationService = {
@@ -161,6 +196,8 @@ const ReservationService = {
 
   // Refusal
   orderRefusal,
+
+  listReservations,
 };
 
 export default ReservationService;

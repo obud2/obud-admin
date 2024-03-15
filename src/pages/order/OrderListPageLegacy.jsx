@@ -9,7 +9,7 @@ import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
 import OrderCancelModal from './OrderCancelModal';
 
-const OrderListPage = () => {
+const OrderListPageLegacy = () => {
   const [detail, setDetail] = useState({});
   const [searchFilter, setSearchFilter] = useState({ value: '', filter: 'basic' });
 
@@ -27,7 +27,7 @@ const OrderListPage = () => {
     return {
       result: list || [],
       nextPage: res?.cursor,
-      isLast: res?.cursor ? false : true,
+      isLast: !res?.cursor,
     };
   };
 
@@ -76,13 +76,13 @@ const OrderListPage = () => {
       <DataListTable
         data={data || []}
         header={LIST_HEADER}
-        isFilterData={searchFilter?.length > 0 ? true : false}
+        isFilterData={searchFilter?.length > 0}
         isLoading={isLoading || isRefetching}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}
-        sorted={true}
+        sorted
         sortId="orderId"
-        excel={true}
+        excel
         excelCols={EXEL_HEADER}
         useDetail={false}
         useOption={useOption}
@@ -94,4 +94,4 @@ const OrderListPage = () => {
   );
 };
 
-export default OrderListPage;
+export default OrderListPageLegacy;
