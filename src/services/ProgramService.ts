@@ -9,6 +9,7 @@ import { LegacyCommonResponse } from '@/entities/common';
 import { LIMIT } from '@/services/ScheduleService';
 import { Program } from '@/entities/program';
 import { ScheduleTitlePreset } from '@/entities/schedule';
+import { Place } from '@/entities/place';
 
 export const getProgramsAll = async (placeId?: string): Promise<Program[]> => {
   if (!placeId) {
@@ -18,15 +19,28 @@ export const getProgramsAll = async (placeId?: string): Promise<Program[]> => {
     return response.data?.value || [];
   });
 };
-export const getPrograms = async (studioId: string, keyword = '') => {
-  const keywordTemp = keyword ? `&keyword=${keyword}` : '';
 
-  return axiosInstance
-    .get<LegacyCommonResponse<Program[]>>(`${API_URL}/studios/lesson/all?studiosId=${studioId}&limit=${LIMIT}${keywordTemp}`)
-    .then((response) => {
-      return response.data.value || [];
-    });
+type ListProgramsRequest = {
+  placeId: Place['id'];
+  keyword?: string;
 };
+
+type ListProgramsResponse = {
+  value: Program[];
+};
+
+const listPrograms = async (req: ListProgramsRequest) => {
+  const { placeId, keyword } = req;
+  const searchParams = new URLSearchParams();
+  searchParams.set('studiosId', placeId);
+  searchParams.set('limit', LIMIT.toString());
+  if (keyword) searchParams.set('keyword', keyword);
+
+  const response = await axiosInstance.get<ListProgramsResponse>(`${API_URL}/studios/lesson/all?${searchParams.toString()}`);
+
+  return response.data.value || [];
+};
+
 export const getProgram = async (id: string) => {
   return axiosInstance.get<LegacyCommonResponse<any>>(`${API_URL}/studios/lesson/${id}`).then((response) => {
     return response?.data?.value || {};
@@ -94,4 +108,8 @@ export const updateProgramTitlePreset = async (presetId: number, body: { title: 
 
 export const deleteProgramTitlePreset = async (presetId: number) => {
   await axiosInstance.delete(`${API_URL}/v2/program/preset/${presetId}`);
+};
+
+export const programService = {
+  listPrograms,
 };

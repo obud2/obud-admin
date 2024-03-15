@@ -13,7 +13,7 @@ import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
 import swal from 'sweetalert';
 import { getStudio } from '@/services/PlaceService';
-import { cloneProgram, deleteProgram, getPrograms, getProgramsAll, sortProgram } from '@/services/ProgramService';
+import { cloneProgram, deleteProgram, getProgramsAll, programService, sortProgram } from '@/services/ProgramService';
 import { Program } from '@/entities/program';
 
 const PlaceDetailPage = () => {
@@ -30,7 +30,7 @@ const PlaceDetailPage = () => {
   });
 
   const fetchData = async (id: string) => {
-    const res = await getPrograms(id, searchFilter?.value || '');
+    const res = await programService.listPrograms({ placeId: id, keyword: searchFilter?.value || '' });
 
     return searchFilter?.filter ? res.filter((a) => a.lessonType === searchFilter.filter) : res;
   };

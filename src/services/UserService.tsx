@@ -19,6 +19,12 @@ const getUserExcel = () => {
   });
 };
 
+// type ListUsersRequest = {
+//   cursor: string;
+//   keyword: string; // 이름 or 전화번호
+// };
+
+// TODO: fix method name to listUsers
 const getUserAll = (cursor: string, keyword: string): Promise<{ value: User[] }> => {
   return new Promise((resolve) => {
     const keywordTemp = keyword ? `&keyword=${keyword}` : '';

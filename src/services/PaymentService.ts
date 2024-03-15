@@ -1,9 +1,10 @@
 import axiosInstance from '@/constants/axiosInstance';
+import { API_URL } from '@/constants/config';
 import { MerchandiseType, Payment, PaymentStatus } from '@/entities/payment';
 import { Place } from '@/entities/place';
 import { Program } from '@/entities/program';
 
-type ListPaymentsRequest = {
+export type ListPaymentsRequest = {
   startDate: string; // format: 2024-03-10
   endDate: string; // format: 2024-03-10
   query?: string; // 이름 or 전화번호
