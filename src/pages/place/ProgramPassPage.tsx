@@ -3,25 +3,34 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Place } from '@/entities/place';
 import { PassService } from '@/services/PassService';
 import { Button, Checkbox, Tabs } from 'antd';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { Pass } from '@/entities/pass';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 
 const ProgramPassPage = () => {
+  const queryClient = useQueryClient();
   const { programId, placeId } = useParams();
   const navigator = useNavigate();
 
   const [selectedPasses, setSelectedPasses] = useState<Pass['id'][]>([]);
 
-  const { data: passes } = usePasses(placeId || '');
+  const { data: availablePasses } = useAvailable(placeId || '');
+  const { data: registeredPasses } = useRegisteredPasses(programId || '');
 
-  if (!programId || !placeId || !passes) return null;
+  useEffect(() => {
+    if (registeredPasses) {
+      setSelectedPasses(registeredPasses.map((pass) => pass.id));
+    }
+  }, [registeredPasses]);
+
+  if (!programId || !placeId || !availablePasses) return null;
 
   const handleSave = async () => {
     try {
       await PassService.createPassForProgram({ programId, passIds: selectedPasses });
+      queryClient.invalidateQueries();
       swal('저장되었습니다');
     } catch (e) {
       swal('저장에 실패했습니다');
@@ -48,7 +57,7 @@ const ProgramPassPage = () => {
 
       <Wrapper>
         <Notice>패스 선택 시 선택한 패스로 프로그램을 예약할 수 있습니다.</Notice>
-        {passes.length === 0 && (
+        {availablePasses.length === 0 && (
           <div>
             <RegisterPass>등록된 패스가 없습니다. 패스를 등록하러 가시겠습니까?</RegisterPass>
             <Button type="primary" onClick={() => navigator('/pages/pass-list')}>
@@ -56,14 +65,14 @@ const ProgramPassPage = () => {
             </Button>
           </div>
         )}
-        {passes.length > 0 && (
+        {availablePasses.length > 0 && (
           <div>
             <Checkbox
               style={{ marginBottom: 4, fontWeight: 'bold' }}
-              checked={selectedPasses.length === passes.length}
+              checked={selectedPasses.length === availablePasses.length}
               onChange={(e) => {
                 if (e.target.checked) {
-                  setSelectedPasses(passes.map((pass) => pass.id));
+                  setSelectedPasses(availablePasses.map((pass) => pass.id));
                 } else {
                   setSelectedPasses([]);
                 }
@@ -71,7 +80,7 @@ const ProgramPassPage = () => {
             >
               전체선택
             </Checkbox>
-            {passes.map((pass) => (
+            {availablePasses.map((pass) => (
               <div key={pass.id}>
                 <Checkbox
                   checked={selectedPasses.includes(pass.id)}
@@ -100,10 +109,16 @@ const ProgramPassPage = () => {
 
 export default ProgramPassPage;
 
-const usePasses = (placeId: Place['id']) => {
-  return useQuery(['passes', placeId], () => PassService.listPasses({ placeId }), {
+const useAvailable = (placeId: Place['id']) => {
+  return useQuery(['availablePasses', placeId], () => PassService.listPasses({ placeId }), {
     enabled: !!placeId,
     select: (data) => data?.value,
+  });
+};
+
+const useRegisteredPasses = (programId: string) => {
+  return useQuery(['registeredPasses', programId], () => PassService.listPassesForProgram({ programId }), {
+    enabled: !!programId,
   });
 };
 

@@ -116,6 +116,20 @@ const cancelUserPass = async (req: CancelUserPassRequest) => {
   await axiosInstance.post(`${API_URL}/pass/users/${req.userPassId}/cancel`);
 };
 
+type ListPassForProgramRequest = {
+  programId: Program['id'];
+};
+
+type ListPassForProgramResponse = {
+  value: Pass[];
+};
+
+const listPassesForProgram = async (req: ListPassForProgramRequest): Promise<ListPassForProgramResponse['value']> => {
+  const response = await axiosInstance.get<ListPassForProgramResponse>(`${API_URL}/pass/programs/${req.programId}`);
+
+  return response.data.value;
+};
+
 type CreatePassForProgramRequest = {
   programId: Program['id'];
   passIds: Pass['id'][];
@@ -163,6 +177,7 @@ export const PassService = {
   updateUserPass,
   cancelUserPass,
   createPassForProgram,
+  listPassesForProgram,
   updatePassOrder,
   listUserPassesExcelList,
 };
