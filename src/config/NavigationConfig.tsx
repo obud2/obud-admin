@@ -216,13 +216,26 @@ export const getNavigationMenu = (isAdmin: boolean) => {
 
   if (isAdmin) {
     menu.push({
+      id: 'payment',
+      key: 'payment',
+      iconType: 'ant',
+      title: '결제관리',
+      type: 'item',
+      url: '/pages/payment-list',
+      icon: 'CreditCard',
+      isShow: true,
+    });
+  }
+
+  if (isAdmin) {
+    menu.push({
       id: 'coupon',
       key: 'coupon',
       iconType: 'ant',
       title: '쿠폰관리',
       type: 'item',
-      url: '/pages/coupon/list',
-      icon: 'CreditCard',
+      url: '/pages/coupon-list',
+      icon: 'Tag',
       isShow: true,
     });
     menu.push({

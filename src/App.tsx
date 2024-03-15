@@ -59,6 +59,9 @@ const ProgramPassPage = lazy(() => import('./pages/place/ProgramPassPage'));
 /* Coupon */
 const CouponListPage = lazy(() => import('./pages/coupon/CouponListPage'));
 
+/* Payment */
+const PaymentListPage = lazy(() => import('./pages/payment/PaymentListPage'));
+
 /* Pass */
 const PassListPage = lazy(() => import('./pages/pass/PassListPage'));
 const PassManagePage = lazy(() => import('./pages/pass/PassManagePage'));
@@ -132,8 +135,11 @@ const App = () => {
             <Route path="/pages/places/:placeId/programs/:programId/schedules" element={<ProgramSchedulePage />} />
             <Route path="/pages/places/:placeId/programs/:programId/passes" element={<ProgramPassPage />} />
 
+            {/* Payment */}
+            <Route path="/pages/payment-list" element={<PaymentListPage />} />
+
             {/* Coupon */}
-            <Route path="/pages/coupon/list" element={<CouponListPage />} />
+            <Route path="/pages/coupon-list" element={<CouponListPage />} />
 
             {/* Pass */}
             <Route path="/pages/pass-list" element={<PassListPage />} />
