@@ -1,23 +1,27 @@
 import DataTableHeader from '@/components/dataTable/DataTableHeader';
 import PaymentService, { ListPaymentsRequest } from '@/services/PaymentService';
-import { DatePicker, Input, Select } from 'antd';
+import { DatePicker, Input, Select, Tag } from 'antd';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Place } from '@/entities/place';
 import { listManagedByMePlaces } from '@/services/PlaceV2Service';
 import { programService } from '@/services/ProgramService';
 import { Program } from '@/entities/program';
-import { MerchandiseType, PaymentStatus } from '@/entities/payment';
+import { MerchandiseType, Payment, PaymentStatus } from '@/entities/payment';
+import DataListTable from '@/components/dataTable/DataListTable';
+import { UserContext } from '@/context/UserContext';
 
 const dateFormat = 'YYYY-MM-DD';
 const defaultStartDate = dayjs().format(dateFormat);
 const defaultEndDate = dayjs().add(1, 'month').format(dateFormat);
 
 const PaymentListPage = () => {
+  const { isAdmin } = useContext(UserContext);
+
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -38,8 +42,6 @@ const PaymentListPage = () => {
     merchandiseType: selectedMerchandiseType,
     status: selectedStatus,
   });
-
-  console.log(payments, isLoading);
 
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
@@ -100,6 +102,20 @@ const PaymentListPage = () => {
             style={{ width: '150px' }}
           />
         </FilterWrapper>
+
+        <PassListWrapper>
+          <DataListTable
+            data={payments || []}
+            onClick={() => null}
+            header={HEADER}
+            isLoading={isLoading}
+            sorted={false}
+            useDetail={isAdmin}
+            excel
+            excelCols={[]}
+            onExcelListApi={() => null}
+          />
+        </PassListWrapper>
       </Wrapper>
     </div>
   );
@@ -123,6 +139,111 @@ const usePrograms = (placeId?: Place['id']) => {
   });
 };
 
+const HEADER = [
+  {
+    id: 'status',
+    label: '상태',
+    customBodyRender: (_: any, data: Payment) => {
+      if (data.status === 'COMPLETE') {
+        return <Tag color="green">결제 완료</Tag>;
+      }
+
+      if (data.status === 'CANCEL') {
+        return <Tag color="red">환불 완료</Tag>;
+      }
+
+      return <div>-</div>;
+    },
+  },
+  {
+    id: 'key',
+    label: '결제번호',
+    customBodyRender: (_: any, data: Payment) => {
+      return <div style={{ fontSize: '10px' }}>{data.key}</div>;
+    },
+  },
+  {
+    id: 'payAt',
+    label: '결제일',
+    customBodyRender: (_: any, data: Payment) => {
+      return <div style={{ padding: '0 8px', fontSize: '11px' }}>{dayjs(data.payAt).format('YYYY-MM-DD HH:mm')}</div>;
+    },
+  },
+  {
+    id: 'user.name',
+    label: '이름',
+    customBodyRender: (_: any, data: Payment) => {
+      return <div style={{ padding: '0 8px' }}>{data?.user.name}</div>;
+    },
+  },
+  {
+    id: 'user.phone',
+    label: '연락처',
+    customBodyRender: (_: any, data: Payment) => {
+      return <div style={{ padding: '0 8px', fontSize: '11px' }}>{data?.user.phone}</div>;
+    },
+  },
+  {
+    id: 'merchandiseType',
+    label: '이용권 타입',
+    customBodyRender: (_: any, data: Payment) => {
+      if (data.merchandiseType === 'ONE_TIME_RESERVATION') {
+        return <Tag color="blue">단건 결제</Tag>;
+      }
+
+      if (data.merchandiseType === 'PASS') {
+        return <Tag color="purple">패스</Tag>;
+      }
+    },
+  },
+  {
+    id: 'pass.title',
+    label: '패스 이름',
+    customBodyRender: (_: any, data: Payment) => {
+      return <div style={{ fontSize: '11px', color: 'grey' }}>{data?.pass?.title}</div>;
+    },
+  },
+  {
+    id: 'place-program',
+    label: '장소/프로그램',
+    customBodyRender: (_: any, data: Payment) => {
+      return (
+        <div style={{ padding: '8px' }}>
+          <div style={{ fontSize: '11px' }}>{data?.place?.title}</div>
+          <div style={{ fontSize: '8px', color: 'grey' }}>{data?.program?.title}</div>
+        </div>
+      );
+    },
+  },
+
+  {
+    id: 'payAmount',
+    label: '결제금액',
+    customBodyRender: (_: any, data: Payment) => {
+      if (data.discountAmount) {
+        return (
+          <div style={{ padding: '0 8px' }}>
+            <div>{data.payAmount.toLocaleString()}원</div>
+            <div style={{ fontSize: '8px', color: 'grey' }}>판매금액 {data.totalAmount.toLocaleString()}원</div>
+            <div style={{ fontSize: '8px', color: 'grey' }}>할인금액 {data.discountAmount.toLocaleString()}원</div>
+          </div>
+        );
+      }
+
+      return <div style={{ padding: '0 8px' }}>{data.payAmount.toLocaleString()}원</div>;
+    },
+  },
+  {
+    id: 'cancelAmount',
+    label: '환불금액',
+    customBodyRender: (_: any, data: Payment) => {
+      if (!data.cancelAmount) return <div style={{ padding: '0 8px' }}>-</div>;
+
+      return <div style={{ padding: '0 8px' }}>{data.cancelAmount.toLocaleString()}원</div>;
+    },
+  },
+];
+
 const Wrapper = styled.div`
   width: 100%;
   padding: 25px 0;
@@ -133,4 +254,11 @@ const FilterWrapper = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 10px;
+`;
+
+const PassListWrapper = styled.div`
+  padding: 0;
+  background: white;
+  margin-top: 20px;
+  border-radius: 10px;
 `;
