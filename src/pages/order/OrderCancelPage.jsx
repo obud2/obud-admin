@@ -7,7 +7,7 @@ import { EXEL_HEADER, FILTER, LIST_HEADER } from './OrderCancelPage.option';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
-import OrderCancelModal from './OrderCancelModal';
+import OrderCancelModal from './OrderCancelModal_legacy';
 import dayjs from 'dayjs';
 
 const OrderCancelPage = () => {

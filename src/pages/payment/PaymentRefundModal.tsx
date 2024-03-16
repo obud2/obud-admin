@@ -25,11 +25,6 @@ const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
   const handleRefund = async () => {
     if (!payment) return;
 
-    if (refundAmount <= 0) {
-      swal('환불금액을 입력해주세요.');
-      return;
-    }
-
     try {
       setIsLoading(true);
       await PaymentService.refundPayment({ paymentKey: payment.key, refundAmount });
@@ -38,7 +33,11 @@ const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
       queryClient.invalidateQueries();
       handleClose();
     } catch (err) {
-      swal('단건 결제 환불에 실패하였습니다.');
+      if (payment.pass) {
+        swal('패스 환불에 실패하였습니다.');
+      } else {
+        swal('단건 결제 환불에 실패하였습니다.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -75,7 +74,7 @@ const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
           <InputNumber
             addonAfter="원"
             placeholder="숫자만 입력하세요."
-            min={1}
+            min={0}
             max={payment.payAmount}
             value={refundAmount}
             formatter={(value) => `${value}`.toLocaleString()}

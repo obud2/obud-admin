@@ -7,7 +7,7 @@ import { EXEL_HEADER, LIST_HEADER } from './OrderRefusalPage.option';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
-import OrderCancelModal from './OrderCancelModal';
+import OrderCancelModal from './OrderCancelModal_legacy';
 
 const OrderRefusalPage = () => {
   const [detail, setDetail] = useState({});

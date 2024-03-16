@@ -1,5 +1,5 @@
 import DataTableHeader from '@/components/dataTable/DataTableHeader';
-import { Button, DatePicker, Form, Input, Modal, Select, Tag } from 'antd';
+import { DatePicker, Form, Input, Select, Tag } from 'antd';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
@@ -12,8 +12,7 @@ import { Program } from '@/entities/program';
 import DataListTable from '@/components/dataTable/DataListTable';
 import ReservationService, { ListReservationsRequest } from '@/services/ReservationService';
 import { Reservation, ReservationStatus } from '@/entities/reservation';
-import { PassService } from '@/services/PassService';
-import swal from 'sweetalert';
+import OrderCancelModal from './OrderCancelModal';
 
 const dateFormat = 'YYYY-MM-DD';
 const defaultStartDate = dayjs().subtract(1, 'day').format(dateFormat);
@@ -54,25 +53,6 @@ const OrderListPage = () => {
 
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
-  };
-
-  const handleCancelReservation = async () => {
-    if (!selectedReservation) return;
-
-    if (selectedReservation.payment.merchandiseType === 'PASS' && selectedReservation.payment.pass?.userPassId) {
-      // 페스 예약 취소\
-      try {
-        await PassService.cancelUserPass({ userPassId: selectedReservation.payment.pass.userPassId });
-        swal('패스 예약이 취소되었습니다.', '', 'success');
-      } catch (error) {
-        swal('패스 예약 취소에 실패했습니다.', '', 'error');
-      }
-    } else {
-      // 단건 예약 취소
-    }
-
-    // await ReservationService.cancelReservation(selectedReservation.id);
-    setOpenCancelModal(false);
   };
 
   const handleHideCancelButton = (reservation: Reservation): boolean => {
@@ -154,26 +134,7 @@ const OrderListPage = () => {
           />
         </PassListWrapper>
       </Wrapper>
-      <Modal
-        title="취소"
-        open={openCancelModal && !!selectedReservation}
-        onCancel={() => setOpenCancelModal(false)}
-        destroyOnClose
-        footer={[
-          <Button type="primary" key="refund" onClick={handleCancelReservation}>
-            예약 취소
-          </Button>,
-          <Button key="cancel" onClick={() => setOpenCancelModal(false)}>
-            닫기
-          </Button>,
-        ]}
-      >
-        <div>정말로 예약을 취소하시겠습니까?</div>
-        <ul>
-          <li>취소 후 복구가 불가합니다.</li>
-          <li>환불은 결제 내역에서 처리해야 결제한 금액이 환불됩니다.</li>
-        </ul>
-      </Modal>
+      <OrderCancelModal open={openCancelModal} reservation={selectedReservation} onClose={() => setOpenCancelModal(false)} />
     </div>
   );
 };
