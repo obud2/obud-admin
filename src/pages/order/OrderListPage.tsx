@@ -24,21 +24,21 @@ const OrderListPage = () => {
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [selectedPlace, setSelectedPlace] = useState<Place>();
-  const [selectedProgram, setSelectedProgram] = useState<Program>();
+  const [selectedPlaceId, setSelectedPlaceId] = useState<Place['id'] | ''>('');
+  const [selectedProgramId, setSelectedProgramId] = useState<Program['id'] | ''>('');
   const [selectedStatus, setSelectedStatus] = useState<ReservationStatus>();
 
   const [selectedReservation, setSelectedReservation] = useState<Reservation>();
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   const { data: places } = usePlaces();
-  const { data: programs } = usePrograms(selectedPlace?.id);
+  const { data: programs } = usePrograms(selectedPlaceId || undefined);
   const { data: reservations, isLoading } = useReservations({
     startDate,
     endDate,
     query: searchKeyword,
-    placeId: selectedPlace?.id,
-    programId: selectedProgram?.id,
+    placeId: selectedPlaceId || undefined,
+    programId: selectedProgramId || undefined,
     status: selectedStatus,
   });
 
@@ -47,8 +47,8 @@ const OrderListPage = () => {
       startDate,
       endDate,
       query: searchKeyword,
-      placeId: selectedPlace?.id,
-      programId: selectedProgram?.id,
+      placeId: selectedPlaceId || undefined,
+      programId: selectedProgramId || undefined,
       status: selectedStatus,
     });
   };
@@ -75,7 +75,7 @@ const OrderListPage = () => {
       <DataTableHeader title="예약내역" />
       <Wrapper>
         <FilterWrapper>
-          <Form.Item label="이용일자" name="date" style={{ maxHeight: '32px', height: '32px', margin: '0px' }}></Form.Item>
+          <Form.Item label="이용일자" style={{ maxHeight: '32px', height: '32px', margin: '0px' }}></Form.Item>
           <DatePicker.RangePicker
             style={{ width: '45%', height: '32px' }}
             disabled={isLoading}
@@ -88,18 +88,26 @@ const OrderListPage = () => {
           />
           <Input.Search placeholder="이름 또는 전화번호로 검색" allowClear onSearch={handleSearch} style={{ width: '40%' }} />
           <Select
-            value={selectedPlace?.id}
+            value={selectedPlaceId}
             placeholder="장소 선택"
-            onChange={(e) => setSelectedPlace(places?.find((place) => place.id === e))}
-            options={places?.map((place) => ({ label: place.title, value: place.id }))}
+            onChange={(e) => setSelectedPlaceId(places?.find((place) => place.id === e)?.id ?? '')}
+            options={[
+              { label: '전체', value: '' },
+              ...(places?.sort((a, b) => a.title.localeCompare(b.title)).map((place) => ({ label: place.title, value: place.id })) ?? []),
+            ]}
             style={{ width: '200px' }}
           />
           <Select
-            disabled={!selectedPlace}
-            value={selectedProgram?.id}
+            disabled={!selectedPlaceId}
+            value={selectedProgramId}
             placeholder="프로그램 선택"
-            onChange={(e) => setSelectedProgram(programs?.find((program) => program.id === e))}
-            options={programs?.map((program) => ({ label: program.title, value: program.id }))}
+            onChange={(e) => setSelectedProgramId(programs?.find((program) => program.id === e)?.id ?? '')}
+            options={[
+              { label: '전체', value: '' },
+              ...(programs
+                ?.sort((a, b) => a.title.localeCompare(b.title))
+                .map((program) => ({ label: program.title, value: program.id })) ?? []),
+            ]}
             style={{ width: '200px' }}
           />
           <Select
