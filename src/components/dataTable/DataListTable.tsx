@@ -39,6 +39,7 @@ const DataListTable = ({
   header,
   onClick,
   useDetail = true,
+  hideDetail,
   detailTitle,
   useOption,
   isLoading,
@@ -55,6 +56,7 @@ const DataListTable = ({
   header: any;
   onClick: any;
   useDetail?: boolean;
+  hideDetail?: (data: any) => boolean;
   detailTitle?: string; // 상세 버튼 타이틀
   useOption?: any;
   isLoading: boolean;
@@ -68,7 +70,6 @@ const DataListTable = ({
   sortId?: string;
 }) => {
   const [select, setSelect] = useState('');
-
   const [datas, setDatas] = useState('');
 
   useEffect(() => {
@@ -139,7 +140,6 @@ const DataListTable = ({
         ))}
 
         {useDetail && <li className="data-list-header-field" aria-label="상세 버튼을 위한 공백" />}
-
         {useOption && <li className="data-list-header-field" aria-label="상세 옵션버튼을 위한 공백" />}
       </ul>
 
@@ -163,7 +163,7 @@ const DataListTable = ({
           handle=".data-list-item-drag-button"
         >
           {datas && datas?.length > 0
-            ? datas?.map((a, i) => (
+            ? datas.map((a, i) => (
                 <DataListItem
                   key={`data-list-item-${a?.id || i}`}
                   data={a}
@@ -174,6 +174,7 @@ const DataListTable = ({
                   isLoading={isLoading}
                   isSelect={select}
                   sorted={sorted}
+                  hideDetail={hideDetail}
                   detailTitle={detailTitle}
                   useDetail={useDetail}
                   useOption={useOption}

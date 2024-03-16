@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from 'antd';
 import { SDataListItem } from './DataListItem.styled';
@@ -6,7 +6,7 @@ import { SDataListItem } from './DataListItem.styled';
 import { RxDragHandleDots1 } from 'react-icons/rx';
 import { IoMdMore } from 'react-icons/io';
 
-const DataListItem = ({ index, data, onClick, option, isLoading, isSelect, useDetail, useOption, sorted, detailTitle }) => {
+const DataListItem = ({ data, onClick, option, isLoading, isSelect, hideDetail, useDetail, useOption, sorted, detailTitle }) => {
   const optionRef = useRef();
 
   const [isOptionOpen, setIsOptionOpen] = useState(false);
@@ -33,13 +33,14 @@ const DataListItem = ({ index, data, onClick, option, isLoading, isSelect, useDe
         </div>
       ))}
 
-      {useDetail && (
+      {useDetail && !hideDetail?.(data) && (
         <div className="data-list-field">
           <Button onClick={() => onClick(data)} disabled={isLoading}>
             {detailTitle ?? '상세'}
           </Button>
         </div>
       )}
+      {useDetail && hideDetail?.(data) && <div className="data-list-field" style={{ width: '200px' }} />}
 
       {useOption?.length > 0 && (
         <div className="data-list-field">

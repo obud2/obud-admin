@@ -62,6 +62,16 @@ const PaymentListPage = () => {
     });
   };
 
+  const handleHideRefundButton = (payment: Payment): boolean => {
+    if (payment.status === 'CANCEL') return true;
+
+    if (payment.merchandiseType === 'PASS' && !isAdmin) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <div>
       <DataTableHeader title="결제내역" />
@@ -130,6 +140,7 @@ const PaymentListPage = () => {
         <PassListWrapper>
           <DataListTable
             data={payments || []}
+            hideDetail={handleHideRefundButton}
             detailTitle="환불"
             onClick={(payment: Payment) => {
               setSelectedPayment(payment);
