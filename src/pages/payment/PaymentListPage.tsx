@@ -17,8 +17,8 @@ import { UserContext } from '@/context/UserContext';
 import PaymentRefundModal from './PaymentRefundModal';
 
 const dateFormat = 'YYYY-MM-DD';
-const defaultStartDate = dayjs().subtract(1, 'day').format(dateFormat);
-const defaultEndDate = dayjs().add(1, 'month').format(dateFormat);
+const defaultStartDate = dayjs().subtract(3, 'month').format(dateFormat);
+const defaultEndDate = dayjs().format(dateFormat);
 
 const PaymentListPage = () => {
   const { isAdmin } = useContext(UserContext);
