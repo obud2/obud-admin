@@ -75,7 +75,7 @@ const OrderListPage = () => {
       <DataTableHeader title="예약내역" />
       <Wrapper>
         <FilterWrapper>
-          <Form.Item label="이용일" name="date" style={{ maxHeight: '32px', height: '32px', margin: '0px' }}></Form.Item>
+          <Form.Item label="이용일자" name="date" style={{ maxHeight: '32px', height: '32px', margin: '0px' }}></Form.Item>
           <DatePicker.RangePicker
             style={{ width: '45%', height: '32px' }}
             disabled={isLoading}
@@ -179,7 +179,7 @@ const usePrograms = (placeId?: Place['id']) => {
 const EXCEL_HEADER = [
   { id: 'status', label: '상태' },
   { id: 'id', label: '예약번호' },
-  { id: 'reserveAt', label: '주문날짜' },
+  { id: 'reserveAt', label: '예약일자' },
   { id: 'userName', label: '예약자명' },
   { id: 'userPhone', label: '연락처' },
   { id: 'scheduleStartDate', label: '이용일시' },
@@ -212,7 +212,7 @@ const HEADER = [
   },
   {
     id: 'id-reserveAt',
-    label: '예약번호/주문날짜',
+    label: '예약번호/예약일자',
     flex: 0.7,
     customBodyRender: (_: any, data: Reservation) => {
       return (
