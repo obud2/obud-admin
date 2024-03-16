@@ -1,6 +1,6 @@
 import DataTableHeader from '@/components/dataTable/DataTableHeader';
 import PaymentService, { ListPaymentsRequest } from '@/services/PaymentService';
-import { DatePicker, Input, Select, Tag } from 'antd';
+import { DatePicker, Form, Input, Select, Tag } from 'antd';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import locale from 'antd/es/date-picker/locale/ko_KR';
@@ -66,13 +66,14 @@ const PaymentListPage = () => {
 
   return (
     <div>
-      <DataTableHeader title="결제 관리" />
+      <DataTableHeader title="결제내역" />
       <Wrapper>
         <FilterWrapper>
+          <Form.Item label="결제일" name="date" style={{ maxHeight: '32px', height: '32px', margin: '0px' }}></Form.Item>
           <DatePicker.RangePicker
-            // disabled={isLoading}
+            style={{ width: '45%', height: '32px' }}
+            disabled={isLoading}
             locale={locale}
-            style={{ width: '50%' }}
             format={dateFormat}
             value={[dayjs(startDate, dateFormat), dayjs(endDate, dateFormat)]}
             onChange={(_, dateString) => {
