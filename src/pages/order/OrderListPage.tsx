@@ -4,23 +4,22 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Place } from '@/entities/place';
 import { listManagedByMePlaces } from '@/services/PlaceV2Service';
 import { programService } from '@/services/ProgramService';
 import { Program } from '@/entities/program';
 import DataListTable from '@/components/dataTable/DataListTable';
-import { UserContext } from '@/context/UserContext';
 import ReservationService, { ListReservationsRequest } from '@/services/ReservationService';
 import { Reservation, ReservationStatus } from '@/entities/reservation';
+import { PassService } from '@/services/PassService';
+import swal from 'sweetalert';
 
 const dateFormat = 'YYYY-MM-DD';
 const defaultStartDate = dayjs().subtract(1, 'day').format(dateFormat);
 const defaultEndDate = dayjs().add(3, 'month').format(dateFormat);
 
 const OrderListPage = () => {
-  const { isAdmin } = useContext(UserContext);
-
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -60,14 +59,26 @@ const OrderListPage = () => {
   const handleCancelReservation = async () => {
     if (!selectedReservation) return;
 
-    if (selectedReservation.payment.merchandiseType === 'PASS') {
-      // 페스 예약 취소
+    if (selectedReservation.payment.merchandiseType === 'PASS' && selectedReservation.payment.pass?.userPassId) {
+      // 페스 예약 취소\
+      try {
+        await PassService.cancelUserPass({ userPassId: selectedReservation.payment.pass.userPassId });
+        swal('패스 예약이 취소되었습니다.', '', 'success');
+      } catch (error) {
+        swal('패스 예약 취소에 실패했습니다.', '', 'error');
+      }
     } else {
       // 단건 예약 취소
     }
 
     // await ReservationService.cancelReservation(selectedReservation.id);
     setOpenCancelModal(false);
+  };
+
+  const handleHideCancelButton = (reservation: Reservation): boolean => {
+    if (reservation.status === 'CANCELLED') return true;
+
+    return false;
   };
 
   return (
@@ -127,6 +138,7 @@ const OrderListPage = () => {
         <PassListWrapper>
           <DataListTable
             data={reservations || []}
+            hideDetail={handleHideCancelButton}
             detailTitle="취소"
             onClick={(reservation: Reservation) => {
               setSelectedReservation(reservation);
@@ -135,7 +147,7 @@ const OrderListPage = () => {
             header={HEADER}
             isLoading={isLoading}
             sorted={false}
-            useDetail={isAdmin}
+            useDetail
             excel
             excelCols={EXCEL_HEADER}
             onExcelListApi={handleExcelListApi}
@@ -148,11 +160,11 @@ const OrderListPage = () => {
         onCancel={() => setOpenCancelModal(false)}
         destroyOnClose
         footer={[
-          <Button key="refund" onClick={handleCancelReservation}>
+          <Button type="primary" key="refund" onClick={handleCancelReservation}>
             예약 취소
           </Button>,
           <Button key="cancel" onClick={() => setOpenCancelModal(false)}>
-            취소
+            닫기
           </Button>,
         ]}
       >

@@ -1,3 +1,4 @@
+import { UserPass } from '../pass';
 import { MerchandiseType } from '../payment';
 
 // order로 되어있는 부분을 reservation, payment로 분리한다.
@@ -40,6 +41,7 @@ export type Reservation = {
     pass?: {
       id: number;
       title: string;
+      userPassId: UserPass['id'];
     };
     // [단건 예약]
     // 결제 금액
