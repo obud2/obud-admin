@@ -1,9 +1,9 @@
 import { DataDetailItem } from '@/components/detailTable/DataDetailBody';
 import { Payment } from '@/entities/payment';
 import PaymentService from '@/services/PaymentService';
-import ReservationService from '@/services/ReservationService';
 import { Button, InputNumber, Modal } from 'antd';
 import { useState } from 'react';
+import { useQueryClient } from 'react-query';
 import swal from 'sweetalert';
 
 type Props = {
@@ -13,6 +13,9 @@ type Props = {
 };
 
 const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
+  const queryClient = useQueryClient();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refundAmount, setRefundAmount] = useState<number>(0);
 
   const handleClose = () => {
@@ -22,26 +25,22 @@ const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
   const handleRefund = async () => {
     if (!payment) return;
 
-    if (payment.pass) {
-      // 패스 환불
-      // TODO: fix payment.pass.id to payment.userPassId
-      try {
-        await PaymentService.refundUserPassPayment({ userPassId: payment.pass.id, refundAmount });
-        swal('패스가 환불되었습니다.');
-      } catch (err) {
-        swal('패스 환불에 실패하였습니다.');
-      }
-    } else {
-      // 단건 결제 환불
-      try {
-        await ReservationService.orderCancelCheck({
-          orderItemId: payment.key,
-          cancelAmount: refundAmount,
-        });
-        swal('단건 결제가 환불되었습니다.');
-      } catch (err) {
-        swal('단건 결제 환불에 실패하였습니다.');
-      }
+    if (refundAmount <= 0) {
+      swal('환불금액을 입력해주세요.');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await PaymentService.refundPayment({ paymentKey: payment.key, refundAmount });
+      swal('환불되었습니다.');
+
+      queryClient.invalidateQueries();
+      handleClose();
+    } catch (err) {
+      swal('단건 결제 환불에 실패하였습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,10 +53,10 @@ const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
       onCancel={handleClose}
       destroyOnClose
       footer={[
-        <Button key="refund" onClick={handleRefund}>
+        <Button disabled={isLoading} key="refund" type="primary" onClick={handleRefund}>
           환불
         </Button>,
-        <Button key="cancel" onClick={handleClose}>
+        <Button disabled={isLoading} key="cancel" onClick={handleClose}>
           취소
         </Button>,
       ]}

@@ -76,10 +76,20 @@ const refundUserPassPayment = async (req: RefundUserPassPaymentRequest) => {
   await axiosInstance.post(`${API_URL}/payments/pass/users/${req.userPassId}/refund`, req);
 };
 
+type RefundPaymentRequest = {
+  paymentKey?: Payment['key'];
+  refundAmount: number;
+};
+
+const refundPayment = async (req: RefundPaymentRequest) => {
+  await axiosInstance.post(`${API_URL}/payments/${req.paymentKey}/refund/admin`, req);
+};
+
 const PaymentService = {
   listPayments,
   listPaymentsExcelListRequest,
   refundUserPassPayment,
+  refundPayment,
 };
 
 export default PaymentService;
