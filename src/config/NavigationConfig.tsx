@@ -121,6 +121,19 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     isShow: true,
   });
 
+  if (isAdmin) {
+    menu.push({
+      id: 'special-programs',
+      key: 'special-programs',
+      title: '특별 프로그램 관리',
+      type: 'item',
+      url: '/pages/special',
+      icon: 'Gift',
+      exact: true,
+      isShow: true,
+    });
+  }
+
   menu.push({
     id: 'order-status',
     key: 'order-status',
@@ -152,19 +165,6 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     icon: 'CreditCard',
     isShow: true,
   });
-
-  if (isAdmin) {
-    menu.push({
-      id: 'special-programs',
-      key: 'special-programs',
-      title: '특별 프로그램 관리',
-      type: 'item',
-      url: '/pages/special',
-      icon: 'Gift',
-      exact: true,
-      isShow: true,
-    });
-  }
 
   menu.push({
     id: 'pass',
