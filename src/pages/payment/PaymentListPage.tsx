@@ -36,7 +36,6 @@ const PaymentListPage = () => {
 
   const { data: places } = usePlaces();
   const { data: programs } = usePrograms(selectedPlace?.id);
-
   const { data: payments, isLoading } = usePayments({
     startDate,
     endDate,

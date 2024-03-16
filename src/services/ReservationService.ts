@@ -146,7 +146,7 @@ const orderCanceling = (param: any) => {
   });
 };
 
-type ListReservationsRequest = {
+export type ListReservationsRequest = {
   startDate: string; // format: 2024-03-10
   endDate: string; // format: 2024-03-10
   sort?: 'USER_NAME' | 'PROGRAM_TITLE' | 'DATE'; // default: DATE
@@ -178,6 +178,24 @@ const listReservations = async (req: ListReservationsRequest): Promise<ListReser
   return response.data.value;
 };
 
+type ListReservationsExcelListRequest = ListReservationsRequest;
+
+const listReservationsExcelList = async (req: ListReservationsExcelListRequest) => {
+  const reservations = await listReservations(req);
+
+  return reservations.map((reservation) => ({
+    status: reservation.status,
+    id: reservation.id,
+    reserveAt: reservation.reserveAt,
+    userName: reservation.user.name,
+    userPhone: reservation.user.phone,
+    placeProgram: `${reservation.place?.title ?? ''} ${reservation.program?.title ?? ''}`,
+    scheduleStartDate: reservation.schedule.startDate,
+    payment: reservation.payment.merchandiseType,
+    paymentId: reservation.payment.key,
+  }));
+};
+
 const ReservationService = {
   getReservationAll,
   getReservation,
@@ -198,6 +216,7 @@ const ReservationService = {
   orderRefusal,
 
   listReservations,
+  listReservationsExcelList,
 };
 
 export default ReservationService;
