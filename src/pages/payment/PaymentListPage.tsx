@@ -14,9 +14,10 @@ import { Program } from '@/entities/program';
 import { MerchandiseType, Payment, PaymentStatus } from '@/entities/payment';
 import DataListTable from '@/components/dataTable/DataListTable';
 import { UserContext } from '@/context/UserContext';
+import PaymentRefundModal from './PaymentRefundModal';
 
 const dateFormat = 'YYYY-MM-DD';
-const defaultStartDate = dayjs().format(dateFormat);
+const defaultStartDate = dayjs().subtract(1, 'day').format(dateFormat);
 const defaultEndDate = dayjs().add(1, 'month').format(dateFormat);
 
 const PaymentListPage = () => {
@@ -29,6 +30,9 @@ const PaymentListPage = () => {
   const [selectedProgram, setSelectedProgram] = useState<Program>();
   const [selectedMerchandiseType, setSelectedMerchandiseType] = useState<MerchandiseType>();
   const [selectedStatus, setSelectedStatus] = useState<PaymentStatus>();
+
+  const [openRefundModal, setOpenRefundModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<Payment>();
 
   const { data: places } = usePlaces();
   const { data: programs } = usePrograms(selectedPlace?.id);
@@ -118,7 +122,11 @@ const PaymentListPage = () => {
         <PassListWrapper>
           <DataListTable
             data={payments || []}
-            onClick={() => null}
+            detailTitle="환불"
+            onClick={(payment: Payment) => {
+              setSelectedPayment(payment);
+              setOpenRefundModal(true);
+            }}
             header={HEADER}
             isLoading={isLoading}
             sorted={false}
@@ -129,6 +137,7 @@ const PaymentListPage = () => {
           />
         </PassListWrapper>
       </Wrapper>
+      <PaymentRefundModal open={openRefundModal} onClose={() => setOpenRefundModal(false)} payment={selectedPayment} />
     </div>
   );
 };

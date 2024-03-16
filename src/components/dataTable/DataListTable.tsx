@@ -39,6 +39,7 @@ const DataListTable = ({
   header,
   onClick,
   useDetail = true,
+  detailTitle,
   useOption,
   isLoading,
   fetchNextPage,
@@ -54,6 +55,7 @@ const DataListTable = ({
   header: any;
   onClick: any;
   useDetail?: boolean;
+  detailTitle?: string; // 상세 버튼 타이틀
   useOption?: any;
   isLoading: boolean;
   fetchNextPage?: any;
@@ -175,6 +177,7 @@ const DataListTable = ({
                   isLoading={isLoading}
                   isSelect={select}
                   sorted={sorted}
+                  detailTitle={detailTitle}
                   useDetail={useDetail}
                   useOption={useOption}
                 />

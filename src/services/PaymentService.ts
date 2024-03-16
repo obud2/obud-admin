@@ -1,5 +1,6 @@
 import axiosInstance from '@/constants/axiosInstance';
 import { API_URL } from '@/constants/config';
+import { UserPass } from '@/entities/pass';
 import { MerchandiseType, Payment, PaymentStatus } from '@/entities/payment';
 import { Place } from '@/entities/place';
 import { Program } from '@/entities/program';
@@ -59,9 +60,19 @@ const listPaymentsExcelListRequest = async (req: ListPaymentsExcelListRequest) =
   });
 };
 
+type RefundUserPassPaymentRequest = {
+  userPassId: UserPass['id'];
+  refundAmount: number;
+};
+
+const refundUserPassPayment = async (req: RefundUserPassPaymentRequest) => {
+  await axiosInstance.post(`${API_URL}/payments/pass/users/${req.userPassId}/refund`, req);
+};
+
 const PaymentService = {
   listPayments,
   listPaymentsExcelListRequest,
+  refundUserPassPayment,
 };
 
 export default PaymentService;

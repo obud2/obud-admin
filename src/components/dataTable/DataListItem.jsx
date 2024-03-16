@@ -6,7 +6,7 @@ import { SDataListItem } from './DataListItem.styled';
 import { RxDragHandleDots1 } from 'react-icons/rx';
 import { IoMdMore } from 'react-icons/io';
 
-const DataListItem = ({ index, data, onClick, option, isLoading, isSelect, useDetail, useOption, sorted }) => {
+const DataListItem = ({ index, data, onClick, option, isLoading, isSelect, useDetail, useOption, sorted, detailTitle }) => {
   const optionRef = useRef();
 
   const [isOptionOpen, setIsOptionOpen] = useState(false);
@@ -38,7 +38,7 @@ const DataListItem = ({ index, data, onClick, option, isLoading, isSelect, useDe
       {useDetail && (
         <div className="data-list-field">
           <Button onClick={() => onClick(data)} disabled={isLoading}>
-            상세
+            {detailTitle ?? '상세'}
           </Button>
         </div>
       )}
