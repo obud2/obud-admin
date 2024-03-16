@@ -179,11 +179,13 @@ const usePrograms = (placeId?: Place['id']) => {
 
 const EXCEL_HEADER = [
   { id: 'status', label: '상태' },
-  { id: 'idReserveAt', label: '예약번호/주문날짜' },
-  { id: 'userName', label: '이름' },
+  { id: 'id', label: '예약번호' },
+  { id: 'reserveAt', label: '주문날짜' },
+  { id: 'userName', label: '예약자명' },
   { id: 'userPhone', label: '연락처' },
-  { id: 'programPlace', label: '프로그램/장소' },
-  { id: 'scheduleStartDate', label: '수업일' },
+  { id: 'scheduleStartDate', label: '이용일시' },
+  { id: 'program', label: '프로그램' },
+  { id: 'place', label: '장소' },
   { id: 'payment', label: '이용수단' },
   { id: 'paymentId', label: '결제번호' },
 ];
@@ -191,7 +193,7 @@ const EXCEL_HEADER = [
 const HEADER = [
   {
     id: 'status',
-    flex: 0.5,
+    flex: 0.4,
     label: '상태',
     customBodyRender: (_: any, data: Reservation) => {
       if (data.status === 'COMPLETED') {
@@ -212,6 +214,7 @@ const HEADER = [
   {
     id: 'id-reserveAt',
     label: '예약번호/주문날짜',
+    flex: 0.7,
     customBodyRender: (_: any, data: Reservation) => {
       return (
         <div>
@@ -223,7 +226,7 @@ const HEADER = [
   },
   {
     id: 'user.name',
-    label: '이름',
+    label: '예약자명',
     flex: 0.5,
     customBodyRender: (_: any, data: Reservation) => {
       return <div>{data?.user.name}</div>;
@@ -232,8 +235,16 @@ const HEADER = [
   {
     id: 'user.phone',
     label: '연락처',
+    flex: 0.6,
     customBodyRender: (_: any, data: Reservation) => {
-      return <div style={{ fontSize: '11px' }}>{data?.user.phone}</div>;
+      return <div>{data?.user.phone}</div>;
+    },
+  },
+  {
+    id: 'schedule.startDate',
+    label: '이용일시',
+    customBodyRender: (_: any, data: Reservation) => {
+      return <div>{dayjs(data.schedule.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}</div>;
     },
   },
   {
@@ -242,17 +253,10 @@ const HEADER = [
     customBodyRender: (_: any, data: Reservation) => {
       return (
         <div>
-          <div style={{ fontSize: '11px' }}>{data?.program?.title}</div>
+          <div>{data?.program?.title}</div>
           <div style={{ fontSize: '9px', color: 'grey' }}>{data?.place?.title}</div>
         </div>
       );
-    },
-  },
-  {
-    id: 'schedule.startDate',
-    label: '수업일',
-    customBodyRender: (_: any, data: Reservation) => {
-      return <div style={{ fontSize: '11px' }}>{dayjs(data.schedule.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}</div>;
     },
   },
   {

@@ -163,12 +163,13 @@ const usePrograms = (placeId?: Place['id']) => {
 
 const EXCEL_HEADER = [
   { id: 'status', label: '상태' },
-  { id: 'keyPayAt', label: '결제번호/결제일' },
+  { id: 'key', label: '결제번호' },
+  { id: 'payAt', label: '결제일' },
   { id: 'userName', label: '이름' },
   { id: 'userPhone', label: '연락처' },
   { id: 'merchandiseType', label: '이용권 타입' },
-  { id: 'passTitle', label: '패스 이름' },
-  { id: 'programPlace', label: '프로그램/장소' },
+  { id: 'passProgram', label: '결제상품' },
+  { id: 'place', label: '장소' },
   { id: 'totalAmount', label: '판매금액' },
   { id: 'discountAmount', label: '할인금액' },
   { id: 'payAmount', label: '결제금액' },
@@ -195,6 +196,7 @@ const HEADER = [
   {
     id: 'keyPayAt',
     label: '결제번호/결제일',
+    flex: 0.8,
     customBodyRender: (_: any, data: Payment) => {
       return (
         <div>
@@ -215,13 +217,15 @@ const HEADER = [
   {
     id: 'user.phone',
     label: '연락처',
+    flex: 0.8,
     customBodyRender: (_: any, data: Payment) => {
-      return <div style={{ fontSize: '11px' }}>{data?.user.phone}</div>;
+      return <div>{data?.user.phone}</div>;
     },
   },
   {
     id: 'merchandiseType',
     label: '이용권 타입',
+    flex: 0.6,
     customBodyRender: (_: any, data: Payment) => {
       if (data.merchandiseType === 'ONE_TIME_RESERVATION') {
         return <Tag color="blue">단건 결제</Tag>;
@@ -232,23 +236,29 @@ const HEADER = [
       }
     },
   },
+
   {
-    id: 'pass.title',
-    label: '패스 이름',
+    id: 'pass-program-place', // pass 결제 시 패스명, 단건 결제 시 프로그램명 표시
+    label: '결제상품/장소',
+    flex: 1.2,
     customBodyRender: (_: any, data: Payment) => {
-      return <div style={{ fontSize: '11px', color: 'grey' }}>{data?.pass?.title}</div>;
-    },
-  },
-  {
-    id: 'program-place',
-    label: '프로그램/장소',
-    customBodyRender: (_: any, data: Payment) => {
-      return (
-        <div>
-          <div style={{ fontSize: '11px' }}>{data?.program?.title}</div>
-          <div style={{ fontSize: '9px', color: 'grey' }}>{data?.place?.title}</div>
-        </div>
-      );
+      if (data.merchandiseType === 'ONE_TIME_RESERVATION') {
+        return (
+          <div>
+            <div>{data?.program?.title}</div>
+            <div style={{ fontSize: '11px', color: 'grey' }}>{data?.place?.title}</div>
+          </div>
+        );
+      }
+
+      if (data.merchandiseType === 'PASS') {
+        return (
+          <div>
+            <div>{data?.pass?.title}</div>
+            <div style={{ fontSize: '11px', color: 'grey' }}>{data?.place?.title}</div>
+          </div>
+        );
+      }
     },
   },
 

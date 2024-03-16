@@ -43,14 +43,22 @@ const listPaymentsExcelListRequest = async (req: ListPaymentsExcelListRequest) =
   const response = await listPayments(req);
 
   return response.map((payments) => {
+    let passProgram;
+    if (payments.merchandiseType === 'ONE_TIME_RESERVATION') {
+      passProgram = payments.program?.title;
+    } else {
+      passProgram = payments.pass?.title;
+    }
+
     return {
       status: payments.status,
-      keyPayAt: `${payments.key}-${payments.payAt}`,
+      key: payments.key,
+      payAt: payments.payAt,
       userName: payments.user.name,
       userPhone: payments.user.phone,
       merchandiseType: payments.merchandiseType,
-      passTitle: payments.pass?.title,
-      programPlace: `${payments.program?.title ?? ''}-${payments.place?.title ?? ''}`,
+      passProgram: passProgram,
+      place: payments.place?.title,
       totalAmount: payments.totalAmount,
       discountAmount: payments.discountAmount,
       payAmount: payments.payAmount,
