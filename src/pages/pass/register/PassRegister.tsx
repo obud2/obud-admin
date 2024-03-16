@@ -55,7 +55,7 @@ const PassRegister = ({ currentPlace, open, onClose }: Props) => {
     }
 
     if (!currentPlace?.id) {
-      emptyCheck('장소를 선택해주세요.');
+      emptyCheck('공간을 선택해주세요.');
       return;
     }
 

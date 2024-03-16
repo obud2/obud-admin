@@ -42,7 +42,7 @@ const PassManagePage = () => {
 
   return (
     <div>
-      <DataTableHeader title="패스 회원 관리" searchDisabled register={{ text: '회원 등록', onClick: () => setOpenRegister(true) }} />
+      <DataTableHeader title="패스 회원 관리" searchDisabled register={{ text: '패스 회원 등록', onClick: () => setOpenRegister(true) }} />
 
       <Wrapper>
         <FilterWrapper>

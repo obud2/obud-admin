@@ -76,10 +76,10 @@ const PlaceListPage = () => {
         refresh={refetch}
         doSearch={(v) => doSearch('value', v)}
         doFilter={(v) => doSearch('filter', v)}
-        register={{ text: '장소 신규등록', onClick: () => onDetail() }}
-        title="장소별 프로그램/스케줄 관리"
+        register={{ text: '공간 신규등록', onClick: () => onDetail() }}
+        title="공간별 수업/일정 관리"
         filter={FILTER}
-        searchPlaceholder="장소명으로 검색하세요."
+        searchPlaceholder="공간명으로 검색하세요."
         isLoading={isAllLoading}
       />
 

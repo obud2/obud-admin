@@ -111,61 +111,45 @@ export const getNavigationMenu = (isAdmin: boolean) => {
   }
 
   menu.push({
-    id: 'order',
-    key: 'order',
-    iconType: 'ant',
-    title: '예약관리',
-    type: 'collapse',
-    icon: 'Profile',
-    isShow: true,
-    children: [
-      {
-        id: 'order-status',
-        key: 'order-status',
-        title: '예약현황',
-        type: 'item',
-        url: '/pages/order-status',
-        exact: true,
-        isShow: true,
-      },
-      {
-        id: 'order-status',
-        key: 'order-status',
-        title: '예약내역',
-        type: 'item',
-        url: '/pages/order-list',
-        exact: true,
-        isShow: true,
-      },
-      {
-        id: 'order-list-legacy',
-        key: 'order-list-legacy',
-        title: '예약내역 - (legacy)',
-        type: 'item',
-        url: '/pages/order-list-legacy',
-        exact: true,
-        isShow: true,
-      },
-      {
-        id: 'order-cancel',
-        key: 'order-cancel',
-        title: '취소내역 - (legacy)',
-        type: 'item',
-        url: '/pages/order-cancel',
-        exact: true,
-        isShow: true,
-      },
-    ],
-  });
-
-  menu.push({
     id: 'place',
     key: 'place',
     iconType: 'ant',
-    title: '장소/프로그램 관리',
+    title: '공간/수업 관리',
     type: 'item',
     url: '/pages/places',
     icon: 'Shopping',
+    isShow: true,
+  });
+
+  menu.push({
+    id: 'order-status',
+    key: 'order-status',
+    iconType: 'ant',
+    icon: 'Profile',
+    title: '일정별 예약현황',
+    type: 'item',
+    url: '/pages/order-status',
+    isShow: true,
+  });
+  menu.push({
+    id: 'order-status',
+    key: 'order-status',
+    iconType: 'ant',
+    icon: 'Profile',
+    title: '예약내역',
+    type: 'item',
+    url: '/pages/order-list',
+    isShow: true,
+  });
+
+  menu.push({
+    id: 'payment',
+    key: 'payment',
+    iconType: 'ant',
+    title: '결제내역',
+    type: 'item',
+    url: '/pages/payment-list',
+    icon: 'CreditCard',
     isShow: true,
   });
 
@@ -211,19 +195,6 @@ export const getNavigationMenu = (isAdmin: boolean) => {
       },
     ],
   });
-
-  if (isAdmin) {
-    menu.push({
-      id: 'payment',
-      key: 'payment',
-      iconType: 'ant',
-      title: '결제관리',
-      type: 'item',
-      url: '/pages/payment-list',
-      icon: 'CreditCard',
-      isShow: true,
-    });
-  }
 
   if (isAdmin) {
     menu.push({
@@ -276,6 +247,36 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     url: '/pages/user/list',
     icon: 'Team',
     isShow: true,
+  });
+
+  menu.push({
+    id: 'order',
+    key: 'order',
+    iconType: 'ant',
+    title: '예약 (Legacy)',
+    type: 'collapse',
+    icon: 'Profile',
+    isShow: true,
+    children: [
+      {
+        id: 'order-list-legacy',
+        key: 'order-list-legacy',
+        title: '예약내역 - (legacy)',
+        type: 'item',
+        url: '/pages/order-list-legacy',
+        exact: true,
+        isShow: true,
+      },
+      {
+        id: 'order-cancel',
+        key: 'order-cancel',
+        title: '취소내역 - (legacy)',
+        type: 'item',
+        url: '/pages/order-cancel',
+        exact: true,
+        isShow: true,
+      },
+    ],
   });
 
   if (isAdmin) {
