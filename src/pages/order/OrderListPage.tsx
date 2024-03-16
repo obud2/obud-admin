@@ -61,6 +61,12 @@ const OrderListPage = () => {
   const handleCancelReservation = async () => {
     if (!selectedReservation) return;
 
+    if (selectedReservation.payment.merchandiseType === 'PASS') {
+      // 페스 예약 취소
+    } else {
+      // 단건 예약 취소
+    }
+
     // await ReservationService.cancelReservation(selectedReservation.id);
     setOpenCancelModal(false);
   };
