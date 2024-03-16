@@ -128,8 +128,6 @@ const DataListTable = ({
 
       {/* Data List Header 영역 */}
       <ul className="data-list-header">
-        <li className="data-list-header-field no">No</li>
-
         {header?.map((head) => (
           <li
             className="data-list-header-field"
@@ -169,7 +167,6 @@ const DataListTable = ({
                 <DataListItem
                   key={`data-list-item-${a?.id || i}`}
                   data={a}
-                  index={i}
                   onClick={onClickListItem}
                   option={header}
                   dataList={datas}

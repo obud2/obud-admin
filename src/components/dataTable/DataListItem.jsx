@@ -27,8 +27,6 @@ const DataListItem = ({ index, data, onClick, option, isLoading, isSelect, useDe
     <SDataListItem className={`${isLoading ? 'disabled' : ''} ${isSelect?.id && (isSelect?.id === data?.id ? 'select' : '')}`}>
       {sorted && <DataListDragButton />}
 
-      <div className="data-list-field no">{index + 1}</div>
-
       {option?.map((o) => (
         <div className="data-list-field" key={`data-lite-item-${o?.label}`} style={{ flex: o?.flex || 1, width: o?.width || 'auto' }}>
           {o?.customBodyRender ? o?.customBodyRender(data[o?.id], data, onClick) : data[o?.id] || '-'}

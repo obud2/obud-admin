@@ -185,11 +185,10 @@ const listReservationsExcelList = async (req: ListReservationsExcelListRequest) 
 
   return reservations.map((reservation) => ({
     status: reservation.status,
-    id: reservation.id,
-    reserveAt: reservation.reserveAt,
+    idReserveAt: `${reservation.id}-${reservation.reserveAt}`,
     userName: reservation.user.name,
     userPhone: reservation.user.phone,
-    placeProgram: `${reservation.place?.title ?? ''} ${reservation.program?.title ?? ''}`,
+    programPlace: `${reservation.program?.title ?? ''}-${reservation.place?.title ?? ''}`,
     scheduleStartDate: reservation.schedule.startDate,
     payment: reservation.payment.merchandiseType,
     paymentId: reservation.payment.key,

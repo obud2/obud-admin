@@ -46,6 +46,8 @@ const PaymentListPage = () => {
     status: selectedStatus,
   });
 
+  console.log('payments', payments);
+
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
@@ -161,13 +163,12 @@ const usePrograms = (placeId?: Place['id']) => {
 
 const EXCEL_HEADER = [
   { id: 'status', label: '상태' },
-  { id: 'key', label: '결제번호' },
-  { id: 'payAt', label: '결제일' },
+  { id: 'keyPayAt', label: '결제번호/결제일' },
   { id: 'userName', label: '이름' },
   { id: 'userPhone', label: '연락처' },
   { id: 'merchandiseType', label: '이용권 타입' },
   { id: 'passTitle', label: '패스 이름' },
-  { id: 'placeProgram', label: '장소/프로그램' },
+  { id: 'programPlace', label: '프로그램/장소' },
   { id: 'totalAmount', label: '판매금액' },
   { id: 'discountAmount', label: '할인금액' },
   { id: 'payAmount', label: '결제금액' },
@@ -178,6 +179,7 @@ const HEADER = [
   {
     id: 'status',
     label: '상태',
+    flex: 0.6,
     customBodyRender: (_: any, data: Payment) => {
       if (data.status === 'COMPLETE') {
         return <Tag color="green">결제 완료</Tag>;
@@ -191,31 +193,30 @@ const HEADER = [
     },
   },
   {
-    id: 'key',
-    label: '결제번호',
+    id: 'keyPayAt',
+    label: '결제번호/결제일',
     customBodyRender: (_: any, data: Payment) => {
-      return <div style={{ fontSize: '10px' }}>{data.key}</div>;
-    },
-  },
-  {
-    id: 'payAt',
-    label: '결제일',
-    customBodyRender: (_: any, data: Payment) => {
-      return <div style={{ padding: '0 8px', fontSize: '11px' }}>{dayjs(data.payAt).format('YYYY-MM-DD HH:mm')}</div>;
+      return (
+        <div>
+          <div style={{ fontSize: '11px' }}>{data.key}</div>
+          <div style={{ fontSize: '9px', color: 'grey' }}>{dayjs(data.payAt).format('YYYY-MM-DD HH:mm')}</div>
+        </div>
+      );
     },
   },
   {
     id: 'user.name',
     label: '이름',
+    flex: 0.5,
     customBodyRender: (_: any, data: Payment) => {
-      return <div style={{ padding: '0 8px' }}>{data?.user.name}</div>;
+      return <div>{data?.user.name}</div>;
     },
   },
   {
     id: 'user.phone',
     label: '연락처',
     customBodyRender: (_: any, data: Payment) => {
-      return <div style={{ padding: '0 8px', fontSize: '11px' }}>{data?.user.phone}</div>;
+      return <div style={{ fontSize: '11px' }}>{data?.user.phone}</div>;
     },
   },
   {
@@ -239,13 +240,13 @@ const HEADER = [
     },
   },
   {
-    id: 'place-program',
-    label: '장소/프로그램',
+    id: 'program-place',
+    label: '프로그램/장소',
     customBodyRender: (_: any, data: Payment) => {
       return (
-        <div style={{ padding: '8px' }}>
-          <div style={{ fontSize: '11px' }}>{data?.place?.title}</div>
-          <div style={{ fontSize: '8px', color: 'grey' }}>{data?.program?.title}</div>
+        <div>
+          <div style={{ fontSize: '11px' }}>{data?.program?.title}</div>
+          <div style={{ fontSize: '9px', color: 'grey' }}>{data?.place?.title}</div>
         </div>
       );
     },
@@ -257,7 +258,7 @@ const HEADER = [
     customBodyRender: (_: any, data: Payment) => {
       if (data.discountAmount) {
         return (
-          <div style={{ padding: '0 8px' }}>
+          <div>
             <div>{data.payAmount.toLocaleString()}원</div>
             <div style={{ fontSize: '8px', color: 'grey' }}>판매금액 {data.totalAmount.toLocaleString()}원</div>
             <div style={{ fontSize: '8px', color: 'grey' }}>할인금액 {data.discountAmount.toLocaleString()}원</div>
@@ -265,16 +266,16 @@ const HEADER = [
         );
       }
 
-      return <div style={{ padding: '0 8px' }}>{data.payAmount.toLocaleString()}원</div>;
+      return <div>{data.payAmount.toLocaleString()}원</div>;
     },
   },
   {
     id: 'cancelAmount',
     label: '환불금액',
     customBodyRender: (_: any, data: Payment) => {
-      if (!data.cancelAmount) return <div style={{ padding: '0 8px' }}>-</div>;
+      if (!data.cancelAmount) return <div>-</div>;
 
-      return <div style={{ padding: '0 8px' }}>{data.cancelAmount.toLocaleString()}원</div>;
+      return <div>{data.cancelAmount.toLocaleString()}원</div>;
     },
   },
 ];
