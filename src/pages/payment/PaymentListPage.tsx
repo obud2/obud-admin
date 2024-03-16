@@ -43,7 +43,7 @@ const PaymentListPage = () => {
     placeId: selectedPlace?.id,
     programId: selectedProgram?.id,
     merchandiseType: selectedMerchandiseType,
-    status: selectedStatus,
+    paymentStatus: selectedStatus,
   });
 
   console.log('payments', payments);
@@ -60,7 +60,7 @@ const PaymentListPage = () => {
       placeId: selectedPlace?.id,
       programId: selectedProgram?.id,
       merchandiseType: selectedMerchandiseType,
-      status: selectedStatus,
+      paymentStatus: selectedStatus,
     });
   };
 

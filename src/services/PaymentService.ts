@@ -10,7 +10,7 @@ export type ListPaymentsRequest = {
   endDate: string; // format: 2024-03-10
   query?: string; // 이름 or 전화번호
   merchandiseType?: MerchandiseType;
-  status?: PaymentStatus;
+  paymentStatus?: PaymentStatus;
   placeId?: Place['id'];
   programId?: Program['id'];
 };
@@ -26,7 +26,7 @@ const listPayments = async (req: ListPaymentsRequest): Promise<ListPaymentsRespo
 
   if (req.query) searchParams.set('query', req.query);
   if (req.merchandiseType) searchParams.set('merchandiseType', req.merchandiseType);
-  if (req.status) searchParams.set('status', req.status);
+  if (req.paymentStatus) searchParams.set('paymentStatus', req.paymentStatus);
   if (req.placeId) searchParams.set('placeId', req.placeId);
   if (req.programId) searchParams.set('programId', req.programId);
 
@@ -57,7 +57,7 @@ const listPaymentsExcelListRequest = async (req: ListPaymentsExcelListRequest) =
       userName: payments.user.name,
       userPhone: payments.user.phone,
       merchandiseType: payments.merchandiseType,
-      passProgram: passProgram,
+      passProgram,
       place: payments.place?.title,
       totalAmount: payments.totalAmount,
       discountAmount: payments.discountAmount,
