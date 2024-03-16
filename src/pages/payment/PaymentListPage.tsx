@@ -149,7 +149,7 @@ const PaymentListPage = () => {
             header={HEADER}
             isLoading={isLoading}
             sorted={false}
-            useDetail={isAdmin}
+            useDetail
             excel
             excelCols={EXCEL_HEADER}
             onExcelListApi={handleExcelListApi}
