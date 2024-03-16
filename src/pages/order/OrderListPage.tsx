@@ -1,8 +1,7 @@
 import DataTableHeader from '@/components/dataTable/DataTableHeader';
-import { Button, DatePicker, Input, Modal, Select, Tag } from 'antd';
+import { Button, DatePicker, Form, Input, Modal, Select, Tag } from 'antd';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import locale from 'antd/es/date-picker/locale/ko_KR';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useContext, useState } from 'react';
@@ -17,7 +16,7 @@ import { Reservation, ReservationStatus } from '@/entities/reservation';
 
 const dateFormat = 'YYYY-MM-DD';
 const defaultStartDate = dayjs().subtract(1, 'day').format(dateFormat);
-const defaultEndDate = dayjs().add(1, 'month').format(dateFormat);
+const defaultEndDate = dayjs().add(3, 'month').format(dateFormat);
 
 const OrderListPage = () => {
   const { isAdmin } = useContext(UserContext);
@@ -73,13 +72,13 @@ const OrderListPage = () => {
 
   return (
     <div>
-      <DataTableHeader title="예약 내역" />
+      <DataTableHeader title="예약내역" />
       <Wrapper>
         <FilterWrapper>
+          <Form.Item label="이용일" name="date" style={{ maxHeight: '32px', height: '32px', margin: '0px' }}></Form.Item>
           <DatePicker.RangePicker
-            // disabled={isLoading}
-            locale={locale}
-            style={{ width: '50%' }}
+            style={{ width: '45%', height: '32px' }}
+            disabled={isLoading}
             format={dateFormat}
             value={[dayjs(startDate, dateFormat), dayjs(endDate, dateFormat)]}
             onChange={(_, dateString) => {
