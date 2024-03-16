@@ -106,6 +106,15 @@ export const getNavigationMenu = (isAdmin: boolean) => {
           exact: true,
           isShow: true,
         },
+        {
+          id: 'order-status',
+          key: 'order-status',
+          title: '예약내역',
+          type: 'item',
+          url: '/pages/order-list',
+          exact: true,
+          isShow: true,
+        },
       ],
     });
   }
@@ -125,15 +134,6 @@ export const getNavigationMenu = (isAdmin: boolean) => {
         title: '예약현황',
         type: 'item',
         url: '/pages/order-status',
-        exact: true,
-        isShow: true,
-      },
-      {
-        id: 'order-status',
-        key: 'order-status',
-        title: '예약내역',
-        type: 'item',
-        url: '/pages/order-list',
         exact: true,
         isShow: true,
       },
