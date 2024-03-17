@@ -69,6 +69,14 @@ const PaymentListPage = () => {
       return true;
     }
 
+    if (payment.merchandiseType === 'ONE_TIME_RESERVATION' && payment.schedule && dayjs(payment.schedule?.startDate).isBefore(dayjs())) {
+      return true;
+    }
+
+    if (payment.merchandiseType === 'PASS' && payment.pass && dayjs(payment.pass.startDate).isBefore(dayjs())) {
+      return true;
+    }
+
     return false;
   };
 

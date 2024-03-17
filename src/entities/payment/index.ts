@@ -19,10 +19,17 @@ export type Payment = {
     id: string;
     title: string;
   };
+  schedule?: {
+    id: string;
+    startDate: string; // YYYY-MM-DDTHH:mm
+  };
   // 패스 결제의 경우
   pass?: {
     id: number;
     title: string;
+    userPassId: number;
+    startDate: string; // YYYY-MM-DD
+    endDate: string; // YYYY-MM-DD
   };
   // 단건 결제의 경우
   program?: {
