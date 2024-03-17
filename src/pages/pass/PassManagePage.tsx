@@ -113,7 +113,13 @@ const EXCEL_HEADER = [
 ];
 
 const HEADER = [
-  { id: 'createdAt', label: '결제일' },
+  {
+    id: 'createdAt',
+    label: '결제일',
+    customBodyRender: (_: any, data: UserPass) => {
+      return <div>{dayjs(data?.createdAt).format('YYYY-MM-DD:HH:mm')}</div>;
+    },
+  },
   {
     id: 'user.name',
     label: '이름',
