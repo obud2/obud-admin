@@ -59,7 +59,6 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
 
   const onChangeInputValue = (key: keyof Pass, value: Pass[keyof Pass]) => {
     setBody((prev) => ({ ...prev, [key]: value }));
-    setMaxDays(0);
   };
 
   const handleClose = () => {
@@ -167,8 +166,9 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
               size="small"
               style={{ width: '100px', height: '20px', marginLeft: '4px' }}
               value={maxDays}
-              onChange={(e) => e && setMaxDays(e)}
+              onChange={(e) => e && e > 0 && setMaxDays(e)}
               addonAfter="일"
+              min={1}
               max={180}
               disabled={isLoading}
             />
@@ -179,9 +179,10 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
         <InputNumber
           style={{ width: '100%', marginLeft: '4px' }}
           value={body.price}
-          onChange={(e) => e && onChangeInputValue('price', e)}
+          onChange={(e) => e && e >= 0 && onChangeInputValue('price', e)}
           placeholder="판매 금액을 입력하세요."
           addonAfter="원"
+          min={0}
           disabled={isLoading}
         />
       </DataDetailItem>
@@ -190,7 +191,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
           <InputNumber
             style={{ width: '100px', marginLeft: '4px' }}
             value={body.maxReservations}
-            onChange={(e) => e && onChangeInputValue('maxReservations', e)}
+            onChange={(e) => e && e > 0 && onChangeInputValue('maxReservations', e)}
             min={1}
             addonAfter="회"
             disabled={isLoading}
@@ -202,7 +203,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
           <InputNumber
             style={{ width: '100px', marginLeft: '4px' }}
             value={body.maxCancels}
-            onChange={(e) => e && onChangeInputValue('maxCancels', e)}
+            onChange={(e) => e && e >= 0 && onChangeInputValue('maxCancels', e)}
             min={0}
             addonAfter="회"
             disabled={isLoading}
@@ -220,7 +221,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             min={0}
             style={{ width: '120px', marginLeft: '4px' }}
             value={body.minCancelWindowHour}
-            onChange={(e) => onChangeInputValue('minCancelWindowHour', e)}
+            onChange={(e) => e && e >= 0 && onChangeInputValue('minCancelWindowHour', e)}
             addonAfter="시간"
             disabled={isLoading}
           />
@@ -230,7 +231,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             max={59}
             style={{ width: '120px', marginLeft: '4px' }}
             value={body.minCancelWindowMinute}
-            onChange={(e) => onChangeInputValue('minCancelWindowMinute', e)}
+            onChange={(e) => e && e >= 0 && onChangeInputValue('minCancelWindowMinute', e)}
             addonAfter="분"
             disabled={isLoading}
           />
