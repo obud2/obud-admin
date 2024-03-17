@@ -2,7 +2,7 @@ import DataDetailBody, { DataDetailItem } from '@/components/detailTable/DataDet
 import { Pass } from '@/entities/pass';
 import { Place } from '@/entities/place';
 import { CreatePassRequest, PassService } from '@/services/PassService';
-import { Button, Input, InputNumber, Radio, Switch } from 'antd';
+import { Button, Checkbox, Input, InputNumber, Radio, Switch } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
@@ -14,8 +14,8 @@ const initialBody: CreatePassRequest = {
   isShow: true,
   durationInDays: 30,
   price: 0,
-  maxReservations: null,
-  maxCancels: null,
+  maxReservations: 1,
+  maxCancels: 1,
   minCancelWindowHour: 0,
   minCancelWindowMinute: 0,
   notice: '',
@@ -29,13 +29,18 @@ type Props = {
   onClose: () => void;
 };
 
+const DEFAULT_DURATION = [30, 60, 90];
+
 const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
   const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
   const [notiMessage, setNotiMessage] = useState('');
   const [body, setBody] = useState<CreatePassRequest>(initialBody);
-  const [maxDays, setMaxDays] = useState<number>(0);
+  const [maxDays, setMaxDays] = useState<number>(1);
+
+  const [noLimitReservations, setNoLimitReservations] = useState<boolean>(false);
+  const [noLimitCancels, setNoLimitCancels] = useState<boolean>(false);
 
   useEffect(() => {
     if (pass && open) {
@@ -52,10 +57,13 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
         notice: pass.notice,
         refundPolicy: pass.refundPolicy,
       });
+      if (!DEFAULT_DURATION.includes(pass.durationInDays)) setMaxDays(pass.durationInDays);
+      setNoLimitReservations(pass.maxReservations === null);
+      setNoLimitCancels(pass.maxCancels === null);
     }
-  }, [pass, open]);
+  }, [pass, open, setNoLimitCancels, setNoLimitReservations]);
 
-  const isActive = body.title && body.durationInDays && body.price && body.maxReservations && body.maxCancels;
+  const isActive = body.title && body.durationInDays;
 
   const onChangeInputValue = (key: keyof Pass, value: Pass[keyof Pass]) => {
     setBody((prev) => ({ ...prev, [key]: value }));
@@ -63,6 +71,10 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
 
   const handleClose = () => {
     setBody(initialBody);
+    setNotiMessage('');
+    setMaxDays(1);
+    setNoLimitCancels(false);
+    setNoLimitReservations(false);
 
     onClose();
   };
@@ -157,9 +169,11 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
       </DataDetailItem>
       <DataDetailItem label="기간" span={2} point>
         <Radio.Group value={body.durationInDays} onChange={(e) => onChangeInputValue('durationInDays', e.target.value)}>
-          <Radio value={30}>1개월 (30일)</Radio>
-          <Radio value={60}>2개월 (60일)</Radio>
-          <Radio value={90}>3개월 (90일)</Radio>
+          {DEFAULT_DURATION.map((day) => (
+            <Radio key={day} value={day}>
+              {Math.floor(day / 30)}개월 ({day}일)
+            </Radio>
+          ))}
           <Radio value={maxDays}>
             직접 입력
             <InputNumber
@@ -194,8 +208,19 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             onChange={(e) => e && e > 0 && onChangeInputValue('maxReservations', e)}
             min={1}
             addonAfter="회"
-            disabled={isLoading}
+            disabled={isLoading || noLimitReservations}
           />
+          <Checkbox
+            style={{ marginLeft: '12px' }}
+            checked={noLimitReservations}
+            onChange={(e) => {
+              setNoLimitReservations(e.target.checked);
+              if (e.target.checked) onChangeInputValue('maxReservations', null);
+            }}
+            disabled={isLoading}
+          >
+            제한 없음
+          </Checkbox>
         </div>
       </DataDetailItem>
       <DataDetailItem label="총 취소가능 횟수" span={2} point>
@@ -203,11 +228,22 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
           <InputNumber
             style={{ width: '100px', marginLeft: '4px' }}
             value={body.maxCancels}
-            onChange={(e) => e && e >= 0 && onChangeInputValue('maxCancels', e)}
+            onChange={(e) => e !== null && e >= 0 && onChangeInputValue('maxCancels', e)}
             min={0}
             addonAfter="회"
-            disabled={isLoading}
+            disabled={isLoading || noLimitCancels}
           />
+          <Checkbox
+            style={{ marginLeft: '12px' }}
+            checked={noLimitCancels}
+            onChange={(e) => {
+              setNoLimitCancels(e.target.checked);
+              if (e.target.checked) onChangeInputValue('maxCancels', null);
+            }}
+            disabled={isLoading}
+          >
+            제한 없음
+          </Checkbox>
         </div>
       </DataDetailItem>
       <DataDetailItem label="유의 사항" span={2}>
@@ -221,7 +257,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             min={0}
             style={{ width: '120px', marginLeft: '4px' }}
             value={body.minCancelWindowHour}
-            onChange={(e) => e && e >= 0 && onChangeInputValue('minCancelWindowHour', e)}
+            onChange={(e) => e !== null && e >= 0 && onChangeInputValue('minCancelWindowHour', e)}
             addonAfter="시간"
             disabled={isLoading}
           />
@@ -231,7 +267,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             max={59}
             style={{ width: '120px', marginLeft: '4px' }}
             value={body.minCancelWindowMinute}
-            onChange={(e) => e && e >= 0 && onChangeInputValue('minCancelWindowMinute', e)}
+            onChange={(e) => e !== null && e >= 0 && onChangeInputValue('minCancelWindowMinute', e)}
             addonAfter="분"
             disabled={isLoading}
           />
