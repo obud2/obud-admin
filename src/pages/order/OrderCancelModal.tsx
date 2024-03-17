@@ -68,31 +68,34 @@ const OrderCancelModal = ({ open, onClose, reservation }: Props) => {
       ]}
     >
       <div>
-        <DataDetailItem label="결제금액">
-          <InputNumber
-            addonAfter="원"
-            placeholder="숫자만 입력하세요."
-            value={reservation.payment.payAmount}
-            formatter={(value) => `${value}`.toLocaleString()}
-            disabled
-          />
-        </DataDetailItem>
-        <DataDetailItem label="환불금액">
-          <InputNumber
-            addonAfter="원"
-            placeholder="숫자만 입력하세요."
-            min={1}
-            max={reservation.payment.payAmount}
-            value={refundAmount}
-            formatter={(value) => `${value}`.toLocaleString()}
-            onChange={(e) => setRefundAmount(e ?? 0)}
-          />
-        </DataDetailItem>
+        {reservation.payment.merchandiseType !== 'PASS' && (
+          <>
+            <DataDetailItem label="결제금액">
+              <InputNumber
+                addonAfter="원"
+                placeholder="숫자만 입력하세요."
+                value={reservation.payment.payAmount}
+                formatter={(value) => `${value}`.toLocaleString()}
+                disabled
+              />
+            </DataDetailItem>
+            <DataDetailItem label="환불금액">
+              <InputNumber
+                addonAfter="원"
+                placeholder="숫자만 입력하세요."
+                min={1}
+                max={reservation.payment.payAmount}
+                value={refundAmount}
+                formatter={(value) => `${value}`.toLocaleString()}
+                onChange={(e) => setRefundAmount(e ?? 0)}
+              />
+            </DataDetailItem>
+          </>
+        )}
         <div style={{ padding: '12px' }}>
           <div>정말로 예약을 취소하시겠습니까?</div>
           <ul>
             <li>취소 후 복구가 불가합니다.</li>
-            <li>환불은 결제 내역에서 처리해야 결제한 금액이 환불됩니다.</li>
           </ul>
         </div>
       </div>
