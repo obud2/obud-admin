@@ -33,10 +33,12 @@ const PaymentRefundModal = ({ open, onClose, payment }: Props) => {
       queryClient.invalidateQueries();
       handleClose();
     } catch (err) {
+      const error = err as { data: { message: string } };
+
       if (payment.pass) {
-        swal('패스 환불에 실패하였습니다.');
+        swal(error.data.message || '패스 환불에 실패하였습니다.');
       } else {
-        swal('단건 결제 환불에 실패하였습니다.');
+        swal(error.data.message || '단건 결제 환불에 실패하였습니다.');
       }
     } finally {
       setIsLoading(false);

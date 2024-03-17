@@ -34,8 +34,10 @@ const OrderCancelModal = ({ open, onClose, reservation }: Props) => {
         await PassService.cancelUserPass({ userPassId: reservation.payment.pass.userPassId });
         swal('패스 예약이 취소되었습니다.');
         queryClient.invalidateQueries();
-      } catch (error) {
-        swal('패스 예약 취소에 실패했습니다.');
+        handleClose();
+      } catch (err) {
+        const error = err as { data: { message: string } };
+        swal(error.data.message || '패스 예약 취소에 실패했습니다.');
       }
     } else {
       // 단건 예약 취소
@@ -43,8 +45,10 @@ const OrderCancelModal = ({ open, onClose, reservation }: Props) => {
         await PaymentService.refundPayment({ paymentKey: reservation.payment.key, refundAmount });
         swal('단건 결제 예약이 취소되었습니다. (환불 완료).');
         queryClient.invalidateQueries();
-      } catch (error) {
-        swal('단건 결제 예약 취소에 실패했습니다.');
+        handleClose();
+      } catch (err) {
+        const error = err as { data: { message: string } };
+        swal(error.data.message || '단건 결제 예약 취소에 실패했습니다.');
       }
     }
     setIsLoading(false);
