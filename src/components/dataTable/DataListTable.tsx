@@ -88,7 +88,8 @@ const DataListTable = ({
         });
       }
 
-      copyArr?.sort((a, b) => (a?.[sortId] < b?.[sortId] ? 1 : -1));
+      // if sortId field is not exist, then show data by given order
+      copyArr?.sort((a, b) => (a?.[sortId] > b?.[sortId] ? -1 : 1));
 
       setDatas(copyArr);
     }
