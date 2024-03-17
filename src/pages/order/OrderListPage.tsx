@@ -58,6 +58,8 @@ const OrderListPage = () => {
   const handleHideCancelButton = (reservation: Reservation): boolean => {
     if (reservation.status === 'CANCELLED') return true;
 
+    if (dayjs(reservation.schedule.startDate).isBefore(dayjs())) return true;
+
     return false;
   };
 
