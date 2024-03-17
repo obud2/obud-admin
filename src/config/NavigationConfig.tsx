@@ -249,36 +249,6 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     isShow: true,
   });
 
-  menu.push({
-    id: 'order',
-    key: 'order',
-    iconType: 'ant',
-    title: '예약 (Legacy)',
-    type: 'collapse',
-    icon: 'Profile',
-    isShow: true,
-    children: [
-      {
-        id: 'order-list-legacy',
-        key: 'order-list-legacy',
-        title: '예약내역 - (legacy)',
-        type: 'item',
-        url: '/pages/order-list-legacy',
-        exact: true,
-        isShow: true,
-      },
-      {
-        id: 'order-cancel',
-        key: 'order-cancel',
-        title: '취소내역 - (legacy)',
-        type: 'item',
-        url: '/pages/order-cancel',
-        exact: true,
-        isShow: true,
-      },
-    ],
-  });
-
   if (isAdmin) {
     menu.push({
       id: 'setting',

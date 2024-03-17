@@ -42,10 +42,7 @@ const Error500Page = lazy(() => import('./pages/errors/500/Error500Page'));
 // --------------------------------------------------------------------------------------------------
 
 /* Order */
-const OrderListPageLegacy = lazy(() => import('./pages/order/OrderListPageLegacy'));
 const OrderListPage = lazy(() => import('./pages/order/OrderListPage'));
-const OrderCancelPage = lazy(() => import('./pages/order/OrderCancelPage'));
-const OrderRefusalPage = lazy(() => import('./pages/order/OrderRefusalPage'));
 const OrderStatusPage = lazy(() => import('./pages/order/OrderStatusPage'));
 const OrderStatusCalendarPage = lazy(() => import('./pages/order/OrderStatusCalendarPage'));
 
@@ -122,11 +119,6 @@ const App = () => {
             <Route path="/pages/order-list" element={<OrderListPage />} />
             <Route path="/pages/order-status" element={<OrderStatusPage />} />
             <Route path="/pages/order-status/:id" element={<OrderStatusCalendarPage />} />
-
-            {/* Will Be Deprecated */}
-            <Route path="/pages/order-list-legacy" element={<OrderListPageLegacy />} />
-            <Route path="/pages/order-cancel" element={<OrderCancelPage />} />
-            <Route path="/pages/order-refusal" element={<OrderRefusalPage />} />
 
             {/* Product */}
             <Route path="/pages/places" element={<PlaceListPage />} />
