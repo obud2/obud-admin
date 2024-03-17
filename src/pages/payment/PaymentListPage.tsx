@@ -65,6 +65,9 @@ const PaymentListPage = () => {
   const handleHideRefundButton = (payment: Payment): boolean => {
     if (payment.status === 'CANCEL') return true;
 
+    // 전체 관리자인 경우에는 취소 상태만 아니면 무조건 보여주어야 한다.
+    if (isAdmin) return false;
+
     if (payment.merchandiseType === 'PASS' && !isAdmin) {
       return true;
     }

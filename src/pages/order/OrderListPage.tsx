@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Place } from '@/entities/place';
 import { listManagedByMePlaces } from '@/services/PlaceV2Service';
 import { programService } from '@/services/ProgramService';
@@ -13,12 +13,15 @@ import DataListTable from '@/components/dataTable/DataListTable';
 import ReservationService, { ListReservationsRequest } from '@/services/ReservationService';
 import { Reservation, ReservationStatus } from '@/entities/reservation';
 import OrderCancelModal from './OrderCancelModal';
+import { UserContext } from '@/context/UserContext';
 
 const dateFormat = 'YYYY-MM-DD';
 const defaultStartDate = dayjs().subtract(1, 'day').format(dateFormat);
 const defaultEndDate = dayjs().add(3, 'month').format(dateFormat);
 
 const OrderListPage = () => {
+  const { isAdmin } = useContext(UserContext);
+
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -57,6 +60,9 @@ const OrderListPage = () => {
 
   const handleHideCancelButton = (reservation: Reservation): boolean => {
     if (reservation.status === 'CANCELLED') return true;
+
+    // 전체 관리자인 경우에는 취소 상태만 아니면 무조건 보여주어야 한다.
+    if (isAdmin) return false;
 
     if (dayjs(reservation.schedule.startDate).isBefore(dayjs())) return true;
 
