@@ -17,6 +17,7 @@ import InstructorRegist from './InstructorRegist';
 
 import DataTableHeader from '../../components/dataTable/DataTableHeader';
 import DataListTable from '../../components/dataTable/DataListTable';
+import swal from 'sweetalert';
 
 const UserListPage = () => {
   const [searchFilter, setSearchFilter] = useState({
@@ -106,7 +107,9 @@ const UserListPage = () => {
           studiosAdminId,
         };
 
-        await UserService?.deleteInstructor(body);
+        await UserService?.deleteInstructor(body).catch((error) => {
+          swal({ title: '', text: error });
+        });
         refetch();
       }
     });

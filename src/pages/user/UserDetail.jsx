@@ -107,7 +107,9 @@ const UserDetail = ({ open, onClose, id, refresh }) => {
           studiosAdminId,
         };
 
-        await UserService?.deleteInstructor(body);
+        await UserService?.deleteInstructor(body).catch((error) => {
+          swal({ title: '', text: error });
+        });
         getAdminStudiosInstr();
       }
     });

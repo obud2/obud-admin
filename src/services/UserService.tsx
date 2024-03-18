@@ -174,7 +174,6 @@ const deleteInstructor = (body: any) => {
         resolve(response?.data || []);
       })
       .catch((error) => {
-        alert(error.data.message);
         reject(error.data.message);
       });
   });
