@@ -367,6 +367,7 @@ const CouponDetail = ({ coupon, open, onClose, refresh }: Props) => {
             onChangeInputValue('startDate', dayjs(dateString[0] ?? '').format(dateFormat));
             onChangeInputValue('endDate', dayjs(dateString[1] ?? '').format(dateFormat));
           }}
+          allowClear={false}
         />
       </DataDetailItem>
       <DataDetailItem label="중복 발급 가능 여부" span={2}>

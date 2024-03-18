@@ -283,6 +283,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
             onChangeInputValue('startDate', start);
             onChangeInputValue('endDate', end);
           }}
+          allowClear={false}
         />
       </DataDetailItem>
 

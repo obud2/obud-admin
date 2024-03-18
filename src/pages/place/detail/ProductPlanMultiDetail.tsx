@@ -280,6 +280,7 @@ const ProductPlanMultiDetail = ({ open, onClose, lessonId, refetch }) => {
               onChangeInputValue('startDate', start);
               onChangeInputValue('endDate', end);
             }}
+            allowClear={false}
           />
 
           <Typography.Text style={{ fontSize: '12px' }} type="secondary">

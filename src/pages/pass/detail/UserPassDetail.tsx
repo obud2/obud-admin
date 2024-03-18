@@ -153,6 +153,7 @@ const UserPassDetail = ({ currentPlace, userPass, open, onClose }: Props) => {
           format={dateFormat}
           value={dayjs(body.startDate ?? '', dateFormat)}
           onChange={(e) => onChangeInputValue('startDate', dayjs(e).format(dateFormat))}
+          allowClear={false}
         />
       </DataDetailItem>
       <DataDetailItem label="종료일" span={2} point>
@@ -163,6 +164,7 @@ const UserPassDetail = ({ currentPlace, userPass, open, onClose }: Props) => {
           format={dateFormat}
           value={dayjs(body.endDate ?? '', dateFormat)}
           onChange={(e) => onChangeInputValue('endDate', dayjs(e).format(dateFormat))}
+          allowClear={false}
         />
       </DataDetailItem>
       <PassDetail>

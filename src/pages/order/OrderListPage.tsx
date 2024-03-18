@@ -84,6 +84,7 @@ const OrderListPage = () => {
               setStartDate(dateString[0]);
               setEndDate(dateString[1]);
             }}
+            allowClear={false}
           />
           <Input.Search placeholder="이름 또는 전화번호로 검색" allowClear onSearch={handleSearch} style={{ width: '40%' }} />
           <Select

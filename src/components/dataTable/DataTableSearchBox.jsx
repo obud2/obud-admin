@@ -174,7 +174,7 @@ const RenderText = ({ filterData, filterArr, rtData, isLoading }) => {
           추가
         </Button>
 
-        <DatePicker open={isDateOpen} onClose={onClickDateClose} onChange={(e) => handleChange('value', e)} />
+        <DatePicker open={isDateOpen} onClose={onClickDateClose} onChange={(e) => handleChange('value', e)} allowClear={false} />
       </div>
     </SRenderText>
   );
