@@ -143,14 +143,14 @@ const changePassword = (id: string, password: string) => {
 };
 
 const setInstructor = (body: any) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .put(`${API_URL}/user/instructor`, body)
       .then((response) => {
         resolve(response?.data);
       })
       .catch((error) => {
-        resolve(error);
+        reject(error.data.message);
       });
   });
 };
@@ -167,14 +167,15 @@ const setInstructor = (body: any) => {
  * @returns
  */
 const deleteInstructor = (body: any) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axiosInstance
       .delete(`${API_URL}/user/instructor?instructorId=${body?.instructorId}&studiosAdminId=${body?.studiosAdminId}`)
       .then((response) => {
         resolve(response?.data || []);
       })
-      .catch(() => {
-        resolve([]);
+      .catch((error) => {
+        alert(error.data.message);
+        reject(error.data.message);
       });
   });
 };
