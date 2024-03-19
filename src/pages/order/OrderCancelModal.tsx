@@ -1,7 +1,7 @@
 import { DataDetailItem } from '@/components/detailTable/DataDetailBody';
 import { Reservation } from '@/entities/reservation';
-import { PassService } from '@/services/PassService';
 import PaymentService from '@/services/PaymentService';
+import ReservationService from '@/services/ReservationService';
 import { Button, InputNumber, Modal } from 'antd';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
@@ -28,10 +28,10 @@ const OrderCancelModal = ({ open, onClose, reservation }: Props) => {
 
     setIsLoading(true);
 
-    if (reservation.payment.merchandiseType === 'PASS' && reservation.payment.pass?.userPassId) {
+    if (reservation.payment.merchandiseType === 'PASS') {
       // 페스 예약 취소
       try {
-        await PassService.cancelUserPass({ userPassId: reservation.payment.pass.userPassId });
+        await ReservationService.cancelReservationByPass({ userPassReservationId: reservation.id });
         swal('패스 예약이 취소되었습니다.');
         queryClient.invalidateQueries();
         handleClose();

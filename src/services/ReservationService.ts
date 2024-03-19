@@ -197,6 +197,14 @@ const listReservationsExcelList = async (req: ListReservationsExcelListRequest) 
   }));
 };
 
+type CancelReservationByPassRequest = {
+  userPassReservationId: Reservation['id'];
+};
+
+const cancelReservationByPass = async (req: CancelReservationByPassRequest) => {
+  await axiosInstance.post(`${API_URL}/reservation/pass/${req.userPassReservationId}/cancel`);
+};
+
 const ReservationService = {
   getReservationAll,
   getReservation,
@@ -218,6 +226,8 @@ const ReservationService = {
 
   listReservations,
   listReservationsExcelList,
+
+  cancelReservationByPass,
 };
 
 export default ReservationService;
