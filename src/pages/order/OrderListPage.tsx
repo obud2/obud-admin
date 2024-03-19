@@ -177,6 +177,8 @@ const EXCEL_HEADER = [
   { id: 'place', label: '장소' },
   { id: 'payment', label: '이용수단' },
   { id: 'paymentId', label: '결제번호' },
+  { id: 'totalAmount', label: '판매금액' },
+  { id: 'payAmount', label: '결제금액' },
 ];
 
 const HEADER = [
@@ -203,11 +205,11 @@ const HEADER = [
   {
     id: 'id-reserveAt',
     label: '예약번호/예약일자',
-    flex: 0.7,
+    flex: 0.8,
     customBodyRender: (_: any, data: Reservation) => {
       return (
         <div>
-          <div style={{ fontSize: '11px' }}>{data?.key}</div>
+          <div style={{ fontSize: '10px' }}>{data?.key}</div>
           <div style={{ fontSize: '8px', color: 'grey' }}>{dayjs(data.reserveAt).format('YYYY-MM-DD HH:mm')}</div>
         </div>
       );
@@ -226,14 +228,14 @@ const HEADER = [
     label: '연락처',
     flex: 0.6,
     customBodyRender: (_: any, data: Reservation) => {
-      return <div>{data?.user.phone}</div>;
+      return <div style={{ fontSize: '1.2rem' }}>{data?.user.phone}</div>;
     },
   },
   {
     id: 'schedule.startDate',
     label: '이용일시',
     customBodyRender: (_: any, data: Reservation) => {
-      return <div>{dayjs(data.schedule.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}</div>;
+      return <div style={{ fontSize: '1.2rem' }}>{dayjs(data.schedule.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}</div>;
     },
   },
   {
@@ -242,7 +244,7 @@ const HEADER = [
     customBodyRender: (_: any, data: Reservation) => {
       return (
         <div>
-          <div>{data?.program?.title}</div>
+          <div style={{ fontSize: '1.2rem' }}>{data?.program?.title}</div>
           <div style={{ fontSize: '9px', color: 'grey' }}>{data?.place?.title}</div>
         </div>
       );
@@ -254,8 +256,13 @@ const HEADER = [
     customBodyRender: (_: any, data: Reservation) => {
       return (
         <div>
-          <div>{data.payment?.merchandiseType === 'ONE_TIME_RESERVATION' ? '단건 결제' : '패스'}</div>
+          <div style={{ fontSize: '1.2rem' }}>{data.payment?.merchandiseType === 'ONE_TIME_RESERVATION' ? '단건 결제' : '패스'}</div>
           <div style={{ fontSize: '9px', color: 'grey' }}>{data.payment?.key}</div>
+          {data.payment?.merchandiseType === 'ONE_TIME_RESERVATION' && (
+            <div style={{ fontSize: '9px', color: 'grey' }}>
+              판매금액:{data.payment?.totalAmount?.toLocaleString()} 결제금액:{data.payment?.payAmount?.toLocaleString()}
+            </div>
+          )}
         </div>
       );
     },

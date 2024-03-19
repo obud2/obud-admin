@@ -193,7 +193,8 @@ const listReservationsExcelList = async (req: ListReservationsExcelListRequest) 
     place: reservation.place?.title,
     scheduleStartDate: reservation.schedule.startDate,
     payment: reservation.payment.merchandiseType,
-    paymentId: reservation.payment.key,
+    totalAmount: reservation.payment.totalAmount,
+    payAmount: reservation.payment.payAmount,
   }));
 };
 

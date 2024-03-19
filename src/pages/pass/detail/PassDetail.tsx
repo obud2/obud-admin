@@ -249,7 +249,11 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
       <DataDetailItem label="유의 사항" span={2}>
         <TextArea value={body.notice} onChange={(e) => e && onChangeInputValue('notice', e.target.value)} rows={10} showCount />
       </DataDetailItem>
-      <DataDetailItem label="에약 취소 기간 설정" span={2}>
+      <DataDetailItem label="예약 취소 기간 설정" span={2}>
+        <div style={{ color: '#1D64D0', marginBottom: '10px', fontSize: '10px' }}>
+          패스로 예약 시, 예약 취소 가능한 시간을 설정해주세요. (해당 기간 동안 취소 시 예약 횟수 차감이 되지 않습니다.) 0으로 입력 시 수업
+          시작 직전까지 취소가 가능합니다.
+        </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span style={{ fontSize: '14px' }}>수업 시간 </span>
           <InputNumber
@@ -271,9 +275,7 @@ const PassDetail = ({ currentPlace, pass, open, onClose }: Props) => {
             addonAfter="분"
             disabled={isLoading}
           />
-          <span style={{ fontSize: '14px', marginLeft: '4px' }}>
-            전 까지 가능 (해당 기간 동안 취소 시 예약 횟수 차감이 되지 않습니다.){' '}
-          </span>
+          <span style={{ fontSize: '14px', marginLeft: '4px' }}>전 까지 가능</span>
         </div>
       </DataDetailItem>
       <DataDetailItem label="환불 규정" span={2}>

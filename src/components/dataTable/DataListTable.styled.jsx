@@ -20,6 +20,7 @@ export const SDataListTable = styled.div`
 
   ${smLayout} {
     overflow-y: none;
+    min-width: 800px;
     /* overflow-x: auto; */
   }
 
@@ -81,7 +82,6 @@ export const SDataListTable = styled.div`
   .data-list-container {
     height: auto;
     color: rgba(0, 0, 0, 0.87);
-
     background-color: #ffffff;
 
     .empty-list-item {
