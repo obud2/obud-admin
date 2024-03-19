@@ -17,6 +17,10 @@ export type Reservation = {
     name: string;
     phone: string;
   };
+  images: {
+    key: string;
+    url: string;
+  }[];
   place: {
     id: string;
     title: string;
