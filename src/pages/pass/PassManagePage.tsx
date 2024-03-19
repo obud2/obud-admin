@@ -73,7 +73,7 @@ const PassManagePage = () => {
             onClick={handleDetail}
             isLoading={false}
             sorted={false}
-            useDetail={isAdmin}
+            useDetail
             excel
             excelCols={EXCEL_HEADER}
             onExcelListApi={onExcelListApi}
