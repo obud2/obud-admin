@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { smLayout } from '@/styles/VariablesStyles';
 
 export const SSideBar = styled.div`
   .detail-body-background {
@@ -36,8 +37,6 @@ export const SSideBar = styled.div`
 
     background-color: #ffffff;
 
-    padding: 15px;
-
     overflow: hidden;
 
     opacity: 0;
@@ -50,8 +49,8 @@ export const SSideBar = styled.div`
       right: 0;
       position: fixed;
 
-      width: 95%;
-      max-width: 500px;
+      width: 100%;
+      max-width: 450px;
       height: 100%;
 
       overflow-y: auto;

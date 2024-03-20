@@ -133,15 +133,6 @@ const OrderStatusCalendarPage = () => {
         </div>
       </SDataDetailBody>
 
-      {/* 예약목록 */}
-      {/* <OrderStatusCalendarPalnList
-        lessonId={id}
-        month={detailId?.id}
-        open={detailId?.id}
-        onClose={() => setDetailId(false)}
-        onResevation={onResevation}
-      /> */}
-
       {/* 예약자 현황 */}
       <ProductPlanResevationList id={reservationId} open={reservationId} onClose={() => setReservationId()} studio={studio} lesson={id} />
     </>

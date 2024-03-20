@@ -1,28 +1,21 @@
 import React, { useState } from 'react';
-
-import { Button, Checkbox, Input, Typography } from 'antd';
-
-import moment from 'moment';
-
+import styled from 'styled-components';
+import { Checkbox } from 'antd';
+import { Spin } from 'antd';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import { useQuery } from 'react-query';
-
-import { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
-
 import SideBar from '../../../components/sidebar/SideBar';
 
-import DataListTable from '../../../components/dataTable/DataListTable';
-
-import PlanCommentDetail from './option/PlanCommentDetail';
 import { getPlan, onAttendance } from '@/services/ScheduleService';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 
 /**
  *
  * @param {*} id : 상품 등록 ID 값 new
  * @returns
  */
-const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
-  const [isCommentOpen, setIsCommentOpen] = useState('');
-
+const ProductPlanResevationList = ({ id, open, onClose }) => {
   const {
     data: plan,
     isLoading: isPlanLoading,
@@ -34,84 +27,165 @@ const ProductPlanResevationList = ({ id, lesson, open, onClose }) => {
 
   const isAllLoading = isPlanLoading || isPlanRefetchLoading;
 
-  const LIST_HEADER = [
-    {
-      id: 'reservationer',
-      label: '예약자명/번호',
-      customBodyRender: (value, data) => {
-        return (
-          <div>
-            <p style={{ fontSize: '13px', fontWeight: 500, color: '#232323' }}>{data?.reservationer || ''}</p>
-            <p style={{ fontSize: '13px', fontWeight: 400, color: '#757575' }}>{data?.reservationerHp || ''}</p>
-          </div>
-        );
-      },
-    },
+  const sortByReservationer = (list) => {
+    return list.slice().sort((a, b) => a.reservationer.localeCompare(b.reservationer));
+  };
 
-    {
-      id: 'reservationCount',
-      label: '인원',
-      customBodyRender: (value) => {
-        return `${value || 0}명`;
-      },
-    },
-    {
-      id: 'attendance',
-      label: '출석여부',
-      customBodyRender: (value, data) => {
-        const onClickAttendance = () => {
-          const param = {
-            orderItemId: data?.id,
-            isAttendance: !value,
-          };
+  const onClickAttendance = (reservationId, isAttendance) => {
+    const param = {
+      orderItemId: reservationId,
+      isAttendance: !isAttendance,
+    };
 
-          onAttendance(param).then(() => {
-            refetch();
-          });
-        };
-
-        return <Checkbox checked={value} onClick={onClickAttendance} disabled={isAllLoading} />;
-      },
-    },
-   
-  ];
-
-  const renderButtons = () => {
-    return [
-      <Button key="cancel-btn" style={{ width: '70px', marginRight: '5px' }} onClick={onClose}>
-        닫기
-      </Button>,
-    ];
+    onAttendance(param).then(() => {
+      refetch();
+    });
   };
 
   return (
-    <SideBar open={open} onClose={onClose} title="예약자 명단" subTitle={lesson?.title || ''} extra={renderButtons()}>
-      <DataDetailItem label="시간" span={2}>
-        <Typography.Text>
-          {`${moment(plan?.startDate).format('YYYY-MM-DD HH:mm')} ~ ${moment(plan?.endDate).format('HH:mm')}`}
-        </Typography.Text>
-      </DataDetailItem>
+    <SideBar open={open} onClose={onClose}>
+      {isAllLoading ? (
+        <Wrapper>
+          <Spin />
+        </Wrapper>
+      ) : (
+        <Wrapper>
+          <div className="reservation-title-container">
+            <div className="reservation-title">예약자 리스트</div>
+            <button className="close-button">
+              <IoCloseCircleOutline size={25} onClick={onClose} />
+            </button>
+          </div>
 
-      <DataDetailItem label="강사" span={2}>
-        <Typography.Text>{plan?.instructorInfo?.name || '-'}</Typography.Text>
-      </DataDetailItem>
+          <div className="reservation-schedule-info-container">
+            <div>
+              <div style={{ marginBottom: '10px', fontSize: '1.3rem' }}>
+                {dayjs(plan?.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}-{dayjs(plan?.endDate).locale('ko').format('HH:mm')}
+              </div>
+            </div>
+            <div style={{ fontSize: '1.3rem' }}>
+              {plan?.title && <div>{plan?.title || '-'}</div>}
+              {plan?.instructorInfo && <div> - 강사: {plan?.instructorInfo?.name || '-'}</div>}
+            </div>
+          </div>
 
-      <DataDetailItem label="예약/정원" span={2}>
-        <Typography.Text type="danger">{plan?.currentMember || 0}</Typography.Text>
-        <Typography.Text>{' / '}</Typography.Text>
-        <Typography.Text>{plan?.maxMember || 0}</Typography.Text>
-      </DataDetailItem>
+          <hr className="horizontal-line" />
 
-      <DataDetailItem label="예약현황" span={2}>
-        <Typography.Text type="danger">{plan?.reservationStatus === 'impossible' ? '예약불가능' : '예약가능'}</Typography.Text>
-      </DataDetailItem>
-      <DataDetailItem span={2} />
+          <div className="reservation-number-info-container">
+            <div className={`reservation-status ${plan?.reservationStatus === 'impossible' ? 'impossible' : 'possible'}`}>
+              {plan?.reservationStatus === 'impossible' ? '예약불가능' : '예약가능'}
+            </div>
 
-      <DataListTable data={plan?.reservationList || []} header={LIST_HEADER} sorted={true} sortId="reservationer" useDetail={false} />
-
-      <PlanCommentDetail isOpen={isCommentOpen} onClose={() => setIsCommentOpen('')} data={isCommentOpen} refetch={refetch} />
+            <div className="item">
+              예약인원/정원: {plan?.currentMember || 0}/{plan?.maxMember || 0}
+            </div>
+          </div>
+          <div className="reservation-list">
+            <div className="reservation-list-item">
+              <div className="reservationer-info">예약자/핸드폰번호</div>
+              <div className="reservationer-number">인원</div>
+              <div className="reservationer-attendance">출석체크</div>
+            </div>
+            {plan &&
+              plan?.reservationList?.length > 0 &&
+              sortByReservationer(plan.reservationList).map((reservation) => (
+                <div className="reservation-list-item" key={reservation.id}>
+                  <div className="reservationer-info">
+                    <div className="reservationer">{reservation.reservationer}</div>
+                    <div className="reservationer-hp">{reservation.reservationerHp}</div>
+                  </div>
+                  <div className="reservationer-number">{reservation.reservationCount}</div>
+                  <div className="reservationer-attendance">
+                    <Checkbox
+                      checked={reservation.attendance}
+                      onClick={() => onClickAttendance(reservation.id, reservation.attendance)}
+                      disabled={isAllLoading}
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
+        </Wrapper>
+      )}
     </SideBar>
   );
 };
 
 export default ProductPlanResevationList;
+
+const Wrapper = styled.div`
+  width: 100%;
+  padding: 25px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  font-size: 1.2rem;
+
+  .reservation-title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 30px 20px 30px;
+  }
+
+  .reservation-title {
+    flex: 1; /* 확장 가능한 영역을 설정하여 가운데 정렬 */
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .reservation-schedule-info-container {
+    margin: 0 30px;
+  }
+
+  .reservation-number-info-container {
+    margin: 0 30px;
+  }
+
+  .reservation-status {
+    /* border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 70px;
+    text-align: center;
+    padding: 4px; */
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .reservation-status.impossible {
+    color: red; /* 예약 불가능일 때의 색상 */
+  }
+
+  .reservation-status.possible {
+    color: #009ef7;
+  }
+
+  .horizontal-line {
+    border: 0.5px solid #e8e7e7;
+    margin: 10px 0;
+  }
+  .reservation-list {
+    display: flex;
+    flex-direction: column;
+
+    .reservation-list-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+
+      padding: 15px 30px;
+      border-bottom: 0.5px solid #e8e7e7;
+
+      .reservationer {
+        font-size: 1.2rem;
+        margin-bottom: 3px;
+      }
+
+      .reservationer-hp {
+        font-size: 1.1rem;
+      }
+    }
+  }
+`;

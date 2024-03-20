@@ -184,7 +184,7 @@ const EXCEL_HEADER = [
 const HEADER = [
   {
     id: 'status',
-    flex: 0.4,
+    flex: 0.3,
     label: '상태',
     customBodyRender: (_: any, data: Reservation) => {
       if (data.status === 'COMPLETED') {
@@ -205,7 +205,7 @@ const HEADER = [
   {
     id: 'id-reserveAt',
     label: '예약번호/예약일자',
-    flex: 0.8,
+    flex: 0.7,
     customBodyRender: (_: any, data: Reservation) => {
       return (
         <div>
@@ -216,28 +216,27 @@ const HEADER = [
     },
   },
   {
-    id: 'user.name',
-    label: '예약자명',
-    flex: 0.5,
-    customBodyRender: (_: any, data: Reservation) => {
-      return <div>{data?.user.name}</div>;
-    },
-  },
-  {
-    id: 'user.phone',
-    label: '연락처',
-    flex: 0.6,
-    customBodyRender: (_: any, data: Reservation) => {
-      return <div style={{ fontSize: '1.2rem' }}>{data?.user.phone}</div>;
-    },
-  },
-  {
     id: 'schedule.startDate',
     label: '이용일시',
+    flex: 0.7,
     customBodyRender: (_: any, data: Reservation) => {
       return <div style={{ fontSize: '1.2rem' }}>{dayjs(data.schedule.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}</div>;
     },
   },
+  {
+    id: 'user.name',
+    label: '예약자명',
+    flex: 0.5,
+    customBodyRender: (_: any, data: Reservation) => {
+      return (
+        <div>
+          <div>{data?.user.name}</div>
+          <div style={{ fontSize: '1rem' }}>{data?.user.phone}</div>
+        </div>
+      );
+    },
+  },
+
   {
     id: 'program-place',
     label: '프로그램/장소',

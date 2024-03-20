@@ -27,7 +27,7 @@ export const SMain = styled.main`
     margin-top: 64px !important;
     margin-left: 0 !important;
 
-    padding: 24px 5% !important;
+    padding: 15px 1% !important;
 
     transition: none;
   }
