@@ -13,13 +13,10 @@ export const SDataTableTitle = styled.div`
   gap: 10px;
 
   margin-bottom: 10px;
-  background-color: #ffffff;
 
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 10px 15px;
-
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  ${smLayout} {
+    display: none;
+  }
 
   .data-table-title-container {
     margin-right: 10px;
@@ -28,7 +25,7 @@ export const SDataTableTitle = styled.div`
     align-items: center;
 
     .data-table-title {
-      font-size: 1.6rem;
+      font-size: 2rem;
       font-weight: 600;
       margin: 0;
 

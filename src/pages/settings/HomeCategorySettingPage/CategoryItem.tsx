@@ -31,11 +31,11 @@ const SCategoryItem = styled.div`
   background-color: #ffffff;
   margin-bottom: 10px;
   border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 
   font-size: 1.6rem;
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
-  width:;
 
   .action-container {
     font-size: 1.2rem;

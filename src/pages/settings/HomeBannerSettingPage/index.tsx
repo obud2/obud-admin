@@ -5,11 +5,13 @@ import BannerService from '@/services/BannerService';
 import DataTableHeader from '@/components/dataTable/DataTableHeader';
 
 import { Banner } from '@/entities/banner';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { ReactSortable } from 'react-sortablejs';
 import styled from 'styled-components';
 import BannerAddModal from './BannerAddModal';
 import BannerItem from './BannerItem';
+import FloatingBtn from '@/components/common/floatingBtn/FloatingBtn';
+import { smLayout } from '@/styles/VariablesStyles';
 
 const HomeBannerSettingPage = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -47,9 +49,6 @@ const HomeBannerSettingPage = () => {
       <DataTableHeader title="홈 배너 관리" register={{ text: '저장', onClick: handleChangeOrder }} />
 
       <div className="button-wrapper">
-        <Button type="primary" onClick={() => setAddModalOpen(true)}>
-          배너 추가
-        </Button>
         <BannerAddModal open={addModalOpen} onClose={() => setAddModalOpen(false)} lastOrder={banners.length} refetch={refetch} />
       </div>
       <ReactSortable
@@ -65,6 +64,7 @@ const HomeBannerSettingPage = () => {
           <BannerItem key={banner.id} banner={banner} refetch={refetch} />
         ))}
       </ReactSortable>
+      <FloatingBtn onClick={() => setAddModalOpen(true)} />
     </Wrapper>
   );
 };
@@ -81,5 +81,9 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
+
+    ${smLayout} {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 `;

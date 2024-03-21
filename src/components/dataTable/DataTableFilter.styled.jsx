@@ -17,7 +17,7 @@ export const SDataTableFilter = styled.div`
     align-items: center;
     justify-content: center;
 
-    font-size: 1.3rem;
+    font-size: 1.6rem;
 
     color: #000000;
     padding: 0 15px 10px 15px;

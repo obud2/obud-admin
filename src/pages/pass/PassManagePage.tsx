@@ -12,6 +12,7 @@ import { UserPass } from '@/entities/pass';
 import dayjs from 'dayjs';
 import { UserContext } from '@/context/UserContext';
 import UserPassDetail from './detail/UserPassDetail';
+import FloatingBtn from '@/components/common/floatingBtn/FloatingBtn';
 
 const PassManagePage = () => {
   const { isAdmin } = useContext(UserContext);
@@ -42,7 +43,7 @@ const PassManagePage = () => {
 
   return (
     <div>
-      <DataTableHeader title="패스 회원 관리" searchDisabled register={{ text: '패스 회원 등록', onClick: () => setOpenRegister(true) }} />
+      <DataTableHeader title="패스 회원 관리" searchDisabled />
 
       <Wrapper>
         <FilterWrapper>
@@ -81,6 +82,7 @@ const PassManagePage = () => {
         </PassListWrapper>
         <PassRegister currentPlace={selectedPlace} open={openRegister} onClose={() => setOpenRegister(false)} />
         <UserPassDetail currentPlace={selectedPlace} userPass={currentUserPass} open={openDetail} onClose={() => setOpenDetail(false)} />
+        <FloatingBtn onClick={() => setOpenRegister(true)} />
       </Wrapper>
     </div>
   );

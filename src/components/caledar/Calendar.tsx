@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 import moment from 'moment';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 import { Button, Spin } from 'antd';
 import { SCalendar } from './Calendar.styled';
@@ -169,7 +171,7 @@ const Calendar = ({ list, onClick, onChangeDate, resister, isLoading, eventConte
       />
 
       <section className="mobile-schedule-list">
-        {selectDate && <div className="mobile-schedule-list-date">{moment(selectDate).locale('ko').format('YYYY-M-DD (ddd)')}</div>}
+        {selectDate && <div className="mobile-schedule-list-date">{dayjs(selectDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}</div>}
         {filteredTemp.length > 0 ? (
           <div>
             {filteredTemp

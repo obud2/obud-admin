@@ -13,6 +13,7 @@ import ProductStudioList from '../../components/product/ProductStudioList';
 
 import ProductStudioDetail from './detail/ProductStudioDetail';
 import { getStudios, sortStudio } from '@/services/PlaceService';
+import FloatingBtn from '@/components/common/floatingBtn/FloatingBtn';
 
 /**
  *
@@ -76,7 +77,6 @@ const PlaceListPage = () => {
         refresh={refetch}
         doSearch={(v) => doSearch('value', v)}
         doFilter={(v) => doSearch('filter', v)}
-        register={{ text: '공간 신규등록', onClick: () => onDetail() }}
         title="공간별 수업/일정 관리"
         filter={FILTER}
         searchPlaceholder="공간명으로 검색하세요."
@@ -94,6 +94,7 @@ const PlaceListPage = () => {
       />
 
       <ProductStudioDetail id={detailId} open={!!detailId} onClose={() => onDetailClose(false)} refresh={() => onDetailClose(true)} />
+      <FloatingBtn onClick={() => onDetail()} />
     </React.Fragment>
   );
 };

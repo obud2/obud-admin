@@ -15,6 +15,7 @@ import swal from 'sweetalert';
 import { getStudio } from '@/services/PlaceService';
 import { cloneProgram, deleteProgram, getProgramsAll, programService, sortProgram } from '@/services/ProgramService';
 import { Program } from '@/entities/program';
+import FloatingBtn from '@/components/common/floatingBtn/FloatingBtn';
 
 const PlaceDetailPage = () => {
   const navigation = useNavigate();
@@ -117,7 +118,6 @@ const PlaceDetailPage = () => {
       <DataTableHeader
         doSearch={(e) => doSearch('value', e)}
         doFilter={(e) => doSearch('filter', e)}
-        register={{ text: '프로그램 등록', onClick: () => onDetail() }}
         title={<ProductShellTitle title={studio?.title || ''} link={studio?.id || ''} subTitle={undefined} />}
         searchPlaceholder="프로그램명으로 검색하세요."
         isLoading={isAllLoading}
@@ -146,6 +146,8 @@ const PlaceDetailPage = () => {
         onClose={() => onDetailClose(false)}
         refresh={() => onDetailClose(true)}
       />
+
+      <FloatingBtn onClick={() => onDetail()} />
     </React.Fragment>
   );
 };

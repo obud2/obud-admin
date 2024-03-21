@@ -66,11 +66,11 @@ const SBannerItem = styled.div`
   background-color: #ffffff;
   margin-bottom: 10px;
   border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 
   font-size: 1.6rem;
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
-  width:;
 
   .banner-tag-wrapper {
     margin-top: 8px;

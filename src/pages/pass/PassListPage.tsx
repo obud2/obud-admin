@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import PassItem from './PassItem';
 import PassDetail from './detail/PassDetail';
 import swal from 'sweetalert';
+import FloatingBtn from '@/components/common/floatingBtn/FloatingBtn';
+import { smLayout } from '@/styles/VariablesStyles';
 
 const PassListPage = () => {
   const queryClient = useQueryClient();
@@ -62,7 +64,7 @@ const PassListPage = () => {
 
   return (
     <div>
-      <DataTableHeader title="패스 목록" searchDisabled register={{ text: '패스 등록', onClick: () => onDetail(null) }} />
+      <DataTableHeader title="패스 목록" searchDisabled />
       <Wrapper>
         <FilterWrapper>
           <Select
@@ -102,6 +104,7 @@ const PassListPage = () => {
           </ReactSortable>
         </PassListWrapper>
         <PassDetail currentPlace={selectedPlace} open={open} pass={pass} onClose={() => setOpen(false)} />
+        <FloatingBtn onClick={() => onDetail(null)} />
       </Wrapper>
     </div>
   );
@@ -133,7 +136,6 @@ const FilterWrapper = styled.div`
 `;
 
 const PassListWrapper = styled.div`
-  padding: 16px;
   min-height: 80vh;
   background: white;
   margin-top: 20px;
@@ -146,10 +148,16 @@ const PassListWrapper = styled.div`
   }
 
   .list-container {
-    display: flex;
-    flex-wrap: wrap;
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
+
     color: rgba(0, 0, 0, 0.87);
+
+    ${smLayout} {
+      grid-template-columns: repeat(2, 1fr);
+    }
 
     background-color: #ffffff;
 

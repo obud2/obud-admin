@@ -2,6 +2,7 @@ import DataTableHeader from '@/components/dataTable/DataTableHeader';
 import { StudioCategory } from '@/entities/place';
 import styled from 'styled-components';
 import CategoryItem from './CategoryItem';
+import { smLayout } from '@/styles/VariablesStyles';
 
 const CategoryItems = [
   {
@@ -42,4 +43,8 @@ const ItemWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
+
+  ${smLayout} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;

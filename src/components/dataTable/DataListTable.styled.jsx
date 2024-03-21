@@ -16,8 +16,6 @@ export const SDataListTable = styled.div`
 
   position: relative;
 
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-
   ${smLayout} {
     overflow-y: none;
     min-width: 800px;

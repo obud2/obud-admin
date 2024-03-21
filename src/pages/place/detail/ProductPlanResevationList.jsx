@@ -51,10 +51,10 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
       ) : (
         <Wrapper>
           <div className="reservation-title-container">
-            <div className="reservation-title">예약자 리스트</div>
             <button className="close-button">
               <IoCloseCircleOutline size={25} onClick={onClose} />
             </button>
+            <div className="reservation-title">예약자 리스트</div>
           </div>
 
           <div className="reservation-schedule-info-container">

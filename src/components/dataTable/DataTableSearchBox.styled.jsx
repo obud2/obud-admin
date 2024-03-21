@@ -7,8 +7,6 @@ export const SDataTableSearchBox = styled.div`
 
   padding: 10px 15px;
 
-  background-color: #ffffff;
-
   .filter-list-container {
     display: flex;
 

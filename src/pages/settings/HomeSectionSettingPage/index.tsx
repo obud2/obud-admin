@@ -6,6 +6,7 @@ import { ReactSortable } from 'react-sortablejs';
 import styled from 'styled-components';
 import SectionItem from './SectionItem';
 import { listSections, updateSectionOrder } from '@/services/PlaceV2Service';
+import { smLayout } from '@/styles/VariablesStyles';
 
 const HomeSectionSettingPage = () => {
   const [sectionWithItems, setSectionWithItems] = useState<SectionWithItems[]>([]);
@@ -74,5 +75,9 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
+
+    ${smLayout} {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 `;

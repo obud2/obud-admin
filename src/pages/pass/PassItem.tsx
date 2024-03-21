@@ -31,8 +31,6 @@ export default PassItem;
 
 const Wrapper = styled.div`
   position: relative;
-
-  width: 200px;
   padding: 20px;
   border: 1px solid #e8e8e8;
   border-radius: 10px;

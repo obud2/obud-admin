@@ -7,6 +7,8 @@ export const SProductStudioItem = styled.div`
 
   background-color: #ffffff;
   margin-bottom: 10px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 
   overflow: hidden;

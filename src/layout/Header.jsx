@@ -25,8 +25,6 @@ const Header = () => {
       <p className="header-title">
         <img src="/img/obud_logo.png" />
       </p>
-
-      <AvatarMenu />
     </SOftadehAppBar>
   );
 };
