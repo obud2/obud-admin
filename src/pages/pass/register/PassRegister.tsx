@@ -32,7 +32,7 @@ const PassRegister = ({ currentPlace, open, onClose }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [notiMessage, setNotiMessage] = useState('');
   const [body, setBody] = useState<CreateUserPassRequest>(initialBody);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<{ id: User['id']; name: User['name']; email: User['email']; phone: User['phone'] }[]>([]);
 
   const isActive = body.userId && body.passId && body.startDate;
 
@@ -93,7 +93,14 @@ const PassRegister = ({ currentPlace, open, onClose }: Props) => {
   };
 
   const handleSearch = (keyword: string) => {
-    UserService.getUserAll('', keyword).then((res) => setUsers(res.value || []));
+    const keywordArr = keyword.split(',');
+    if (keywordArr.length !== 2) return;
+
+    const name = keywordArr[0].trim();
+    const phone = keywordArr[1].trim();
+
+    if (phone.length < 10) return;
+    UserService.listUsersFromNameAndPhone({ name, phone }).then((res) => setUsers(res || []));
   };
 
   return (
@@ -107,7 +114,7 @@ const PassRegister = ({ currentPlace, open, onClose }: Props) => {
     >
       <DataDetailItem label="회원 선택" span={2} point>
         <Select
-          value={body.userId || '회원을 검색 후 선택 해주세요'}
+          value={body.userId || '홍길동,010-1122-3344'}
           defaultActiveFirstOption={false}
           suffixIcon={<SearchOutlined />}
           showSearch

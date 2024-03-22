@@ -179,6 +179,30 @@ const deleteInstructor = (body: any) => {
   });
 };
 
+type ListUsersFromNameAndPhoneRequest = {
+  name: string;
+  phone: string;
+};
+
+type ListUsersFromNameAndPhoneResponse = {
+  value: {
+    id: User['id'];
+    name: User['name'];
+    phone: User['phone'];
+    email: User['email'];
+  }[];
+};
+
+const listUsersFromNameAndPhone = async (req: ListUsersFromNameAndPhoneRequest): Promise<ListUsersFromNameAndPhoneResponse['value']> => {
+  const searchParams = new URLSearchParams();
+  searchParams.set('name', req.name);
+  searchParams.set('phone', req.phone);
+
+  const response = await axiosInstance.get<ListUsersFromNameAndPhoneResponse>(`${API_URL}/user/find?${searchParams.toString()}`);
+
+  return response.data.value;
+};
+
 const UserService = {
   getUserExcel,
   getInstructor,
@@ -192,6 +216,7 @@ const UserService = {
   changePassword,
   setInstructor,
   deleteInstructor,
+  listUsersFromNameAndPhone,
 };
 
 export default UserService;
