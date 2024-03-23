@@ -7,7 +7,7 @@ import 'dayjs/locale/ko';
 import { useQuery } from 'react-query';
 import SideBar from '../../../components/sidebar/SideBar';
 
-import { getPlan, updateReservationAttendance } from '@/services/ScheduleService';
+import { getSchedule, updateReservationAttendance } from '@/services/ScheduleService';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 
 /**
@@ -21,15 +21,11 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
     isLoading: isPlanLoading,
     isRefetching: isPlanRefetchLoading,
     refetch,
-  } = useQuery(['product-schedule-item', id], () => getPlan(id), {
+  } = useQuery(['product-schedule-item', id], () => getSchedule(id), {
     enabled: !!id,
   });
 
   const isAllLoading = isPlanLoading || isPlanRefetchLoading;
-
-  const sortByReservationer = (list) => {
-    return list.slice().sort((a, b) => a.reservationer.localeCompare(b.reservationer));
-  };
 
   const onClickAttendance = (reservationId, isAttendance) => {
     const param = {
@@ -41,6 +37,9 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
       refetch();
     });
   };
+
+  const nonCancelledReservations =
+    schedule && schedule.reservations.length > 0 ? schedule.reservations.filter((reservation) => reservation.status !== 'CANCELLED') : [];
 
   return (
     <SideBar open={open} onClose={onClose}>
@@ -73,7 +72,9 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
           <hr className="horizontal-line" />
 
           <div className="reservation-number-info-container">
-            <div className={`reservation-status ${schedule?.reservationStatus === 'impossible' ? 'impossible' : 'possible'}`}>
+            <div
+              className={`reservation-status ${schedule?.reservationStatus?.toLowerCase() === 'impossible' ? 'impossible' : 'possible'}`}
+            >
               {schedule?.reservationStatus === 'impossible' ? '예약불가능' : '예약가능'}
             </div>
 
@@ -87,24 +88,22 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
               <div className="reservationer-number">인원</div>
               <div className="reservationer-attendance">출석체크</div>
             </div>
-            {schedule &&
-              schedule.reservations.length > 0 &&
-              sortByReservationer(schedule.reservations).map((reservation) => (
-                <div className="reservation-list-item" key={reservation.id}>
-                  <div className="reservationer-info">
-                    <div className="reservationer">{reservation.user.name}</div>
-                    <div className="reservationer-hp">{reservation.user.phone}</div>
-                  </div>
-                  <div className="reservationer-number">{reservation.reservationCount}</div>
-                  <div className="reservationer-attendance">
-                    <Checkbox
-                      checked={reservation.attendance}
-                      onClick={() => onClickAttendance(reservation.id, reservation.attendance)}
-                      disabled={isAllLoading}
-                    />
-                  </div>
+            {nonCancelledReservations.map((reservation) => (
+              <div className="reservation-list-item" key={reservation.id}>
+                <div className="reservationer-info">
+                  <div className="reservationer">{reservation.user.name}</div>
+                  <div className="reservationer-hp">{reservation.user.phone}</div>
                 </div>
-              ))}
+                <div className="reservationer-number">{reservation.reservationCount}</div>
+                <div className="reservationer-attendance">
+                  <Checkbox
+                    checked={reservation.attendance}
+                    onClick={() => onClickAttendance(reservation.id, reservation.attendance)}
+                    disabled={isAllLoading}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </Wrapper>
       )}

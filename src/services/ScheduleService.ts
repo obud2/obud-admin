@@ -15,10 +15,10 @@ export const getMonthPlans = async (lessonId: string, month: string, keyword = '
       return response.data.value || [];
     });
 };
-export const getPlan = async (id: string) => {
+export const getSchedule = async (id: string) => {
   return await axiosInstance
     .get<LegacyCommonResponse<Schedule & { reservations: Reservation[] }>>(`${API_URL}/studios/plan/${id}`)
-    .then((response): Schedule => response.data.value);
+    .then((response): Schedule & { reservations: Reservation[] } => response.data.value);
 };
 /**
  *

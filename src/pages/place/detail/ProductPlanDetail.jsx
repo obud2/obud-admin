@@ -13,7 +13,7 @@ import { Button, DatePicker, Input, InputNumber, Select, Switch } from 'antd';
 
 import DataDetailBody, { DataDetailItem } from '../../../components/detailTable/DataDetailBody';
 
-import { clonePlan, deletePlan, getPlan, setPlan } from '@/services/ScheduleService';
+import { clonePlan, deletePlan, getSchedule, setPlan } from '@/services/ScheduleService';
 import { Flex } from '@/styles/CommonStyles';
 import { getProgramTitlePresets } from '@/services/ProgramService';
 
@@ -77,7 +77,7 @@ const ProductPlanDetail = ({ id, open, onClose, lessonId, refetch }) => {
     if (id && id !== 'new') {
       setIsLoading(true);
 
-      getPlan(id).then((res) => {
+      getSchedule(id).then((res) => {
         if (res?.currentMember > 0) {
           setIsDisabled(true);
         }
