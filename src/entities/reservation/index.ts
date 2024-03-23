@@ -37,6 +37,7 @@ export type Reservation = {
     endDate: string;
   };
   reservationCount: number;
+  attendance: boolean;
   payment: {
     // 주문 번호
     key: string;

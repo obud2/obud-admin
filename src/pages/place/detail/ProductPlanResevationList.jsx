@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import { Spin } from 'antd';
@@ -7,7 +7,7 @@ import 'dayjs/locale/ko';
 import { useQuery } from 'react-query';
 import SideBar from '../../../components/sidebar/SideBar';
 
-import { getPlan, onAttendance } from '@/services/ScheduleService';
+import { getPlan, updateReservationAttendance } from '@/services/ScheduleService';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 
 /**
@@ -17,11 +17,11 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
  */
 const ProductPlanResevationList = ({ id, open, onClose }) => {
   const {
-    data: plan,
+    data: schedule,
     isLoading: isPlanLoading,
     isRefetching: isPlanRefetchLoading,
     refetch,
-  } = useQuery(['product-plan-item', id], () => getPlan(id), {
+  } = useQuery(['product-schedule-item', id], () => getPlan(id), {
     enabled: !!id,
   });
 
@@ -33,11 +33,11 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
 
   const onClickAttendance = (reservationId, isAttendance) => {
     const param = {
-      orderItemId: reservationId,
+      id: reservationId,
       isAttendance: !isAttendance,
     };
 
-    onAttendance(param).then(() => {
+    updateReservationAttendance(param).then(() => {
       refetch();
     });
   };
@@ -60,24 +60,25 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
           <div className="reservation-schedule-info-container">
             <div>
               <div style={{ marginBottom: '10px', fontSize: '1.3rem' }}>
-                {dayjs(plan?.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}-{dayjs(plan?.endDate).locale('ko').format('HH:mm')}
+                {dayjs(schedule?.startDate).locale('ko').format('YYYY-MM-DD (ddd) HH:mm')}-
+                {dayjs(schedule?.endDate).locale('ko').format('HH:mm')}
               </div>
             </div>
             <div style={{ fontSize: '1.3rem' }}>
-              {plan?.title && <div>{plan?.title || '-'}</div>}
-              {plan?.instructorInfo && <div> - 강사: {plan?.instructorInfo?.name || '-'}</div>}
+              {schedule?.title && <div>{schedule?.title || '-'}</div>}
+              {schedule?.instructorInfo && <div> - 강사: {schedule?.instructorInfo?.name || '-'}</div>}
             </div>
           </div>
 
           <hr className="horizontal-line" />
 
           <div className="reservation-number-info-container">
-            <div className={`reservation-status ${plan?.reservationStatus === 'impossible' ? 'impossible' : 'possible'}`}>
-              {plan?.reservationStatus === 'impossible' ? '예약불가능' : '예약가능'}
+            <div className={`reservation-status ${schedule?.reservationStatus === 'impossible' ? 'impossible' : 'possible'}`}>
+              {schedule?.reservationStatus === 'impossible' ? '예약불가능' : '예약가능'}
             </div>
 
             <div className="item">
-              예약인원/정원: {plan?.currentMember || 0}/{plan?.maxMember || 0}
+              예약인원/정원: {schedule?.currentMember || 0}/{schedule?.maxMember || 0}
             </div>
           </div>
           <div className="reservation-list">
@@ -86,13 +87,13 @@ const ProductPlanResevationList = ({ id, open, onClose }) => {
               <div className="reservationer-number">인원</div>
               <div className="reservationer-attendance">출석체크</div>
             </div>
-            {plan &&
-              plan?.reservationList?.length > 0 &&
-              sortByReservationer(plan.reservationList).map((reservation) => (
+            {schedule &&
+              schedule.reservations.length > 0 &&
+              sortByReservationer(schedule.reservations).map((reservation) => (
                 <div className="reservation-list-item" key={reservation.id}>
                   <div className="reservationer-info">
-                    <div className="reservationer">{reservation.reservationer}</div>
-                    <div className="reservationer-hp">{reservation.reservationerHp}</div>
+                    <div className="reservationer">{reservation.user.name}</div>
+                    <div className="reservationer-hp">{reservation.user.phone}</div>
                   </div>
                   <div className="reservationer-number">{reservation.reservationCount}</div>
                   <div className="reservationer-attendance">

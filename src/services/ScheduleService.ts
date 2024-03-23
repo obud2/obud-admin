@@ -2,6 +2,7 @@ import axiosInstance from '@/constants/axiosInstance';
 import { API_URL } from '@/constants/config';
 import { LegacyCommonResponse } from '@/entities/common';
 import { Schedule } from '@/entities/schedule';
+import { Reservation } from '@/entities/reservation';
 
 export const LIMIT = 20;
 
@@ -16,7 +17,7 @@ export const getMonthPlans = async (lessonId: string, month: string, keyword = '
 };
 export const getPlan = async (id: string) => {
   return await axiosInstance
-    .get<LegacyCommonResponse<Schedule>>(`${API_URL}/studios/plan/${id}`)
+    .get<LegacyCommonResponse<Schedule & { reservations: Reservation[] }>>(`${API_URL}/studios/plan/${id}`)
     .then((response): Schedule => response.data.value);
 };
 /**
@@ -85,10 +86,8 @@ export const getPlanCaledarDayInfo = async (studiosId: number, date: string) => 
  *  *************************************
  */
 
-export const onAttendance = async (param: any) => {
-  return axiosInstance.put(`${API_URL}/studios/plan/attendance`, param).then((response) => {
-    return response?.data?.value || {};
-  });
+export const updateReservationAttendance = async (reservationId: string, attendance: boolean) => {
+  return axiosInstance.put(`${API_URL}/reservation/${reservationId}/attendance`, { attendance });
 };
 export const onComment = async (param: any) => {
   return axiosInstance.put(`${API_URL}/studios/plan/comment`, param).then((response) => {
