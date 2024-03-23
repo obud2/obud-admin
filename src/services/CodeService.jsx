@@ -46,22 +46,6 @@ const saveItem = (type, param) => {
   });
 };
 
-const deleteItem = (id) => {
-  return new Promise((resolve, reject) => {
-    axiosInstance
-      .request({
-        method: 'delete',
-        url: `${API_URL}/code/${id}`,
-      })
-      .then((response) => {
-        resolve(response.data.value);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
-
 const dashBorder = () => {
   return new Promise((resolve, reject) => {
     axios
@@ -76,7 +60,6 @@ const CodeService = {
   getItem,
   getListByGroup,
   saveItem,
-  deleteItem,
 
   dashBorder,
 };

@@ -125,23 +125,6 @@ const setUser = (method: string, param: string) => {
   });
 };
 
-const checkUser = ({ id }: { id: string }) => {
-  return new Promise((resolve) => {
-    axiosInstance.get(`${API_URL}/user/check/${id}`).then((response) => {
-      resolve(response?.data?.Item);
-    });
-  });
-};
-
-const changePassword = (id: string, password: string) => {
-  return new Promise((resolve) => {
-    const param = { id, change: password };
-    axiosInstance.put(`${API_URL}/user/changePassword/`, param).then((response) => {
-      resolve(response?.data?.Item);
-    });
-  });
-};
-
 const setInstructor = (body: any) => {
   return new Promise((resolve, reject) => {
     axiosInstance
@@ -205,15 +188,13 @@ const listUsersFromNameAndPhone = async (req: ListUsersFromNameAndPhoneRequest):
 
 const UserService = {
   getUserExcel,
-  getInstructor,
   getUserAll,
+  getUserList,
   getUser,
+  getInstructor,
   getStudioInstructor,
   getAdminStudiosInstructor,
   setUser,
-  getUserList,
-  checkUser,
-  changePassword,
   setInstructor,
   deleteInstructor,
   listUsersFromNameAndPhone,

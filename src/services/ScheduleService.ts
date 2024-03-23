@@ -89,8 +89,3 @@ export const getPlanCaledarDayInfo = async (studiosId: number, date: string) => 
 export const updateReservationAttendance = async (reservationId: string, attendance: boolean) => {
   return axiosInstance.put(`${API_URL}/reservation/${reservationId}/attendance`, { attendance });
 };
-export const onComment = async (param: any) => {
-  return axiosInstance.put(`${API_URL}/studios/plan/comment`, param).then((response) => {
-    return response?.data?.value || {};
-  });
-};

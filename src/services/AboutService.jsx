@@ -1,7 +1,6 @@
 import { API_URL } from '../constants/config';
 
 import axiosInstance from '../constants/axiosInstance';
-import swal from '@sweetalert/with-react';
 
 const getListByType = (type) => {
   return new Promise((resolve) => {
@@ -41,27 +40,9 @@ const saveItem = (type, param) => {
   });
 };
 
-const deleteItem = (id) => {
-  return new Promise((resolve) => {
-    axiosInstance
-      .delete(`${API_URL}/bbs/contact/${id}`, {
-        headers: { Pragma: 'no-cache' },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          swal('삭제되었습니다.', {
-            icon: 'success',
-          });
-          resolve();
-        }
-      });
-  });
-};
-
 const AboutService = {
   getListByType,
   info,
-  deleteItem,
   saveItem,
 };
 
