@@ -428,7 +428,7 @@ export const SDataDetail = styled.div`
 
     transition: all 0.3s;
 
-    width: 95%;
+    width: 100%;
     height: 95%;
 
     opacity: 1;

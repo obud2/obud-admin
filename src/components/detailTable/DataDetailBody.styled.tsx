@@ -36,8 +36,6 @@ export const SDataDetailBody = styled.div<{ padding?: boolean }>`
   .data-detail-body-container {
     width: 100%;
     border-radius: 8px;
-
-    border: 1px solid rgba(5, 5, 5, 0.06);
   }
 
   ${(props) =>
@@ -80,7 +78,9 @@ export const SDataDetailItem = styled.div<{ span?: number }>`
     min-width: 160px;
 
     color: rgba(0, 0, 0, 0.65);
-    background-color: #f7f8fb;
+    /* background-color: #f7f8fb; */
+
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
 
     padding: 16px 24px;
     font-size: 1.45rem;

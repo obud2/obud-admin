@@ -12,8 +12,6 @@ export const SDetailHeader = styled.div`
 
   gap: 10px;
 
-  background-color: #f7f8fb;
-
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 10px 15px;
