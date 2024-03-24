@@ -5,12 +5,16 @@ import { smLayout } from '@/styles/VariablesStyles';
 
 type Props = {
   onClick: () => void;
+  isLoading?: boolean;
+  disabled?: boolean;
 };
 
-const FloatingBtn = ({ onClick }: Props) => {
+const FloatingBtn = ({ onClick, isLoading, disabled }: Props) => {
   return (
     <Container className="upload-button" onClick={onClick}>
       <Button
+        disabled={isLoading}
+        loading={isLoading}
         style={{
           width: '50px',
           height: '50px',

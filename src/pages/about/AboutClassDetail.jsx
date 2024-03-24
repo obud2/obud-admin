@@ -14,8 +14,6 @@ const AboutClassDetail = ({ open, onClose, id, refresh }) => {
 
   const [notiMessage, setNotiMessage] = useState('');
 
-  console.log(body);
-
   useEffect(() => {
     if (notiMessage) {
       setTimeout(() => {

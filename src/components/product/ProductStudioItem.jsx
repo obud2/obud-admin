@@ -4,73 +4,9 @@ import { setCreatedAt } from '../../constants/config';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { RxDragHandleDots1 } from 'react-icons/rx';
 
-import { useNavigate } from 'react-router-dom';
-
 import { SProductStudioItem } from './ProductStudioItem.styled';
-import swal from 'sweetalert';
-import { cloneStudio, deleteStudio } from '@/services/PlaceService.ts';
 
-const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail }) => {
-  const navigation = useNavigate();
-
-  const onClickOption = (id) => {
-    if (id === 'edit') {
-      onDetail(data);
-    }
-
-    if (id === 'copy') {
-      swal({
-        title: '장소를 복제하시겠습니까?',
-        text: '',
-        buttons: true,
-        icon: 'info',
-      }).then((willDelete) => {
-        if (willDelete) {
-          cloneStudio(data?.id).then(() => {
-            refetch();
-          });
-        }
-      });
-    }
-
-    if (id === 'delete') {
-      swal({
-        title: '장소을 삭제하시겠습니까?',
-        text: '',
-        buttons: true,
-        icon: 'warning',
-      }).then((willDelete) => {
-        if (willDelete) {
-          deleteStudio(data?.id).then((res) => {
-            if (res.status === 200) {
-              refetch();
-            } else {
-              swal({
-                title: '',
-                text: res.data?.message || '스튜디오를 삭제할 수 없습니다.',
-                icon: 'warning',
-              });
-            }
-          });
-        }
-      });
-    }
-
-    if (id === 'detail') {
-      onClickGoDetail();
-    }
-  };
-
-  const onClickGoDetail = () => {
-    if (onClick) {
-      onClick(data);
-    } else if (data?.lessonType === 'Special') {
-      navigation(`/pages/places/${data?.studiosId}/programs/${data?.id}`);
-    } else {
-      navigation(`/pages/places/${data?.id}`);
-    }
-  };
-
+const ProductStudioItem = ({ data, sorted, onClick, useOption }) => {
   return (
     <SProductStudioItem className="sorted-product-shell">
       <div className="product-shell-item-image-container">
@@ -85,12 +21,12 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
 
         {sorted && <ProductShellDragButton />}
 
-        {option && <ProductShellItemOption onClickOption={onClickOption} />}
+        {useOption && <ProductShellItemOption data={data} useOption={useOption} />}
       </div>
 
       <div className="product-shell-item-contents-container">
         <p className="product-shell-item-createdAt">{setCreatedAt(data?.createdAt || '', '-')}</p>
-        <p className="product-shell-item-title" onClick={onClickGoDetail}>
+        <p className="product-shell-item-title" onClick={() => onClick(data)}>
           {data?.title || ''}
         </p>
         <div className={`product-shell-item-isShow ${data?.isShow ? 'point-text' : 'disabled-text'}`}>
@@ -101,13 +37,6 @@ const ProductStudioItem = ({ data, refetch, option, sorted, onClick, onDetail })
   );
 };
 
-const Option = [
-  { id: 'edit', title: '장소 수정' },
-  { id: 'copy', title: '장소 복제' },
-  { id: 'delete', title: '장소 삭제' },
-  { id: 'detail', title: '프로그램 목록' },
-];
-
 const ProductShellDragButton = () => {
   return (
     <button className="product-shell-item-drag-button">
@@ -116,7 +45,7 @@ const ProductShellDragButton = () => {
   );
 };
 
-const ProductShellItemOption = ({ onClickOption }) => {
+const ProductShellItemOption = ({ data, useOption }) => {
   const optionRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -136,11 +65,6 @@ const ProductShellItemOption = ({ onClickOption }) => {
     setIsOpen((prev) => !prev);
   };
 
-  const onClickOptionByClose = (id) => {
-    onClickOption(id);
-    setIsOpen(false);
-  };
-
   return (
     <div className="product-shell-item-option-container" ref={optionRef}>
       <button className="product-shell-item-option-button" onClick={onClickToggleOption}>
@@ -148,9 +72,16 @@ const ProductShellItemOption = ({ onClickOption }) => {
       </button>
 
       <ul className={`product-shell-item-option ${isOpen ? 'active' : ''}`}>
-        {Option.map((option) => (
-          <li key={option.id} className="option-item" onClick={() => onClickOptionByClose(option.id)}>
-            {option.title}
+        {useOption?.map((option) => (
+          <li
+            key={option.label}
+            className="option-item"
+            onClick={() => {
+              option?.onClick(data?.id, data) || '';
+              setIsOpen(false);
+            }}
+          >
+            {option.label}
           </li>
         ))}
       </ul>

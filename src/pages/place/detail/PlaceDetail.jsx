@@ -11,7 +11,7 @@ import CodeService from '../../../services/CodeService';
 import swal from 'sweetalert';
 
 import UploadBtn from '../../../components/common/uploadBtn/UploadBtn';
-import FileUpload from '../../../components/fileUpload/FileUpload.tsx';
+import FileUpload from '../../../components/fileUpload/FileUpload';
 import DaumPost from '../../../components/daumPost/DaumPost';
 import StudioRefundSettingList from './option/StudioRefundSettingList';
 import { getStudio, setStudio } from '@/services/PlaceService';
@@ -22,7 +22,7 @@ import TextArea from 'antd/es/input/TextArea';
  * @param {*} id : 상품 등록 ID 값 new
  * @returns
  */
-const ProductShellDetail = ({ id, open, onClose, refresh }) => {
+const PlaceDetail = ({ id, open, onClose, refresh }) => {
   const fileRef = useRef();
 
   const fetchData = async () => {
@@ -369,4 +369,4 @@ const ProductShellDetail = ({ id, open, onClose, refresh }) => {
   );
 };
 
-export default ProductShellDetail;
+export default PlaceDetail;
