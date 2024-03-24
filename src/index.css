@@ -209,3 +209,8 @@ a:hover {
 .disabled-text {
   color: #868686 !important;
 }
+
+/* ant Tabs font-size  */
+.ant-tabs-tab-btn {
+  font-size: 1.7rem;
+}
