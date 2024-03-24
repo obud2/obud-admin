@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useQuery, useQueryClient } from 'react-query';
 
-import ProductShellTitle from './ProductStudio';
+import ProductShellTitle from './ProductShellTitle';
 import ProductPlanDetail from './detail/ProductPlanDetail';
 
 import { SDataDetailBody } from '@/components/detailTable/DataDetailBody.styled';

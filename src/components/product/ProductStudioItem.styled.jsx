@@ -39,6 +39,7 @@ export const SProductStudioItem = styled.div`
       object-fit: cover;
 
       -webkit-user-drag: none;
+      cursor: pointer;
     }
   }
 

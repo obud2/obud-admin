@@ -5,8 +5,15 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { RxDragHandleDots1 } from 'react-icons/rx';
 
 import { SProductStudioItem } from './ProductStudioItem.styled';
+import { GoLinkExternal } from 'react-icons/go';
 
-const ProductStudioItem = ({ data, sorted, onClick, useOption }) => {
+const ProductStudioItem = ({ data, sorted, onClick, useOption, onClickLink }) => {
+  const handleOnClickLink = () => {
+    if (onClickLink) {
+      onClickLink(data);
+    }
+  };
+
   return (
     <SProductStudioItem className="sorted-product-shell">
       <div className="product-shell-item-image-container">
@@ -17,6 +24,7 @@ const ProductStudioItem = ({ data, sorted, onClick, useOption }) => {
           onError={(e) => {
             e.target.src = '/img/noImg.png';
           }}
+          onClick={() => onClick(data)}
         />
 
         {sorted && <ProductShellDragButton />}
@@ -29,6 +37,7 @@ const ProductStudioItem = ({ data, sorted, onClick, useOption }) => {
         <p className="product-shell-item-title" onClick={() => onClick(data)}>
           {data?.title || ''}
         </p>
+        <p className="product-shell-item-title">{onClickLink && <GoLinkExternal onClick={handleOnClickLink} />}</p>
         <div className={`product-shell-item-isShow ${data?.isShow ? 'point-text' : 'disabled-text'}`}>
           {data?.isShow ? '게시중' : '숨김'}
         </div>

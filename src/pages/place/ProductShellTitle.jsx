@@ -1,7 +1,35 @@
-import styled from 'styled-components';
+import React from 'react';
+
+import { APP_URL } from '../../constants/config';
+
+import { GoLinkExternal } from 'react-icons/go';
 import { smLayout } from '../../styles/VariablesStyles';
 
-export const SProductStudio = styled.div`
+import styled from 'styled-components';
+
+const ProductShellTitle = ({ title, subTitle, link }) => {
+  const onClickGoDataDetail = () => {
+    window.open(`${APP_URL}/class/${link}`);
+  };
+
+  return (
+    <SProductShellTitle>
+      {title}
+
+      {subTitle && <div className="subTitle">{subTitle}</div>}
+
+      {link && (
+        <button className="link-button" onClick={onClickGoDataDetail}>
+          <GoLinkExternal />
+        </button>
+      )}
+    </SProductShellTitle>
+  );
+};
+
+export default ProductShellTitle;
+
+export const SProductShellTitle = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;

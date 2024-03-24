@@ -48,7 +48,7 @@ const OrderStatusCalendarPage = lazy(() => import('./pages/order/OrderStatusCale
 
 /* Product */
 const PlaceListPage = lazy(() => import('./pages/place/PlaceListPage'));
-const PlaceDetailPage = lazy(() => import('./pages/place/PlaceDetailPage'));
+const ProgramListPage = lazy(() => import('./pages/place/ProgramListPage'));
 const ProgramDetailPage = lazy(() => import('./pages/place/ProgramDetailPage'));
 const ProgramSchedulePage = lazy(() => import('./pages/place/ProgramSchedulePage'));
 const ProgramPassPage = lazy(() => import('./pages/place/ProgramPassPage'));
@@ -122,7 +122,7 @@ const App = () => {
 
             {/* Product */}
             <Route path="/pages/places" element={<PlaceListPage />} />
-            <Route path="/pages/places/:placeId" element={<PlaceDetailPage />} />
+            <Route path="/pages/places/:placeId" element={<ProgramListPage />} />
             <Route path="/pages/places/:placeId/programs/:programId" element={<ProgramDetailPage />} />
             <Route path="/pages/places/:placeId/programs/:programId/schedules" element={<ProgramSchedulePage />} />
             <Route path="/pages/places/:placeId/programs/:programId/passes" element={<ProgramPassPage />} />

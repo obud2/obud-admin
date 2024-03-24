@@ -16,4 +16,5 @@ export type Program = LegacyFullTimestamp & {
   title: string;
   contents: string;
   images: Image[];
+  sortOrder: number;
 };
