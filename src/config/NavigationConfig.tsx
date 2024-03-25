@@ -114,7 +114,7 @@ export const getNavigationMenu = (isAdmin: boolean) => {
     id: 'place',
     key: 'place',
     iconType: 'ant',
-    title: '공간/수업 관리',
+    title: '장소/수업 관리',
     type: 'item',
     url: '/pages/places',
     icon: 'Shopping',

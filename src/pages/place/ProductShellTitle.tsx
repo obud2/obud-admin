@@ -7,14 +7,29 @@ import { smLayout } from '../../styles/VariablesStyles';
 
 import styled from 'styled-components';
 
-const ProductShellTitle = ({ title, subTitle, link }) => {
+type Props = {
+  title: string;
+  subTitle?: string;
+  link?: string;
+  onClickTitle?: () => void;
+};
+
+const ProductShellTitle = ({ title, subTitle, link, onClickTitle }: Props) => {
   const onClickGoDataDetail = () => {
     window.open(`${APP_URL}/class/${link}`);
   };
 
+  const handleTitleClick = () => {
+    if (onClickTitle) {
+      onClickTitle();
+    }
+  };
+
   return (
     <SProductShellTitle>
-      {title}
+      <div className="title" onClick={handleTitleClick}>
+        {title}
+      </div>
 
       {subTitle && <div className="subTitle">{subTitle}</div>}
 

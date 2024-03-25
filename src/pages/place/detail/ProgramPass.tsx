@@ -2,16 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Place } from '@/entities/place';
 import { PassService } from '@/services/PassService';
-import { Button, Checkbox, Tabs } from 'antd';
+import { Button, Checkbox } from 'antd';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { Pass } from '@/entities/pass';
 import { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 
-const ProgramPassPage = () => {
+const ProgramPass = ({ programId, placeId }: { programId: string; placeId: string }) => {
   const queryClient = useQueryClient();
-  const { programId, placeId } = useParams();
   const navigator = useNavigate();
 
   const [selectedPasses, setSelectedPasses] = useState<Pass['id'][]>([]);
@@ -39,22 +38,6 @@ const ProgramPassPage = () => {
 
   return (
     <>
-      <Tabs
-        defaultActiveKey="pass"
-        items={[
-          { label: '프로그램 정보', key: 'program' },
-          { label: '스케줄 관리', key: 'schedule' },
-          { label: '패스 설정', key: 'pass' },
-        ]}
-        onChange={(key: string) => {
-          if (key === 'program') {
-            return navigator(`/pages/places/${placeId}/programs/${programId}`);
-          } else if (key === 'schedule') {
-            return navigator(`/pages/places/${placeId}/programs/${programId}/schedules`);
-          }
-        }}
-      />
-
       <Wrapper>
         <Notice>패스 선택 시 선택한 패스로 프로그램을 예약할 수 있습니다.</Notice>
         {availablePasses.length === 0 && (
@@ -107,7 +90,7 @@ const ProgramPassPage = () => {
   );
 };
 
-export default ProgramPassPage;
+export default ProgramPass;
 
 const useAvailable = (placeId: Place['id']) => {
   return useQuery(['availablePasses', placeId], () => PassService.listPasses({ placeId }), {

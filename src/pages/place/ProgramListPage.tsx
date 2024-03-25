@@ -109,7 +109,7 @@ const ProgramListPage = () => {
   };
 
   const onProgramDetail = (data: Program) => {
-    navigation(`/pages/places/${data.studiosId || ''}/programs/${data.id || ''}/schedules`);
+    navigation(`/pages/places/${data.studiosId || ''}/programs/${data.id || ''}`);
   };
 
   const useOption = [
@@ -148,10 +148,7 @@ const ProgramListPage = () => {
 
   return (
     <React.Fragment>
-      <DataTableHeader
-        title={<ProductShellTitle title={place?.title || ''} link={place?.id || ''} subTitle={undefined} />}
-        isLoading={isAllLoading}
-      />
+      <DataTableHeader title={<ProductShellTitle title={place?.title || ''} link={place?.id || ''} />} isLoading={isAllLoading} />
       <SProgramList>
         {isAllLoading ? (
           <div className="product-loading-container">

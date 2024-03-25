@@ -6,18 +6,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useQuery, useQueryClient } from 'react-query';
 
-import ProductPlanDetail from './detail/ProductPlanDetail';
+import ProductPlanDetail from './ProductPlanDetail';
 
 import { SDataDetailBody } from '@/components/detailTable/DataDetailBody.styled';
 
-import Calendar from '../../components/caledar/Calendar';
+import Calendar from '@/components/caledar/Calendar';
 
-import ProductPlanList from './detail/ProductPlanList';
-import ProductPlanResevationList from './detail/ProductPlanResevationList';
-import ProductPlanMultiDetail from './detail/ProductPlanMultiDetail';
+import ProductPlanList from './ProductPlanList';
+import ProductPlanResevationList from './ProductPlanResevationList';
+import ProductPlanMultiDetail from './ProductPlanMultiDetail';
 
-import DataTableHeader from '../../components/dataTable/DataTableHeader';
-import ProductShellTitle from './ProductShellTitle';
+import DataTableHeader from '@/components/dataTable/DataTableHeader';
+
 import { Program } from '@/entities/program';
 import { getMonthPlans } from '@/services/ScheduleService';
 import {
@@ -27,9 +27,10 @@ import {
   getProgramTitlePresets,
   updateProgramTitlePreset,
 } from '@/services/ProgramService';
+
 import { Schedule, ScheduleTitlePreset } from '@/entities/schedule';
 import { DatesSetArg } from '@fullcalendar/core';
-import { Button, Input, Modal, Popconfirm, Table, Tabs, Typography } from 'antd';
+import { Button, Input, Modal, Popconfirm, Table, Typography } from 'antd';
 import { toast } from 'react-hot-toast';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -156,10 +157,7 @@ function UpdateSchedulePresetModal({ preset, open, close }: { preset?: ScheduleT
   );
 }
 
-const ProgramSchedulePage = () => {
-  const { programId, placeId } = useParams();
-  const navigator = useNavigate();
-
+const ProgramSchedule = ({ programId }: { programId: string }) => {
   const dateFormat = 'YYYY-MM';
 
   const [isOpen, setIsOpen] = useState(false);
@@ -268,39 +266,8 @@ const ProgramSchedulePage = () => {
     });
   };
 
-  const onClickTitle = (data: Program) => {
-    navigator(`/pages/places/${data?.studiosId}`);
-  };
-
   return (
     <React.Fragment>
-      <DataTableHeader
-        title={
-          <ProductShellTitle
-            title={lesson?.studios?.title || ''}
-            subTitle={lesson?.title || ''}
-            onClickTitle={() => onClickTitle(lesson)}
-          />
-        }
-        searchDisabled
-      />
-
-      <Tabs
-        defaultActiveKey="schedule"
-        items={[
-          { label: '프로그램 정보', key: 'program' },
-          { label: '스케줄 관리', key: 'schedule' },
-          { label: '패스 설정', key: 'pass' },
-        ]}
-        onChange={(key: string) => {
-          if (key === 'program') {
-            return navigator(`/pages/places/${placeId}/programs/${programId}`);
-          } else if (key === 'pass') {
-            return navigator(`/pages/places/${placeId}/programs/${programId}/passes`);
-          }
-        }}
-      />
-
       <DataTableHeader
         title="회차별 상세 정보 등록"
         subTitle="각 회차별 상세 정보를 입력할 때 사용합니다. 상세정보가 없으면 입력하지 않아도 됩니다."
@@ -435,4 +402,4 @@ const ProgramSchedulePage = () => {
   );
 };
 
-export default ProgramSchedulePage;
+export default ProgramSchedule;
