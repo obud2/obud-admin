@@ -22,6 +22,7 @@ import { xlLayout, smLayout } from '../../styles/VariablesStyles';
 import { ReactSortable } from 'react-sortablejs';
 
 import { Spin } from 'antd';
+import swal from 'sweetalert';
 
 const PlaceListPage = () => {
   const navigation = useNavigate();
@@ -106,7 +107,9 @@ const PlaceListPage = () => {
       icon: 'info',
     }).then(async (willCopy) => {
       if (willCopy) {
-        await cloneStudio(id);
+        await cloneStudio(id).catch((error) => {
+          swal(error.data.message || '장소 복제에 실패했습니다.');
+        });
         refetch();
       }
     });
@@ -120,7 +123,9 @@ const PlaceListPage = () => {
       icon: 'warning',
     }).then(async (willDelete) => {
       if (willDelete) {
-        await deleteStudio(id);
+        await deleteStudio(id).catch((error) => {
+          swal(error.data.message || '장소 삭제해 실패했습니다.');
+        });
         refetch();
       }
     });

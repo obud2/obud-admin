@@ -59,14 +59,9 @@ export const sortStudio = async (param: any) => {
 };
 
 export const cloneStudio = async (id: string) => {
-  return axiosInstance
-    .post(`${API_URL}/studios/clone/${id}`)
-    .then((response) => {
-      return response?.data?.value || {};
-    })
-    .catch(() => {
-      return {};
-    });
+  return axiosInstance.post(`${API_URL}/studios/clone/${id}`).then((response) => {
+    return response?.data?.value || {};
+  });
 };
 
 export const deleteStudio = async (id: string) => {
