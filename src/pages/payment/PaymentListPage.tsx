@@ -311,11 +311,16 @@ const HEADER = [
   },
   {
     id: 'cancelAmount',
-    label: '환불금액',
+    label: '환불금액/환불일',
     customBodyRender: (_: any, data: Payment) => {
-      if (!data.cancelAmount) return <div>-</div>;
+      if (!data.cancelAmount && data.status !== 'CANCEL') return <div>-</div>;
 
-      return <div>{data.cancelAmount.toLocaleString()}원</div>;
+      return (
+        <div>
+          <div style={{ fontSize: '11px' }}>{data.cancelAmount.toLocaleString()}원</div>
+          <div style={{ fontSize: '9px', color: 'grey' }}>{dayjs(data.cancelAt).format('YYYY-MM-DD HH:mm')}</div>
+        </div>
+      );
     },
   },
 ];
