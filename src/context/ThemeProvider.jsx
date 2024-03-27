@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
 const ThemeProvider = ({ children }) => {
   // 각 프로젝트 별 메인 컬러 지정
   const BasicColor = {
-    mainColor: '#515c50',
+    mainColor: '#344235',
 
     subColor: '#555555',
     subColor2: '#8b8b8b',

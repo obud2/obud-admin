@@ -20,7 +20,7 @@ const DataTableTitle = ({ title, subTitle, addResister, resister, isLoading, dis
             block
             disabled={isLoading || disabled}
             loading={isLoading}
-            style={{ width: 'auto', minWidth: '100px', backgroundColor: '#f5222d', color: '#ffffff' }}
+            style={{ width: 'auto', minWidth: '100px', borderColor: '##d9d9d9' }}
           >
             {addResister?.text || '등록'}
           </Button>

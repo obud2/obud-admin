@@ -15,6 +15,7 @@ import { getProgram } from '@/services/ProgramService';
 import ProductShellTitle from './ProductShellTitle';
 import { Program } from '@/entities/program';
 import ProgramPass from './detail/ProgramPass';
+import ProgramScheduleTitle from './detail/ProgramScheduleTitle';
 
 const ProgramDetailPage = () => {
   const { programId, placeId } = useParams();
@@ -40,6 +41,8 @@ const ProgramDetailPage = () => {
         return <EditProgram programId={programId} placeId={placeId} />;
       case 'pass':
         return <ProgramPass programId={programId} placeId={placeId} />;
+      case 'schedule-title':
+        return <ProgramScheduleTitle programId={programId} />;
       default:
         return <ProgramSchedule programId={programId} />;
     }
@@ -63,6 +66,7 @@ const ProgramDetailPage = () => {
         onChange={(key: string) => setCurrentTab(key)} // 탭 변경 시 currentTab 상태 업데이트
         items={[
           { label: '프로그램 정보', key: 'program' },
+          { label: '회차명 관리', key: 'schedule-title' },
           { label: '스케줄 관리', key: 'schedule' },
           { label: '패스 설정', key: 'pass' },
         ]}

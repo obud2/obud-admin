@@ -1,35 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-import moment from 'moment';
-
-import { useNavigate, useParams } from 'react-router-dom';
-
 import { useQuery, useQueryClient } from 'react-query';
 
-import ProductPlanDetail from './detail/ProductPlanDetail';
+import DataTableHeader from '@/components/dataTable/DataTableHeader';
 
-import { SDataDetailBody } from '@/components/detailTable/DataDetailBody.styled';
-
-import Calendar from '../../components/caledar/Calendar';
-
-import ProductPlanList from './detail/ProductPlanList';
-import ProductPlanResevationList from './detail/ProductPlanResevationList';
-import ProductPlanMultiDetail from './detail/ProductPlanMultiDetail';
-
-import DataTableHeader from '../../components/dataTable/DataTableHeader';
-import ProductShellTitle from './ProductShellTitle';
-import { Program } from '@/entities/program';
-import { getMonthPlans } from '@/services/ScheduleService';
 import {
   createProgramTitlePreset,
   deleteProgramTitlePreset,
-  getProgram,
   getProgramTitlePresets,
   updateProgramTitlePreset,
 } from '@/services/ProgramService';
-import { Schedule, ScheduleTitlePreset } from '@/entities/schedule';
-import { DatesSetArg } from '@fullcalendar/core';
-import { Button, Input, Modal, Popconfirm, Table, Tabs, Typography } from 'antd';
+
+import { ScheduleTitlePreset } from '@/entities/schedule';
+import { Button, Input, Modal, Popconfirm, Table, Typography } from 'antd';
 import { toast } from 'react-hot-toast';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -156,20 +139,8 @@ function UpdateSchedulePresetModal({ preset, open, close }: { preset?: ScheduleT
   );
 }
 
-const ProgramSchedulePage = () => {
-  const { programId, placeId } = useParams();
-  const navigator = useNavigate();
-
-  const dateFormat = 'YYYY-MM';
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMultiOpen, setIsMultiOpen] = useState(false);
-
-  const [detailId, setDetailId] = useState('');
-  const [reservationId, setReservationId] = useState('');
+const ProgramScheduleTitle = ({ programId }: { programId: string }) => {
   const [preset, setPreset] = useState<ScheduleTitlePreset>();
-
-  const [month, setMonth] = useState(moment().format(dateFormat));
 
   const [notiMessage, setNotiMessage] = useState('');
   const [registerPresetOpen, setRegisterPresetOpen] = useState(false);
@@ -183,83 +154,10 @@ const ProgramSchedulePage = () => {
     }
   }, [notiMessage]);
 
-  const fetchData = async (id: string) => {
-    const schedules = await getMonthPlans(id, month);
-    return schedules.map((a) => {
-      const start = moment(a.startDate).format('YYYY-MM-DD');
-      const end = moment(a.endDate).format('YYYY-MM-DD');
-      const startTime = moment(a.startDate).format('HH:mm');
-      const endTime = moment(a.endDate).format('HH:mm');
-
-      const currentMember = a?.currentMember || 0;
-      const maxMember = a?.maxMember || 0;
-
-      return {
-        ...a,
-        start,
-        end,
-        allDay: true,
-        scheduleTitle: a.title,
-        title: `${startTime}-${endTime} :: ${a.title} :: ${currentMember} / ${maxMember}`,
-        numberOfPeople: `${currentMember} / ${maxMember}`,
-      };
-    });
-  };
-
   const queryClient = useQueryClient();
   const { data: presets } = useQuery(['/program/preset', { programId }], () => getProgramTitlePresets(programId!), {
     enabled: !!programId,
   });
-
-  const { data: lesson, isLoading: isLessonLoading } = useQuery(['product-lesson-detail', programId], () => getProgram(programId!), {
-    enabled: !!programId,
-  });
-
-  const {
-    data: plan,
-    isLoading: isPlanLoading,
-    refetch,
-  } = useQuery([`product-paln-list-${programId}`, month], () => fetchData(programId!), {
-    enabled: !!programId,
-  });
-
-  const onChangeDate: (arg: DatesSetArg & { view: { getCurrentData: () => { currentDate: Date } } }) => void = (args) => {
-    const currentDate = args.view.getCurrentData().currentDate;
-    const formatDate = moment(currentDate).format(dateFormat);
-
-    setMonth(formatDate);
-    refetch();
-  };
-
-  const onClickMultiOpen = () => {
-    setIsMultiOpen(true);
-  };
-
-  const onDetail = (schedule: Schedule, id: string) => {
-    setDetailId(id || 'new');
-  };
-
-  const onList = () => {
-    setIsOpen(true);
-  };
-
-  const onDetailClose = (refresh: boolean) => {
-    if (refresh) refetch();
-
-    setDetailId('');
-  };
-
-  const onMultiPlanClose = (refresh: boolean) => {
-    if (refresh) refetch();
-
-    setIsMultiOpen(false);
-  };
-
-  const eventContent = (eventInfo?: { event?: { title: string } }) => {
-    return <div style={{ padding: 3, fontSize: 11 }}>{eventInfo?.event?.title}</div>;
-  };
-
-  const isAllLoading = isLessonLoading || isPlanLoading;
 
   const onDeletePreset = (presetId: number) => {
     deleteProgramTitlePreset(presetId).then(() => {
@@ -268,41 +166,10 @@ const ProgramSchedulePage = () => {
     });
   };
 
-  const onClickTitle = (data: Program) => {
-    navigator(`/pages/places/${data?.studiosId}`);
-  };
-
   return (
     <React.Fragment>
       <DataTableHeader
-        title={
-          <ProductShellTitle
-            title={lesson?.studios?.title || ''}
-            subTitle={lesson?.title || ''}
-            onClickTitle={() => onClickTitle(lesson)}
-          />
-        }
-        searchDisabled
-      />
-
-      <Tabs
-        defaultActiveKey="schedule"
-        items={[
-          { label: '프로그램 정보', key: 'program' },
-          { label: '스케줄 관리', key: 'schedule' },
-          { label: '패스 설정', key: 'pass' },
-        ]}
-        onChange={(key: string) => {
-          if (key === 'program') {
-            return navigator(`/pages/places/${placeId}/programs/${programId}`);
-          } else if (key === 'pass') {
-            return navigator(`/pages/places/${placeId}/programs/${programId}/passes`);
-          }
-        }}
-      />
-
-      <DataTableHeader
-        title="회차별 상세 정보 등록"
+        title=""
         subTitle="각 회차별 상세 정보를 입력할 때 사용합니다. 상세정보가 없으면 입력하지 않아도 됩니다."
         register={{ text: '회차 정보 추가', onClick: () => setRegisterPresetOpen(true) }}
         searchDisabled
@@ -377,62 +244,8 @@ const ProgramSchedulePage = () => {
 
       <RegisterSchedulePresetModal programId={programId!} open={registerPresetOpen} close={() => setRegisterPresetOpen(false)} />
       <UpdateSchedulePresetModal preset={preset} open={updatePresetOpen} close={() => setUpdatePresetOpen(false)} />
-
-      <DataTableHeader
-        addResister={{ text: '반복등록', onClick: () => onClickMultiOpen() }}
-        register={{ text: '스케줄 등록', onClick: () => setDetailId('new') }}
-        title="일정 관리"
-        isLoading={isAllLoading}
-        notiMessage={notiMessage}
-        searchDisabled
-      />
-
-      <SDataDetailBody padding>
-        <div className="calendar-wrapper">
-          <Calendar
-            list={plan || []}
-            resister={{ text: '일정보기', onClick: () => onList() }}
-            eventContent={eventContent}
-            onClick={onDetail}
-            onChangeDate={onChangeDate}
-            isLoading={isAllLoading}
-          />
-        </div>
-      </SDataDetailBody>
-
-      {/* 일정보기 리스트 */}
-      <ProductPlanList
-        lessonId={lesson?.id || ''}
-        data={plan}
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        month={month}
-        onDetail={onDetail}
-        setNotiMessage={setNotiMessage}
-        refetch={refetch}
-      />
-
-      {/* 플랜 상세 */}
-      <ProductPlanDetail
-        id={detailId || ''}
-        lessonId={lesson?.id || ''}
-        open={detailId}
-        onClose={() => onDetailClose(false)}
-        refetch={() => onDetailClose(true)}
-      />
-
-      {/* 플랜 반복 등록 */}
-      <ProductPlanMultiDetail
-        open={isMultiOpen}
-        onClose={() => onMultiPlanClose(false)}
-        refetch={() => onMultiPlanClose(true)}
-        lessonId={lesson?.id || ''}
-      />
-
-      {/* 예약자 현황 */}
-      <ProductPlanResevationList id={reservationId} open={reservationId} onClose={() => setReservationId('')} lesson={lesson} />
     </React.Fragment>
   );
 };
 
-export default ProgramSchedulePage;
+export default ProgramScheduleTitle;
